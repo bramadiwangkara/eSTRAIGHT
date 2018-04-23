@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Month</title>
+  <style>
+
+    * {
+      font-size: 25px;
+    }
+
+    button {
+      background-color: lightblue;
+      border: 2px solid navy;
+      border-radius: 10px;
+      margin: 3px;
+    }
+    button:hover{
+      background-color: lightcyan;
+      cursor: pointer;
+    }
+    button:active {
+      background-color: lightblue;
+      -webkit-box-shadow: inset 0 0 5px #000000;
+       box-shadow:         inset 0 0 5px #000000;
+    }
+
+    .year {
+      text-align: center;
+    }
+
+    .monthpicker {
+      display: grid;
+      grid-template-columns: repeat(3, 4em);
+      grid-gap: 5px;
+    }
+
+    .monthpicker input[type="radio"] {
+      display: none;
+    }
+
+    .monthpicker>input[type="radio"]:checked+label {
+      background-color: lightslategrey;
+    }
+
+    .monthpicker label {
+      background-color: white;
+      border: 2px solid black;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+    }
+
+    .monthpicker label:hover {
+      background-color: lightgrey;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="mp">
+    <form class="monthpicker" action="" method="post">
+      <button type="button" name="button" id="decrease"><</button>
+      <div class="year"></div>
+      <button type="button" name="button" id="increase">></button>
+      <input type="radio" name="month" value="0" id="Jan">
+      <label for="Jan" id="JanL" class="mon-lab">Jan</label>
+      <input type="radio" name="month" value="0" id="Feb">
+      <label for="Feb" id="FebL" class="mon-lab">Feb</label>
+      <input type="radio" name="month" value="0" id="Mar">
+      <label for="Mar" id="MarL" class="mon-lab">Mar</label>
+      <input type="radio" name="month" value="0" id="Apr">
+      <label for="Apr" id="AprL" class="mon-lab">Apr</label>
+      <input type="radio" name="month" value="0" id="May">
+      <label for="May" id="MayL" class="mon-lab">May</label>
+      <input type="radio" name="month" value="0" id="Jun">
+      <label for="Jun" id="JunL" class="mon-lab">Jun</label>
+      <input type="radio" name="month" value="0" id="Jul">
+      <label for="Jul" id="JulL" class="mon-lab">Jul</label>
+      <input type="radio" name="month" value="0" id="Aug">
+      <label for="Aug" id="AugL" class="mon-lab">Aug</label>
+      <input type="radio" name="month" value="0" id="Sep">
+      <label for="Sep" id="SepL" class="mon-lab">Sep</label>
+      <input type="radio" name="month" value="0" id="Oct">
+      <label for="Oct" id="OctL" class="mon-lab">Oct</label>
+      <input type="radio" name="month" value="0" id="Nov">
+      <label for="Nov" id="NovL" class="mon-lab">Nov</label>
+      <input type="radio" name="month" value="0" id="Dec">
+      <label for="Dec" id="DecL" class="mon-lab">Dec</label>
+    </form>
+  </div>
+
+  <script>
+    $(function() {
+      var today = new Date();
+      var month = today.getMonth();
+      var year = parseInt(today.getFullYear());
+      var incAble = true;
+      var decAble = true;
+
+      $('.year').html(year);
+
+      $('#decrease').on('click', function() {
+        year-=1;
+        $('.year').html(year);
+        incAble = true;
+        $('#increase').css("background-color", "lightblue");
+      })
+      $('#increase').on('click', function() {
+        if (incAble == true) {
+          year+=1;
+          $('.year').html(year);
+        }
+        else {
+          alert("Cannot increase year!");
+        }
+      })
+
+      if(year === parseInt(today.getFullYear())) {
+        $('#increase').css("background-color", "white");
+        incAble = false;
+      }
+      else {
+        $('#increase').css("background-color", "lightblue");
+        incAble = true;
+      }
+
+
+    });
+
+  </script>
+</body>
+</html>

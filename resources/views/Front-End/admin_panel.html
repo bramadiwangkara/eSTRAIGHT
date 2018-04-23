@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style_Adminpanel.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <title>AdminPanel</title>
+</head>
+<body>
+  <div class="header">
+    Header
+  </div>
+  <div class="nav">
+    <div class="bars">
+      <i class="fa fa-bars"></i>
+    </div>
+    <ul>
+      <li class="navButtton" data-id="Dashboard">Dashboard</li>
+      <li class="navButtton" data-id="Users">Users Management</li>
+      <li class="navButtton" data-id="Developer">Developer</li>
+      <li class="navButtton" data-id="About">About</li>
+      <li>Log Out</li>
+    </ul>
+  </div>
+  <div class="Panel" id="Dashboard">
+    Dashboard
+  </div>
+  <div class="Panel" id="Users">
+    Users Management
+    <div class="usermanag">
+      <button type="button" name="add" id="AddUser"><i class="fa fa-plus"></i></button>
+      <input type="text" name="search" value="search">
+      <table id="UsersList">
+        <tr>
+          <th>Nama</th>
+          <th>Id</th>
+          <th>Password</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="Panel" id="Developer">
+    Developer
+  </div>
+  <div class="Panel" id="About">
+    About
+  </div>
+  <div class="addUserForm">
+    <div class="form">
+      <h3>Add User</h3>
+      <input type="text" name="nama" value="" id="namaAU">
+      <label for="namaAu">Nama</label>
+      <input type="text" name="id" value="" id="idAU">
+      <label for="idAu">ID</label>
+      <input type="text" name="pass" value="" id="passAU">
+      <label for="passAu">Password</label>
+      <button type="button" name="addusr" id="AddAU">Add</button>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      var currPage = "Dashboard";
+      var prevPage = "";
+      var panelWidth = $('.Panel').width();
+
+      $('#'+currPage).css("left", '-='+panelWidth+"px");
+
+      $('.navButtton').on('click', function() {
+        prevPage = currPage;
+        currPage = $(this).data("id");
+
+        if (prevPage != currPage) {
+          if ( parseInt($('#'+prevPage).css("left")) < parseInt($('#'+currPage).css("left"))) {
+            $('#'+prevPage).css("left", '-='+panelWidth);
+            $('#'+currPage).css("left", '-='+panelWidth);
+          }
+          else {
+            $('#'+prevPage).css("left", '+='+panelWidth);
+            $('#'+currPage).css("left", '+='+panelWidth);
+          }
+        }
+      })
+
+      var namaTest = "Fulan";
+      var idTest = "1234567890";
+      var passTest = "fulan123";
+
+      var nama = namaTest;
+      var id = idTest;
+      var pass = passTest;
+
+      $('#AddUser').on('click', function() {
+        $('.addUserForm').show();
+        // $('#UsersList').append("<tr><td>"+nama+"</td><td>"+id+"</td><td>"+pass+"</td></tr>");
+      })
+
+      $('#AddAU').click(function() {
+        nama = $('#namaAU').val();
+        id = $('#idAU').val();
+        pass = $('#passAU').val();
+        $('.addUserForm').hide();
+        $('#UsersList').append("<tr><td>"+nama+"</td><td>"+id+"</td><td>"+pass+"</td></tr>");
+        $('#namaAU').val() = "";
+        $('#idAU').val() = "";
+        $('#passAU').val() = "";
+      })
+
+
+
+    })
+  </script>
+</body>
+</html>
