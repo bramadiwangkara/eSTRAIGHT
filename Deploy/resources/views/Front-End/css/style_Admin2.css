@@ -8,13 +8,17 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
+
 .nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 170px;
   height: 100%;
-  background-color: #125d72;
+  background: linear-gradient(to left, #14a2ba, #125d72);
 }
 
 .nav ul {
@@ -95,6 +99,13 @@ table {
 }
 
 
+.customer_area_select {
+  font-size: 20px;
+  line-height: 25px;
+  width: 200px;
+  border-radius: 5px;
+}
+
 
 table, th, td {
   border-bottom: 1px solid #607D8B;
@@ -142,9 +153,18 @@ td {
   font-style: italic;
 }
 
-.add_user_form, .add_cust_form {
+.add_user_form_box, .add_cust_form_box {
   display: none;
-  /* display: flex; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.add_user_form, .add_cust_form {
+  display: flex;
   flex-direction: column;
   position: absolute;
   top: 50%;
@@ -188,6 +208,21 @@ td {
   margin: 0;
 }
 
+#add_user_pass_show {
+  display: none;
+}
+
+#add_user_pass_show:checked~label[for="add_user_pass_show"] {
+  text-decoration: none;
+}
+
+.add_user_form label[for="add_user_pass_show"] {
+  font-size: 12px;
+  text-decoration: line-through;
+  cursor: pointer;
+  line-height: 30px;
+}
+
 .add_cust_form input {
   display: none;
 }
@@ -205,7 +240,7 @@ td {
   border-right: 2px solid #607D8B;
   border-top: 2px solid honeydew;
   border-left: 2px solid honeydew;
-  background-color: #14a2ba;
+  background: linear-gradient(to top, grey, white);
   margin-bottom: 10px;
 }
 
@@ -215,4 +250,5 @@ td {
   border-left: 2px solid #607D8B;
   border-bottom: 2px solid honeydew;
   border-right: 2px solid honeydew;
+  background: linear-gradient(to bottom, #869791, #d6d6d6);
 }

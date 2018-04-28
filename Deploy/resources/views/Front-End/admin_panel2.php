@@ -65,10 +65,10 @@
   <div class="add_user_form">
     <h3><span></span> Pengguna</h3>
       <input type="number" name="add_user_id" id="add_user_id" value="" placeholder="Nomor Induk Pegawai">
-      <input type="text" name="add_user_pass" id="add_user_pass" value="" placeholder="Password">
+      <input type="password" name="add_user_pass" id="add_user_pass" value="" placeholder="Password (default: pegawaiPLN)">
       <select name="cars" id="add_user_level">
-        <option value="0">Admin</option>
-        <option value="1">Pegawai</option>
+        <option value="0">Pegawai</option>
+        <option value="1">Admin</option>
       </select>
       <div class="form_button">
         <button type="button" name="cancel_add" id="cancel_add">Cancel</button>
@@ -78,8 +78,8 @@
 
   <div class="add_cust_form">
     <h3><span></span> Pelanggan</h3>
-      <input type="file" name="add_cust" id="add_cust_file" value="" >
-      <label for="add_cust_file"><i class="fa fa-upload" aria-hidden="true"></i> Add File
+      <input type="file" name="add_cust" id="add_cust_file" value="" accept=".xls,.xlsx">
+      <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
       </label><br>
       <div class="form_button">
         <button type="button" name="cancel_add" id="cancel_addc">Cancel</button>
@@ -93,11 +93,12 @@
 
   <script>
     $(function() {
-      var curr = "Customer";
+      var curr = "Userm";
       var nama_form = "Lorem Ipsum";
       var id_form = "";
-      var pass = ""
+      var pass = "pegawaiPLN";
       var selected = 0;
+      var selected_id = "";
 
       $('.page').hide();
       $('#'+curr).show();
@@ -114,47 +115,26 @@
         $('#'+curr).show();
       })
 
+
+      $('.select_all').prop('disabled', true);
+      $('.del_user').prop('disabled', true);
+      $('.edit_user').prop('disabled', true);
+      $('#select_all').prop('disabled', true);
+
       $('.add_user').on('click', function() {
         $('.add_user_form').show().css('display', 'flex');
         $('.add_user_form').find('span').html('Tambah');
         $('#add_user_id').focus();
       })
 
-      $('.del_user').prop('disabled', true);
-      $('.edit_user').prop('disabled', true);
-      $('.select_all').prop('disabled', true);
-      $('.del_cust').prop('disabled', true);
-      $('.edit_cust').prop('disabled', true);
 
-      var clear_form = function() {
-        $('#add_user_id').val("");
-        $('#add_user_pass').val("");
-      }
-
-      $('#cancel_add').on('click', function() {
-        $('.add_user_form').hide();
-        clear_form();
-      })
 
       $('#cancel_addc').on('click', function() {
         $('.add_cust_form').hide();
         $('#add_cust_file').val("");
       })
 
-      $('#submit_cust').on('click', function() {
-        $('.add_cust_form').hide();
-        $('#add_cust_file').val("");
-      })
 
-      var add_user = function(new_id, new_pass, new_level) {
-        //nama_form = new_nama;
-        id_form = new_id;
-        pass = new_pass
-        $('.add_user_form').hide();
-        $('.user_list').append("<tr id="+new_id+"><td><input type='checkbox' class='select_row'></td><td>"+nama_form+"</td><td>"+new_id+"</td><td>"+new_pass+"</td><td>"+new_level+"</td></tr>")
-        $('.select_all').attr('disabled', false);
-        clear_form();
-      }
 
       var add_cust = function( ) {
         var new_id = "09712";
@@ -172,6 +152,7 @@
 
         $('.add_cust_form').show();
         $('.add_cust_form').find('span').html('Tambah');
+        // $('#select_all').prop('disabled', false);
 
         //$('.cust_list').append('<tr id='+new_id+' class="cust"> <td><input type="checkbox" class="select_row"></td><td><input type="checkbox" class="opt">'+new_id+'</td><td>'+new_name+'</td></tr><tr class="cust_details_box"> <td colspan="3"> <div class="cust_details"> <table id="sub_table"> <tr> <td>unitap</td><td>'+new_unitap+'</td></tr><tr> <td>Alamat Pelanggan</td><td>'+new_alamat+'</td></tr><tr> <td>Tarif Pelanggan</td><td>'+new_tarif+'</td></tr><tr> <td>Daya Pelanggan</td><td>'+new_daya+'</td></tr><tr> <td>Fakm Pelanggan</td><td>'+new_fakm+'</td></tr><tr> <td>Fakmvarh Pelanggan</td><td>'+new_fakmvarh+'</td></tr><tr> <td>Kdgardu Pelanggan</td><td>'+new_kdgardu+'</td></tr><tr> <td>dlpd pelanggan</td><td>'+new_dlpd+'</td></tr><tr> <td>dlpd fkm pelanggan</td><td>'+new_dlpd_fakm+'</td></tr><tr> <td>dlpd instrumentasi pelanggan</td><td>'+new_dlpd_inst+'</td></tr></table> </div></td></tr>');
       }
@@ -183,14 +164,28 @@
       })
 
       $('#submit_user').click( function() {
-        add_user($('#add_user_id').val(), $('#add_user_pass').val(), $('#add_user_level').val() );
+        if ($('#add_user_id').val() != "" && $('#add_user_level').val() != ""){
+          add_user($('#add_user_id').val(), pass, $('#add_user_level').val() );
+        }
+        else {
+          alert("Isi data bro!");
+        }
       })
+
+      var selecting_rows = function() {
+
+      }
 
       $('#select_all').on('change', function() {
         $('.select_row').prop("checked", $('#select_all').prop("checked"));
         $('.del_user').prop('disabled', !$('#select_all').prop("checked"));
-        $('.edit_user').prop('disabled', !$('#select_all').prop("checked"));
-        selected = $(this).children().length;
+        selected = $('.user_list input:checked').length - Number($('#select_all').prop("checked"));
+        if (selected === 1) {
+          $('.edit_user').prop('disabled', !$('#select_all').prop("checked"));
+          // console.log($('#select_row:checked').parent().parent().attr("id"));
+        }
+        console.log($('.user_list input:checked').parent().attr('id'));
+        console.log(selected);
       })
 
       $(document).on('click', '.select_row', function() {
@@ -201,15 +196,24 @@
         else {
           selected--;
         }
-        if (selected > 0 ) {
-          $('.del_user').prop('disabled', false);
-          $('.edit_user').prop('disabled', false);
+        console.log(selected);
+        if (selected != 0 ) {
+          if (selected == 1) {
+            $('.del_user').prop('disabled', false);
+            $('.edit_user').prop('disabled', false);
+            selected_id = $(this).parent().parent().attr('id');
+            console.log(selected_id);
+          }
+          else {
+            $('.del_user').prop('disabled', false);
+            $('.edit_user').prop('disabled', true);
+          }
         }
         else {
           $('.del_user').prop('disabled', true);
           $('.edit_user').prop('disabled', true);
         }
-      })
+      });
 
       $(document).on('click', '.cust td:not(:first-child)', function(e) {
         var opt = $('.opt');

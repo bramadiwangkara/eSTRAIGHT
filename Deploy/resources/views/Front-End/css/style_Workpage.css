@@ -10,6 +10,7 @@
   box-sizing: border-box;
 }
 
+
 .nav {
   background: linear-gradient(to left, #14a2ba, #125d72);
   height: 70px;
@@ -33,6 +34,25 @@
 
 .curr_nav {
   background-color: rgba(0,0,0, .2);
+}
+
+.change_pass_form {
+  display: none;
+  width: 400px;
+  /* height: 200px; */
+  padding: 15px;
+  border: 1px solid lightslategrey;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.change_pass_form input {
+  width: 90%;
+  font-size: 18px;
+}
+
+.change_pass_form button {
+  font-size: 18px;
+  border-radius: 3px;
 }
 
 
