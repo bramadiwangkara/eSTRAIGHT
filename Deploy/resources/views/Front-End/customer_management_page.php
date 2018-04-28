@@ -10,58 +10,76 @@
     </select>
     <table class="cust_list">
       <tr>
-        <th><input type="checkbox" id="select_all"/></th>
+        <th><input type="checkbox" id="select_allc"/></th>
         <th>Id</th>
         <th>Nama Pelanggan</th>
       </tr>
       <tr id='+new_id+' class="cust">
-        <td><input type="checkbox" class="select_row"></td>
+        <td><input type="checkbox" class="select_rowc"></td>
         <td><input type="checkbox" class="opt">'+new_id+'</td>
         <td>'+new_name+'</td>
       </tr>
       <tr class="cust_details_box">
         <td colspan="3">
           <div class="cust_details">
-            <table id="sub_table">
+            <table class="sub_table">
               <tr>
                 <td>unitap</td>
-                <td>'+new_unitap+'</td>
+                <td colspan="2">'+new_unitap+'</td>
               </tr>
               <tr>
                 <td>Alamat Pelanggan</td>
-                <td>'+new_alamat+'</td>
+                <td colspan="2">'+new_alamat+'</td>
               </tr>
               <tr>
                 <td>Tarif Pelanggan</td>
-                <td>'+new_tarif+'</td>
+                <td colspan="2">'+new_tarif+'</td>
               </tr>
               <tr>
                 <td>Daya Pelanggan</td>
-                <td>'+new_daya+'</td>
+                <td colspan="2">'+new_daya+'</td>
               </tr>
               <tr>
                 <td>Fakm Pelanggan</td>
-                <td>'+new_fakm+'</td>
+                <td colspan="2">'+new_fakm+'</td>
               </tr>
               <tr>
                 <td>Fakmvarh Pelanggan</td>
-                <td>'+new_fakmvarh+'</td>
+                <td colspan="2">'+new_fakmvarh+'</td>
               </tr>
               <tr>
                 <td>Kdgardu Pelanggan</td>
-                <td>'+new_kdgardu+'</td>
+                <td colspan="2">'+new_kdgardu+'</td>
               </tr>
               <tr>
                 <td>dlpd pelanggan</td>
-                <td>'+new_dlpd+'</td>
+                <td colspan="2">'+new_dlpd+'</td>
               </tr>
               <tr>
                 <td>dlpd fkm pelanggan</td>
-                <td>'+new_dlpd_fakm+'</td>
+                <td colspan="2">'+new_dlpd_fakm+'</td>
               </tr>
               <tr>
                 <td>dlpd instrumentasi pelanggan</td>
-                <td>'+new_dlpd_inst+'</td>
+                <td colspan="2">'+new_dlpd_inst+'</td>
+              </tr>
+              <tr>
+                <td rowspan="3">
+                  <select class="jam_nyala_opt" name="jam_nyala_opt">
+                    <option value="jamNyala_0">Jam Nyala bulan X</option>
+                    <option value="jamNyala_1">Jam Nyala bulan Y</option>
+                  </select>
+                </td>
+                <td>Jam Nyala</td>
+                <td>'+cust['new_jam_nyala']['jam_pemakaian']+'</td>
+              </tr>
+              <tr>
+                <td>Bulan</td>
+                <td>'+cust['new_jam_nyala']['bulan']+'</td>
+              </tr>
+              <tr>
+                <td>Tahun</td>
+                <td>'+cust['new_jam_nyala']['tahun']+'</td>
               </tr>
             </table>
           </div>
@@ -85,11 +103,12 @@
 
 <script>
 
+var selected_rows_numberc = 0;
+var selected_rows_idc = "";
+
 
 var add_cust = function(cust) {
 
-  var selected_rows_number = 0;
-  var selected_rows_id = "";
 
   // add table Pelanggan to cust
   var cust = {
@@ -160,31 +179,49 @@ var add_cust = function(cust) {
     }
   });
 
-  $(document).on('click', '.select_row', function() {
-    $('#select_all').prop("checked", false);
+
+  $('#select_allc').on('change', function() {
+    $('.select_rowc').prop("checked", $('#select_allc').prop("checked"));
+    $('.del_cust').prop('disabled', !$('#select_allc').prop("checked"));
+    selected_rows_numberc = $('.cust_list input:checked').length - Number($('#select_allc').prop("checked"));
+    if (selected_rows_numberc <= 1) {
+      $('.edit_cust').prop('disabled', !$('#select_allc').prop("checked"));
+      // console.log($('#select_row:checked').parent().parent().attr("id"));
+    }
+    // console.log($('.cust_list input:checked').parent().attr('id'));
+    // console.log(selected_rows_number);
+  })
+
+  $(document).on('click', '.select_rowc', function() {
+    $('#select_allc').prop("checked", false);
     if ($(this).prop('checked')) {
-      selected_rows_number++;
+      selected_rows_numberc++;
     }
     else {
-      selected_rows_number--;
+      selected_rows_numberc--;
     }
-    // console.log(selected_rows_number);
-    if (selected_rows_number != 0 ) {
-      if (selected_rows_number == 1) {
-        $('.del_user').prop('disabled', false);
-        $('.edit_user').prop('disabled', false);
-        selected_rows_id = $(this).parent().parent().attr('id');
+    console.log(selected_rows_numberc);
+    if (selected_rows_numberc != 0 ) {
+      if (selected_rows_numberc == 1) {
+        $('.del_cust').prop('disabled', false);
+        $('.edit_cust').prop('disabled', false);
+        selected_rows_idc = $(this).parent().parent().attr('id');
         // console.log(selected_rows_id);
       }
       else {
-        $('.del_user').prop('disabled', false);
-        $('.edit_user').prop('disabled', true);
+        $('.del_cust').prop('disabled', false);
+        $('.edit_cust').prop('disabled', true);
       }
     }
     else {
-      $('.del_user').prop('disabled', true);
-      $('.edit_user').prop('disabled', true);
+      $('.del_cust').prop('disabled', true);
+      $('.edit_cust').prop('disabled', true);
     }
+  });
+
+  $('.jam_nyala_opt').on('change', function() {
+    //alert($(this).val());
+    console.log($(this).val());
   });
 
 
@@ -194,7 +231,13 @@ var add_cust = function(cust) {
   $(function() {
     $('.del_cust').prop('disabled', true);
     $('.edit_cust').prop('disabled', true);
-    $('#select_all').prop('disabled', true);
+    //$('#select_allc').prop('disabled', true);
+
+
+    $('.jam_nyala_opt').parent().css({
+      'border-right': '1px solid #607D8B',
+      'vertical-align': 'top'
+    });
 
 
   })

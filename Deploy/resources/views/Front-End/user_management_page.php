@@ -39,7 +39,7 @@ User Management
   var pass = "default";
   var nama_form = "Lorem Ipsum";
   var selected_rows_number = 0;
-  //var selected_rows_id = "";
+  var selected_rows_id = "";
 
   $('.add_user').on('click', function() {
     $('.add_user_form_box').show();
@@ -126,7 +126,20 @@ User Management
 
   $('#add_user_pass_show').on('click', function() {
     $('#add_user_pass').attr('type', $('#add_user_pass_show').prop('checked') ? 'text' : 'password' );
-  })
+  });
+
+
+  $('#select_all').on('change', function() {
+    $('.select_row').prop("checked", $('#select_all').prop("checked"));
+    $('.del_user').prop('disabled', !$('#select_all').prop("checked"));
+    selected_rows_number = $('.user_list input:checked').length - Number($('#select_all').prop("checked"));
+    if (selected_rows_number <= 1) {
+      $('.edit_user').prop('disabled', !$('#select_all').prop("checked"));
+      // console.log($('#select_row:checked').parent().parent().attr("id"));
+    }
+    // console.log($('.user_list input:checked').parent().attr('id'));
+    // console.log(selected);
+  });
 
   $(document).on('click', '.select_row', function() {
     $('#select_all').prop("checked", false);
