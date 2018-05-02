@@ -15,11 +15,12 @@
 <body>
   <div class="nav">
     <ul>
-      <li>Home</li>
-      <li class="curr_nav">Workpage</li>
+      <li class="nav-button curr_nav"data-id="profile_menu">Home</li>
+      <li class="nav-button" data-id="workpage_menu_box">Workpage</li>
+      <a href="admin_panel3.php"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
     </ul>
   </div>
-  <div class="workpage_menu_box">
+  <div id="workpage_menu_box">
     <div class="sa">
       <h2>
         Select Area <i class="fa fa-toggle-down" ></i>
@@ -176,12 +177,23 @@
       </div>
     </div>
   </div>
+  <div id="profile_menu">
+    <button type="button" name="change_password" id="change_password">Change Password</button>
+    <div class="change_pass_form">
+      <input type="password" name="old_pass" value="" placeholder="Password Lama"> <span>*</span>
+      <input type="password" name="re_old_pass" value="" placeholder="Ulang Password Lama"> <span>*</span>
+      <input type="password" name="new_pass" value="" placeholder="Password Baru"> <span>*</span>
+      <button type="submit" name="submit_new_pass">Submit</button>
+    </div>
+  </div>
 
 
   <script>
     $(function() {
 
       var show_area = false;
+      var curr_page = "profile_menu";
+      $("#"+curr_page).siblings().not('.nav').hide();
 
       $('.cls, .group').hover(function(e) {
         $(this).addClass("hovered");
@@ -267,6 +279,24 @@
           $('.map2').show();
           // $('.map2disp').fadeIn(500)
         }
+      })
+
+      $('.nav-button:not(admin_only)').click(function() {
+        $("#"+$(this).data('id')).show();
+        $(this).siblings().removeClass('curr_nav');
+        $(this).addClass('curr_nav');
+        $("#"+$(this).data('id')).siblings().not('.nav').hide();
+        // console.log($(this).attr('class'));
+      })
+
+      $('.admin_only').on('click', function () {
+
+      })
+
+
+
+      $('#change_password').click(function() {
+        $('.change_pass_form').toggle();
       })
 
 
