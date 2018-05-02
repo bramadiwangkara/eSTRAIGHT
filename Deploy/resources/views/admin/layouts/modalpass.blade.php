@@ -8,7 +8,7 @@
         <h4 class="modal-title">Ubah Password Pegawai</h4>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('passwordakun') }}">
+        <form method="POST" action="{{ route('ubahpassword') }}">
             @csrf
 
             <!-- <div class="form-group row">

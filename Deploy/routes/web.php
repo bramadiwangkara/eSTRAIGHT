@@ -22,6 +22,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Admin
 Route::get('/admin', 'Controller@adminIndex')->name('admin');
 Route::get('/admin/buatakun', 'Controller@adminCreate')->name('buatakun');
+
 Route::get('/admin/manajemenakun', 'Controller@manajemenakun')->name('manajemenakun');
-Route::post('/admin/manajemenakun/passwordakun', 'Controller@passwordakun')->name('passwordakun');
+//go to manajemen akun
+
+Route::post('/admin/manajemenakun/ubahpassword', 'Controller@ubahpassword')->name('ubahpassword');
+//change password admin
+
 Route::get('/admin/manajemenakun/delete/{id}', 'Controller@deleteakun');
+//delete akun admin
+
+Route::post('/admin/manajemenakun/tambahakun', 'Controller@tambahakun')->name('tambahakun');

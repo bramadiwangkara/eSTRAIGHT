@@ -29,12 +29,29 @@ class Controller extends BaseController
         return view('admin.manajemenakun', ['datauser' => $datauser]);
     }
 
-    public function passwordakun(Request $request){
+    public function tambahakun(Request $request){
+      $newadmin = new User();
+      $newadmin->nip = $request->nip;
+      $newadmin->password = $request->password;
+      $newadmin->level = $request->level;
+
+      $newadmin->save();
+
+      $datauser = User::all();
+        return view('admin.manajemenakun', ['datauser' => $datauser]);
+
+    }
+
+    public function ubahpassword(Request $request){
+
+      // dd($request->new_password);
       $calon = User::where('nip', $request->nip)->first();
-      $calon -> password = $request->new_password;
+      $calon->password = $request->new_password;
       $calon->save();
 
-      return redirect()->route('manajemenakun')->with('alert-success', 'Password Berhasil Diubah.');
+      // return redirect()->route('manajemenakun')
+      // $datauser = User::all();
+        return view('admin.manajemenakun', ['datauser' => $datauser])->with('alert-success', 'Password Berhasil Diubah.');
     }
 
     public function deleteakun($id){
