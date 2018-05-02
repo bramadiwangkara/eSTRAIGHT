@@ -22,3 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Admin
 Route::get('/admin', 'Controller@adminIndex')->name('admin');
 Route::get('/admin/buatakun', 'Controller@adminCreate')->name('buatakun');
+Route::get('/admin/manajemenakun', 'Controller@manajemenakun')->name('manajemenakun');
+Route::post('/admin/manajemenakun/passwordakun', 'Controller@passwordakun')->name('passwordakun');
+Route::get('/admin/manajemenakun/delete/{id}', 'Controller@deleteakun');

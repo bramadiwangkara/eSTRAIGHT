@@ -66,14 +66,14 @@
                             </li>
                         @endguest -->
                         <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link" href="{{ route('manajemenakun') }}" role="button">
                                     Manajemen akun<span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('register') }}">Buat akun</a>
+<!--                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('buatakun') }}">Buat akun</a>
                                     <a class="dropdown-item" href="/admin">Hapus akun</a>
-                                </div>
+                                </div> -->
                         </li>
 
                         <li class="nav-item dropdown">
