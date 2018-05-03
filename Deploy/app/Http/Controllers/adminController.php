@@ -15,10 +15,24 @@ class adminController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function adminhome(){
-      return view('admin2.layouts.masteradmin');
+      $datauser = User::all();
+        return view('admin2.layouts.masteradmin', ['datauser' => $datauser]);
     }
 
     public function workpage(){
       return view('admin2.workpage');
+    }
+
+    public function adduser(Request $request){
+      $newadmin = new User();
+      $newadmin->nip = $request->nip;
+      $newadmin->password = $request->password;
+      $newadmin->level = $request->level;
+
+      $newadmin->save();
+
+      $datauser = User::all();
+      // return view('admin2.layouts.masteradmin', ['datauser' => $datauser]);
+        return redirect('admin2');
     }
 }

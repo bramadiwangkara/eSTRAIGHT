@@ -6,30 +6,47 @@
   <table class="user_list">
     <tr>
       <th><input type="checkbox" id="select_all"/></th>
-      <th>Nama</th>
       <th>Id</th>
-      <th>Password</th>
+      <th>NIP</th>
       <th>Level</th>
     </tr>
+    <tbody>
+
+      @foreach ($datauser as $value)
+
+      <tr>
+      <td><input type="checkbox" class="select_row" id="{{$value-> id}}"/></td>
+      <td><a href="#">{{$value -> id}}</a></td>
+      <td>{{$value -> nip}}</td>
+    <td>
+      {{$value -> level}}
+    </td>
+    </tr>
+      @endforeach
+    </tbody>
   </table>
 </div>
 
 <div class="add_user_form_box">
   <div class="add_user_form">
     <h3><span></span> Pengguna</h3>
-    <input type="number" name="add_user_id" id="add_user_id" value="" placeholder="Nomor Induk Pegawai">
-    <input type="password" name="add_user_pass" id="add_user_pass" value="" placeholder="Password (default: pegawaiPLN)">
-    <div>
-      <input type="checkbox" name="add_user_pass_show" id="add_user_pass_show">
-      <label for="add_user_pass_show"><i class="fa fa-eye" aria-hidden="true"></i> Show Password</label>
-    </div>
-    <select name="cars" id="add_user_level">
-      <option value="0">Pegawai</option>
-      <option value="1">Admin</option>
-    </select>
-    <div class="form_button">
-      <button type="button" name="cancel_add" id="cancel_add">Cancel</button>
-      <button type="submit" name="submit_user" id="submit_user">Submit</button>
+    <form method="post" action="{{route('adduser')}}" >
+      @csrf
+      <input type="number" name="nip" id="nip" value="" placeholder="Nomor Induk Pegawai">
+      <input type="password" name="password" id="password" value="" placeholder="Password (default: pegawaiPLN)">
+      <div>
+        <input type="checkbox" name="add_user_pass_show" id="add_user_pass_show">
+        <label for="add_user_pass_show"><i class="fa fa-eye" aria-hidden="true"></i> Show Password</label>
+      </div>
+      <select name="level" id="level">
+        <option value="0">Pegawai</option>
+        <option value="1">Admin</option>
+      </select>
+      <div class="form_button">
+        <button type="button" name="cancel_add" id="cancel_add">Cancel</button>
+        {{-- <button type="submit" name="submit_user" id="submit_user">Submit</button> --}}
+        <button type="submit" >Tambah</button>
+    </form>
     </div>
   </div>
 </div>

@@ -38,3 +38,5 @@ Route::post('/admin/manajemenakun/tambahakun', 'Controller@tambahakun')->name('t
 
 Route::get('/admin2', 'adminController@adminhome')->name('adminhome');
 Route::get('/admin2/workpage', 'adminController@workpage')->name('adminworkpage');
+// Route::get('/admin2/user_management', 'adminController@user_management')->name('user_management');
+Route::post('/admin2/adduser', 'adminController@adduser')->name('adduser');

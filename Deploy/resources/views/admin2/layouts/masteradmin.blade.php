@@ -41,7 +41,7 @@
 
   <script>
     $(function() {
-      var curr = "Userm";
+      var curr = "About";
 
       $('.page').hide();
       $('#'+curr).show();
