@@ -1,0 +1,58 @@
+/*Reset Styling*/
+@import "reset_css.css";
+
+/*Import font*/
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/*
+Color Pallete
+#14a2ba
+#125d72
+#efe62f
+#869791
+#d6d6d6
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #d6d6d6;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.wrapper {
+  clear: right;
+  background: linear-gradient(to left, #14a2ba, #125d72);
+  height: 70px;
+  line-height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+}
+#uid, #upass {
+  margin: 18px 5px;
+  border: 1px solid #869791;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  padding: 0.5em;
+  border-radius: 7px;
+}
+#login_button {
+  margin: 18px 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0.5em;
+  border-radius: 7px;
+}
