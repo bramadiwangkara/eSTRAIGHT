@@ -33,3 +33,8 @@ Route::get('/admin/manajemenakun/delete/{id}', 'Controller@deleteakun');
 //delete akun admin
 
 Route::post('/admin/manajemenakun/tambahakun', 'Controller@tambahakun')->name('tambahakun');
+
+
+
+Route::get('/admin2', 'adminController@adminhome')->name('adminhome');
+Route::get('/admin2/workpage', 'adminController@workpage')->name('adminworkpage');
