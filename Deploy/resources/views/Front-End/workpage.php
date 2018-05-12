@@ -145,8 +145,6 @@
 
           <div class="lastUpdate">
             Update Terakhir: <span class="lastUpdateDate">---</span>
-            <button type="button" name="tambah">Tambah</button>
-            <button type="button" name="hapus">Hapus</button>
           </div>
           <div class="export">
             Export

@@ -81,14 +81,14 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link" href="{{ route('manajemendata') }}" role="button">
                                     Manajemen data<span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/admin">Tambah data</a>
+                                <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="">Tambah data</a>
                                     <a class="dropdown-item" href="/admin">Hapus data</a>
-                                </div>
+                                </div> -->
                         </li>
 
                         <li class="nav-item dropdown">

@@ -34,6 +34,10 @@ Route::get('/admin/manajemenakun/delete/{id}', 'Controller@deleteakun');
 
 Route::post('/admin/manajemenakun/tambahakun', 'Controller@tambahakun')->name('tambahakun');
 
+Route::get('/admin/manajemendata', 'PelangganController@index')->name('manajemendata');
+
+Route::post('/admin/manajemendata/tambah', 'PelangganController@store')->name('tambahdata');
+
 
 
 Route::get('/admin2', 'adminController@adminhome')->name('adminhome');

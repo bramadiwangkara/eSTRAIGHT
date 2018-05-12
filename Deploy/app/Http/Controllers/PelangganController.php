@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Excel;
 
 class PelangganController extends Controller
 {
@@ -14,7 +17,7 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        //
+        return view('pelanggan.index');
     }
 
     /**
@@ -33,9 +36,43 @@ class PelangganController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        // $rules = array(
+        //     'file' => 'required',
+        //     'num_records' => 'required',
+        // );
+
+        // $validatorFactory = app('Illuminate\Validation\Factory');
+        // $validator = $validatorFactory->make(Input::all(), $rules);
+        // //process the form
+        // if($validator->fails())
+        //     return redirect()->action('Controller@adminIndex');
+        // else
+        // {
+        //     try{
+        //         Excel::load(Input::file('file'), function($reader) {
+        //             foreach ($reader->toArray() as $row) {
+        //                 dd($row);
+        //             }
+        //         });
+        //         \Session::flash('success', 'Users uploaded successfully.');
+        //         return redirect(route('users.index'));
+        //     } catch (\Exception $e) {
+        //         \Session::flash('error', $e->getMessage());
+        //         return redirect(route('users.index'));
+        //     }
+        
+        // }
+
+        $file = Input::file('file');
+        $file_name = $file->getClientOriginalName();
+        $file->move('files', $file_name);
+        Excel::load("files/".$file_name, function($reader){
+           foreach ($reader->toArray() as $row) {
+                dd($row);
+            } 
+        });
     }
 
     /**
