@@ -191,7 +191,9 @@ class PelangganController extends Controller
     {
         $area = strtoupper($request->area);
         $tahun = $request->tahun;
+
         $unitup = area::where('area', $area)->get();
+
         $pelanggans = pelanggan::whereHas('jam_nyala', function($query) use($tahun){
             $query->where('tahun', $tahun);
         })
@@ -204,6 +206,9 @@ class PelangganController extends Controller
 
     public function tetap(Request $request)
     {
+        $area = strtoupper($request->area);
+        $tahun = $request->tahun;
+
         $bln_now = $request->bulan;
         $thn_now = $request->tahun;
         if($bln_now == 1){
@@ -215,16 +220,18 @@ class PelangganController extends Controller
             $thn_bef = $thn_now;
         }
 
-        $unitup = area::whereRaw('area = "'.$request->area.'"')->get(); 
-        $p = pelanggan::whereIn('unitup', $unitup);
-
         $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
                        SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
 
-        $p = $p->whereHas('jam_nyala', function($query) use($having){
+        $unitup = area::whereRaw('area = "'.$request->area.'"')->get(); 
+
+        $pelanggans = pelanggan::whereHas('jam_nyala', function($query) use($bln_now, $thn_now, $having){
             $query->groupBy('idpel')
                   ->havingRaw($having);
-        })->paginate(25)->appends(request()->input);
+        })
+        ->whereIn('unitup', $unitup)
+        ->paginate(25)
+        ->appends(request()->input);
 
         if($request->btn == 'export')
         {
@@ -234,12 +241,13 @@ class PelangganController extends Controller
                 });
             })->export('xls');
         }
-        return view('pelanggan.index2', ['pelanggans' => $p]);
+        return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
     }
 
     public function turun(Request $request)
     {
         $jb = $request->jumlah_bulan;
+        $area = strtoupper($request->area);
         $bulan = $request->bulan;
         $tahun = $request->tahun;
 

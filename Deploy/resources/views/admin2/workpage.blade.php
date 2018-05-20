@@ -165,40 +165,48 @@
           </div>
           <div class="sorek_pemakaian">
             <form action="{{ route('pelanggantahunan') }}" method="GET">
-              <input type="hidden" name="area" value="" id="area">
-              <input type="hidden" name="tahun" value="" id="tahunan">
+              <input type="hidden" name="area" value="" id="tahunan_area">
+              <input type="hidden" name="tahun" value="" id="tahunan_tahun">
               <button type="submit">SOREK Tahunan</button>
             </form>
             <form action="{{ route('pelanggantetap') }}" method="GET">
-              <input type="hidden" name="area" value="" id="pemakaian_area">
-              <input type="hidden" name="bulan" value="12">
-              <input type="hidden" name="tahun" value="2013">
-              <!-- <button type="submit" name="btn" value="query">Pelanggan Tetap<\/button> -->
-              <button type="submit" name="pemakaian" value="query">Pemakaian Tetap</button>
-              <!-- <button type="submit" name="btn" value="export">Export</button> -->
-              </form>
+              <input type="hidden" name="area" value="" id="tetap_area">
+              <input type="hidden" name="bulan" value="" id="tetap_bulan">
+              <input type="hidden" name="tahun" value="" id="tetap_tahun">
+              <button type="submit" name="pemakaian" value="query" >Pemakaian Tetap</button>
             </form>
           </div>
           <div class="minmax">
-            <div class="minmax_box">
-              <div>Min</div>
-              <input type="number" name="minmax_min_input" value="0">
-              <button >Turun 1 Bulan</button>
-            </div>
-            <div class="minmax_box">
-              <div>Max</div>
-              <input type="number" name="minmax_max_input" value="0">
-              <button >Turun 3 Bulan</button>
-            </div>
+            <form action="{{ route('pln') }}" method="GET">
+                <input type="hidden" name="area" value="" id="pln_area">
+                <input type="hidden" name="bulan" value="" id="pln_bulan">
+                <input type="hidden" name="tahun" value="" id="pln_tahun">
+              <div class="minmax_box">
+                <div>Min</div>
+                <input type="number" name="bBawah">
+                <button type="submit" name="btn" value="1" >Turun 1 Bulan</button>
+              </div>
+              <div class="minmax_box">
+                <div>Max</div>
+                <input type="number" name="bAtas">
+                <button type="submit" name="btn" value="3">Turun 3 Bulan</button>
+              </div>
+            </form>
           </div>
           <div class="export_turun">
-            Turun
-            <select id="export_turun_select">
+            <form action="{{ route('pelangganturun') }}" method="GET">
+              <input type="hidden" name="area" value="" id="turun_area">
+              <input type="hidden" name="bulan" value="" id="turun_bulan">
+              <input type="hidden" name="tahun" value="" id="turun_tahun">
+              Turun
+            <!-- <select id="export_turun_select">
               <option value="3">3</option>
               <option value="6">6</option>
-            </select>
-            Bulan <br>
-            <button>Export</button>
+            </select> -->
+              <input type="number" name="jumlah_bulan" min="1">
+              Bulan <br>
+              <button type="submit">Export</button>
+            </form>
           </div>
           <div class="chartProp">
             <form>
@@ -260,8 +268,17 @@
         if ($(this).attr('id') != 'Surabaya'){
           $('.workspace').slideDown(500);
           $('.Areaname').html($(this).attr('id'));
-          $('#pemakaian_area, #area').val($(this).attr('id'));
-          $('#tahunan').val($('#select_tahun').find(':selected').text());
+          $('#tahunan_area, #area').val($(this).attr('id'));
+          $('#tetap_area, #area').val($(this).attr('id'));
+          $('#pln_area, #area').val($(this).attr('id'));
+          $('#turun_area, #area').val($(this).attr('id'));
+          $('#tetap_bulan').val($('#select_bulan').val());
+          $('#pln_bulan').val($('#select_bulan').val());    
+          $('#turun_bulan').val($('#select_bulan').val());
+          $('#tetap_tahun').val($('#select_tahun').val());
+          $('#tahunan_tahun').val($('#select_tahun').val());
+          $('#pln_tahun').val($('#select_tahun').val());
+          $('#turun_tahun').val($('#select_tahun').val()); 
           $('#infobox').css('display', 'none');
           $('.sa').hide();
           $('.map2').hide(); 
@@ -272,6 +289,19 @@
           //   $('.map2disp').fadeIn(500);
           // }, 100);
         }
+      })
+
+      $('#select_bulan').on('change', function() {
+          $('#tetap_bulan').val($('#select_bulan').val());
+          $('#pln_bulan').val($('#select_bulan').val());    
+          $('#turun_bulan').val($('#select_bulan').val());      
+      })
+
+      $('#select_tahun').on('change', function() {
+          $('#tetap_tahun').val($('#select_tahun').val());
+          $('#tahunan_tahun').val($('#select_tahun').val());
+          $('#pln_tahun').val($('#select_tahun').val());
+          $('#turun_tahun').val($('#select_tahun').val());
       })
 
       $('.close').on('click', function(e) {
