@@ -13,8 +13,13 @@
                 </div>
                 <form action="{{ route('export') }}" method="GET">
                     <input type="hidden" name="id" value= "{{ $_GET['id'] }}">
+                    <input type="hidden" id="chart" name="chart" value="">
                     <button type="submit">Export</button>
                 </form>
+
+                <script>
+                    document.getElementById("submit").innerHTML = "TEST";
+                </script>
         </div>
     </div>
 </div>

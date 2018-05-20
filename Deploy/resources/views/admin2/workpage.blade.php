@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="{{asset('css/style_Workpage.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Workpage |</title>
 </head>
@@ -142,33 +141,78 @@
       <div class="close"><i class="fa fa-close"></i></div>
       <div class="wrapper">
           <h2 class="Areaname">...</h2><br>
-
-          <div class="lastUpdate">
-            Update Terakhir: <span class="lastUpdateDate">---</span>
-            <button type="button" name="tambah">Tambah</button>
-            <button type="button" name="hapus">Hapus</button>
-          </div>
           <div class="export">
-            Export
-            <div class="tahun">
+            <span id="EXPORT_">Export</span><br><br>
+            <div class="export_box">
+              <div class="tahun">
               Tahun
+              <select name="tahun" id="select_tahun">
+                @foreach($bjn_thn as $a)
+                  <option value="{{ $a->tahun }}">{{ $a->tahun }}</option>
+                @endforeach
+              </select>
             </div>
             <div class="bulan">
               Bulan
+              <select name="Bulan" id="select_bulan">
+                @foreach($bjn_bln as $a)
+                  <option value="{{ $a->bulan }}">{{ strtoupper(date('M', mktime(0, 0, 0, $a->bulan, 1, 2013))) }}</option>
+                @endforeach
+              </select>
+            </div>
+
             </div>
           </div>
-          <div class="sorek">
-            <button type="button" name="sorek">SOREK Tahunan</button>
+          <div class="sorek_pemakaian">
+            <form action="{{ route('pelanggantahunan') }}" method="GET">
+              <input type="hidden" name="area" value="" id="area">
+              <input type="hidden" name="tahun" value="" id="tahunan">
+              <button type="submit">SOREK Tahunan</button>
+            </form>
+            <form action="{{ route('pelanggantetap') }}" method="GET">
+              <input type="hidden" name="area" value="" id="pemakaian_area">
+              <input type="hidden" name="bulan" value="12">
+              <input type="hidden" name="tahun" value="2013">
+              <!-- <button type="submit" name="btn" value="query">Pelanggan Tetap<\/button> -->
+              <button type="submit" name="pemakaian" value="query">Pemakaian Tetap</button>
+              <!-- <button type="submit" name="btn" value="export">Export</button> -->
+              </form>
+            </form>
           </div>
-          <div class="pemakaian">
-            <button type="button" name="pemakaian">Pemakaian Tetap</button>
+          <div class="minmax">
+            <div class="minmax_box">
+              <div>Min</div>
+              <input type="number" name="minmax_min_input" value="0">
+              <button >Turun 1 Bulan</button>
+            </div>
+            <div class="minmax_box">
+              <div>Max</div>
+              <input type="number" name="minmax_max_input" value="0">
+              <button >Turun 3 Bulan</button>
+            </div>
+          </div>
+          <div class="export_turun">
+            Turun
+            <select id="export_turun_select">
+              <option value="3">3</option>
+              <option value="6">6</option>
+            </select>
+            Bulan <br>
+            <button>Export</button>
           </div>
           <div class="chartProp">
+            <form>
+            <input type="number" name="char_id" id="ID">
             <label for="ID">ID</label>
-            <div id="ID">01941841739</div>
-            <label for="tahunChart"></label>
-            <div id="tahunChart">2000</div>
+            <br>
+            <select id="tahunChart">
+              <option value="2016">2016</option>
+              <option value="2017">2017</option>
+            </select>
+            <label for="tahunChart">Tahun</label>
+            <br>
             <button type="button" name="buat">Buat Chart</button>
+            </form>
           </div>
 
         <div class="chart">
@@ -192,7 +236,7 @@
     $(function() {
 
       var show_area = false;
-      var curr_page = "profile_menu";
+      var curr_page = "workpage_menu_box";
       $("#"+curr_page).siblings().not('.nav').hide();
 
       $('.cls, .group').hover(function(e) {
@@ -216,9 +260,11 @@
         if ($(this).attr('id') != 'Surabaya'){
           $('.workspace').slideDown(500);
           $('.Areaname').html($(this).attr('id'));
+          $('#pemakaian_area, #area').val($(this).attr('id'));
+          $('#tahunan').val($('#select_tahun').find(':selected').text());
           $('#infobox').css('display', 'none');
           $('.sa').hide();
-          $('.map2').hide();
+          $('.map2').hide(); 
         }
         else {
           $('.map2').show();
@@ -273,7 +319,8 @@
 
           $('.workspace').slideDown(500);
           $('.Areaname').html($(this).data('id'));
-          $('.sa').hide();
+          $('#pemakaian_area, #area').val($(this).data('id'));
+           $('.sa').hide();
         }
         else {
           $('.map2').show();

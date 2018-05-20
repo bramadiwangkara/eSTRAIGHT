@@ -14,10 +14,11 @@ Customer
       <th>Id</th>
       <th>Nama Pelanggan</th>
     </tr>
+    @foreach($pelanggans as $p)
     <tr id='+new_id+' class="cust">
       <td><input type="checkbox" class="select_rowc"></td>
-      <td><input type="checkbox" class="opt">'+new_id+'</td>
-      <td>'+new_name+'</td>
+      <td><input type="checkbox" class="opt">{{ $p->id }}</td>
+      <td>{{ $p->nama }}</td>
     </tr>
     <tr class="cust_details_box">
       <td colspan="3">
@@ -29,39 +30,39 @@ Customer
             </tr>
             <tr>
               <td>Alamat Pelanggan</td>
-              <td colspan="2">'+new_alamat+'</td>
+              <td colspan="2">{{ $p->alamat }}</td>
             </tr>
             <tr>
               <td>Tarif Pelanggan</td>
-              <td colspan="2">'+new_tarif+'</td>
+              <td colspan="2">{{ $p->tarif }}</td>
             </tr>
             <tr>
               <td>Daya Pelanggan</td>
-              <td colspan="2">'+new_daya+'</td>
+              <td colspan="2">{{ $p->daya }}</td>
             </tr>
             <tr>
               <td>Fakm Pelanggan</td>
-              <td colspan="2">'+new_fakm+'</td>
+              <td colspan="2">{{ $p->fakm }}</td>
             </tr>
             <tr>
               <td>Fakmvarh Pelanggan</td>
-              <td colspan="2">'+new_fakmvarh+'</td>
+              <td colspan="2">{{ $p->fakmvarh }}</td>
             </tr>
             <tr>
               <td>Kdgardu Pelanggan</td>
-              <td colspan="2">'+new_kdgardu+'</td>
+              <td colspan="2">{{ $p->kdgardu }}</td>
             </tr>
             <tr>
               <td>dlpd pelanggan</td>
-              <td colspan="2">'+new_dlpd+'</td>
+              <td colspan="2">{{ $p->dlpd }}</td>
             </tr>
             <tr>
               <td>dlpd fkm pelanggan</td>
-              <td colspan="2">'+new_dlpd_fakm+'</td>
+              <td colspan="2">{{ $p->dlpd_fkm }}</td>
             </tr>
             <tr>
-              <td>dlpd instrumentasi pelanggan</td>
-              <td colspan="2">'+new_dlpd_inst+'</td>
+              <td>dlpd jenis mutasi pelanggan</td>
+              <td colspan="2">{{ $p->dlpd_jnsmutasi }}</td>
             </tr>
             <tr>
               <td rowspan="3">
@@ -85,19 +86,23 @@ Customer
         </div>
       </td>
     </tr>
+    @endforeach
   </table>
 </div>
 
 <div class="add_cust_form_box">
 <div class="add_cust_form">
   <h3><span></span> Pelanggan</h3>
-  <input type="file" name="add_cust" id="add_cust_file" value="" accept=".xls,.xlsx">
-  <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
+  <form action="{{ route('tambahdata') }}" method="post" enctype="multipart/form-data">
+  <input type="hidden" value="{{ csrf_token() }}" name="_token" /><br>
+  <input type="file" name="add_cust" value="" accept=".xls,.xlsx"/>
+<!--   <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
   </label><br>
-  <div class="form_button">
+ -->  <div class="form_button">
     <button type="button" name="cancel_add" id="cancel_addc">Cancel</button>
     <button type="submit" name="submit_user" id="submit_cust">Submit</button>
   </div>
+  </form>
 </div>
 </div>
 

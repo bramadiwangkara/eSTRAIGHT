@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\pelanggan;
 use App\jam_nyala;
+use App\area;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -53,34 +54,7 @@ class PelangganController extends Controller
      */
     public function store()
     {
-        // $rules = array(
-        //     'file' => 'required',
-        //     'num_records' => 'required',
-        // );
-
-        // $validatorFactory = app('Illuminate\Validation\Factory');
-        // $validator = $validatorFactory->make(Input::all(), $rules);
-        // //process the form
-        // if($validator->fails())
-        //     return redirect()->action('Controller@adminIndex');
-        // else
-        // {
-        //     try{
-        //         Excel::load(Input::file('file'), function($reader) {
-        //             foreach ($reader->toArray() as $row) {
-        //                 dd($row);
-        //             }
-        //         });
-        //         \Session::flash('success', 'Users uploaded successfully.');
-        //         return redirect(route('users.index'));
-        //     } catch (\Exception $e) {
-        //         \Session::flash('error', $e->getMessage());
-        //         return redirect(route('users.index'));
-        //     }
-        
-        // }
-
-        $file = Input::file('file');
+        $file = Input::file('add_cust');
         $file_name = $file->getClientOriginalName();
         $file->move('files', $file_name);
         Excel::load("files/".$file_name, function($reader){
@@ -88,40 +62,76 @@ class PelangganController extends Controller
             $ctr = 0;
             $sql = "";
             foreach ($array as $row) {
-                // print_r($row);
-                // echo "<br/>";
-                // echo "<br/>";
-
                 $alamat = trim($row["alamat"]);
                 if($row["rt"] != null && $row["rt"] != 0)
                     $alamat = $alamat . " RT " . trim($row["rt"]);
                 if($row["rw"] != null && $row["rw"] != 0)
                     $alamat = $alamat . " RW " . trim($row["rw"]);
 
-                $sql .= "INSERT INTO pelanggans VALUES ('".$row["idpel"]."', '".$row["nama"]."', '".$alamat."', '".$row["tarif"]."', '".$row["daya"]."', '".$row["fakm"]."', '".$row["fakmkvarh"]."', '".$row["slalwbp"]."', '".$row["sahlwbp"]."', '".$row["slawbp"]."', '".$row["sahwbp"]."', '".$row["slakvarh"]."', '".$row["sahkvarh"]."', '".$row["pemkwh"]."', '".$row["unitup"]."', '".$row["kdgardu"]."', '".$row["dlpd"]."', '".$row["dlpd_fkm"]."', '".$row["dlpd_jnsmutasi"]."') ON DUPLICATE KEY UPDATE unitup='".$row["unitup"]."', nama='".$row["nama"]."', alamat='".$alamat."', tarif='".$row["tarif"]."', daya='".$row["daya"]."', fakm='".$row["fakm"]."', fakmvarh='".$row["fakmkvarh"]."', slalwbp='".$row["slalwbp"]."', sahlwbp='".$row["sahlwbp"]."', slawbp='".$row["slawbp"]."', sahwbp='".$row["sahwbp"]."', slakvarh='".$row["slakvarh"]."', sahkvarh='".$row["sahkvarh"]."', pemkwh='".$row["pemkwh"]."', kdgardu='".$row["kdgardu"]."', dlpd='".$row["dlpd"]."', dlpd_fkm='".$row["dlpd_fkm"]."', dlpd_jnsmutasi='".$row["dlpd_jnsmutasi"]."';";
+                $sql .= "INSERT INTO pelanggans VALUES ('
+                    ".$row["idpel"]."', 
+                    '".$row["nama"]."', 
+                    '".$alamat."', 
+                    '".$row["tarif"]."', 
+                    '".$row["daya"]."', 
+                    '".$row["fakm"]."', 
+                    '".$row["fakmkvarh"]."', 
+                    '".$row["slalwbp"]."', 
+                    '".$row["sahlwbp"]."', 
+                    '".$row["slawbp"]."', 
+                    '".$row["sahwbp"]."', 
+                    '".$row["slakvarh"]."', 
+                    '".$row["sahkvarh"]."', 
+                    '".$row["pemkwh"]."', 
+                    '".$row["unitup"]."', 
+                    '".$row["kdgardu"]."', 
+                    '".$row["dlpd"]."', 
+                    '".$row["dlpd_fkm"]."', 
+                    '".$row["dlpd_jnsmutasi"]."') 
+                    ON DUPLICATE KEY UPDATE 
+                    unitup='".$row["unitup"]."', 
+                    nama='".$row["nama"]."', 
+                    alamat='".$alamat."', 
+                    tarif='".$row["tarif"]."', 
+                    daya='".$row["daya"]."', 
+                    fakm='".$row["fakm"]."', 
+                    fakmvarh='".$row["fakmkvarh"]."', 
+                    slalwbp='".$row["slalwbp"]."', 
+                    sahlwbp='".$row["sahlwbp"]."', 
+                    slawbp='".$row["slawbp"]."', 
+                    sahwbp='".$row["sahwbp"]."', 
+                    slakvarh='".$row["slakvarh"]."', 
+                    sahkvarh='".$row["sahkvarh"]."', 
+                    pemkwh='".$row["pemkwh"]."', 
+                    kdgardu='".$row["kdgardu"]."', 
+                    dlpd='".$row["dlpd"]."', 
+                    dlpd_fkm='".$row["dlpd_fkm"]."', 
+                    dlpd_jnsmutasi='".$row["dlpd_jnsmutasi"]."';";
 
-                // $arr[$ctr] = array($row["idpel"], $row["unitap"], $row["nama"], $alamat, $row["tarif"], $row["daya"], $row["fakm"], $row["fakmkvarh"], $row["kdgardu"], $row["dlpd"], $row["dlpd_fkm"], $row["dlpd_jnsmutasi"]);
+                $arr[$ctr] = array($row["idpel"], $row["unitap"], $row["nama"], $alamat, $row["tarif"], $row["daya"], $row["fakm"], $row["fakmkvarh"], $row["kdgardu"], $row["dlpd"], $row["dlpd_fkm"], $row["dlpd_jnsmutasi"]);
 
-                // print_r($arr[$ctr]);
-                // echo "<br/>";
-                // echo "<br/>";
+                //print_r($arr[$ctr]);
+                //echo "<br/>";
+                //echo "<br/>";
 
-                // $ctr = $ctr + 1;
+                $ctr = $ctr + 1;
             }
-
-            $conn = mysqli_connect("127.0.0.1", "root", "", "pln");
-            if(!$conn)
-                die("Connection failed: ".$conn->connect_error);
-
-            if($conn->multi_query($sql) === TRUE)
-                echo "yeay";
-            else
-                echo mysqli_error($conn);
-
-            echo $sql;
-
-            $conn->close();
         });
+
+
+        //     $conn = mysqli_connect("127.0.0.1", "root", "", "pln");
+        //     if(!$conn)
+        //         die("Connection failed: ".$conn->connect_error);
+
+        //     if($conn->multi_query($sql) === TRUE)
+        //         echo "yeay";
+        //     else
+        //         echo mysqli_error($conn);
+
+        //     echo $sql;
+
+        //     $conn->close();
+        // });
     }
 
     /**
@@ -177,9 +187,45 @@ class PelangganController extends Controller
         return view('pelanggan.index2', ['pelanggans' => $pelanggan]);
     }
 
+    public function tahunan(Request $request)
+    {
+        $area = strtoupper($request->area);
+        $tahun = $request->tahun;
+        $unitup = area::where('area', $area)->get();
+        $pelanggans = pelanggan::whereHas('jam_nyala', function($query) use($tahun){
+            $query->where('tahun', $tahun);
+        })
+        ->whereIn('unitup', $unitup)
+        ->paginate(25)
+        ->appends(request()->input);
+
+        return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
+    }
+
     public function tetap(Request $request)
     {
-        $p = pelanggan::whereIn('id', jam_nyala::tetap($request->bulan, $request->tahun))->paginate(25)->appends(request()->input);
+        $bln_now = $request->bulan;
+        $thn_now = $request->tahun;
+        if($bln_now == 1){
+            $bln_bef = 12;
+            $thn_bef = $thn_now - 1;
+        }
+        else{
+            $bln_bef = $bln_now - 1;
+            $thn_bef = $thn_now;
+        }
+
+        $unitup = area::whereRaw('area = "'.$request->area.'"')->get(); 
+        $p = pelanggan::whereIn('unitup', $unitup);
+
+        $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
+                       SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
+
+        $p = $p->whereHas('jam_nyala', function($query) use($having){
+            $query->groupBy('idpel')
+                  ->havingRaw($having);
+        })->paginate(25)->appends(request()->input);
+
         if($request->btn == 'export')
         {
             Excel::create('test', function($excel){
@@ -189,7 +235,6 @@ class PelangganController extends Controller
             })->export('xls');
         }
         return view('pelanggan.index2', ['pelanggans' => $p]);
-            
     }
 
     public function turun(Request $request)
@@ -342,10 +387,11 @@ class PelangganController extends Controller
             'png' => true,
         ]);
 
-        echo Lava::render('LineChart', 'sorek');
+        //echo Lava::render('LineChart', 'sorek');
 
-        $pdf = PDF::loadview('pelanggan.chart', $table);
-        return $pdf->download('chart.pdf');
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML("<div id='chart'>".Lava::render('LineChart','sorek')."</div>") ;
+        return $pdf->stream();
 
         //return view('pelanggan.chart');
     }
