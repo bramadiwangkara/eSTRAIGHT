@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Lava;
 use Excel;
+use App;
 use PDF;
 
 class PelangganController extends Controller
@@ -343,7 +344,7 @@ class PelangganController extends Controller
 
         echo Lava::render('LineChart', 'sorek');
 
-        $pdf = PDF::loadHTML('<div id="chart"></div>');
+        $pdf = PDF::loadview('pelanggan.chart', $table);
         return $pdf->download('chart.pdf');
 
         //return view('pelanggan.chart');
