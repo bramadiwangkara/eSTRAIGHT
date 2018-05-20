@@ -14,10 +14,9 @@ class CreateAreasTable extends Migration
     public function up()
     {
         Schema::create('areas', function (Blueprint $table) {
-            $table->char('unitap', 5)->index();
-            $table->string('area');
+            $table->char('unitup', 5)->index();
             $table->string('rayon');
-            $table->timestamps();
+            $table->string('area');
         });
     }
 

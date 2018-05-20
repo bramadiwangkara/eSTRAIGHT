@@ -44,3 +44,10 @@ Route::get('/admin2', 'adminController@adminhome')->name('adminhome');
 Route::get('/admin2/workpage', 'adminController@workpage')->name('adminworkpage');
 // Route::get('/admin2/user_management', 'adminController@user_management')->name('user_management');
 Route::post('/admin2/adduser', 'adminController@adduser')->name('adduser');
+
+Route::get('/pelanggan', 'PelangganController@index2')->name('pelanggan');
+Route::any('/pelanggan/search', 'PelangganController@search')->name('pelanggansearch');
+Route::get('/pelanggan/tetap', 'PelangganController@tetap')->name('pelanggantetap');
+Route::get('/pelanggan/turun', 'PelangganController@turun')->name('pelangganturun');
+Route::get('/pelanggan/chart', 'PelangganController@chart')->name('chart');
+Route::get('/pelanggan/curang', 'PelangganController@pln')->name('pln');

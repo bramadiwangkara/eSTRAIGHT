@@ -19,7 +19,6 @@ class CreateJamNyalasTable extends Migration
             $table->integer('jam_nyala');
             $table->integer('bulan');
             $table->integer('tahun');
-            $table->timestamps();
         });
 
         Schema::table('jam_nyalas', function($table){

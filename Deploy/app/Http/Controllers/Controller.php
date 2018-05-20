@@ -59,4 +59,8 @@ class Controller extends BaseController
       $datauser = User::all();
       return view('admin.manajemenakun', ['datauser' => $datauser]);
     }
+
+    public function tambahdata(){
+      
+    }
 }

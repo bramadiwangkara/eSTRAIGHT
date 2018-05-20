@@ -15,23 +15,29 @@ class CreatePelanggansTable extends Migration
     {
         Schema::create('pelanggans', function (Blueprint $table) {
             $table->char('id', 12)->index();
-            $table->char('unitap', 5);
             $table->string('nama');
             $table->string('alamat');
             $table->string('tarif');
             $table->integer('daya');
             $table->integer('fakm');
             $table->integer('fakmvarh');
+            $table->double('slalwbp');
+            $table->double('sahlwbp');
+            $table->double('slawbp');
+            $table->double('sahwbp');
+            $table->double('slakvarh');
+            $table->double('sahkvarh');
+            $table->integer('pemkwh');
+            $table->char('unitup', 5);
             $table->string('kdgardu');
             $table->string('dlpd');
             $table->string('dlpd_fkm');
             $table->string('dlpd_jnsmutasi');
-            $table->timestamps();
         });
 
         Schema::table('pelanggans', function($table){
-            $table->foreign('unitap')
-                ->references('unitap')
+            $table->foreign('unitup')
+                ->references('unitup')
                 ->on('areas')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
