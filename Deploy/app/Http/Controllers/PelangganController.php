@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Lava;
 use Excel;
+use PDF;
 
 class PelangganController extends Controller
 {
@@ -314,5 +315,37 @@ class PelangganController extends Controller
         echo Lava::render('LineChart', 'sorek');
 
         return view('pelanggan.chart');
+    }
+
+    public function export(Request $request)
+    {   
+        $id = $request->id;
+        $pelanggan = pelanggan::find($id);
+
+        Lava::DateFormat(['pattern' => 'MMMyy']);
+
+        $table = Lava::Datatable();
+        $table  ->addDateColumn('Bulan')
+                ->addNumberColumn('Jam Nyala');
+
+        for($i = 1; $i <= 12; $i++){
+            $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala']]);
+        }
+
+        $title = $id . ' - ' . $pelanggan->nama;
+
+        Lava::LineChart('sorek', $table, [
+            'elementId' => 'chart',
+            'title' => $title,
+            'pointsize' => 100,
+            'png' => true,
+        ]);
+
+        echo Lava::render('LineChart', 'sorek');
+
+        $pdf = PDF::loadHTML('<div id="chart"></div>');
+        return $pdf->download('chart.pdf');
+
+        //return view('pelanggan.chart');
     }
 }

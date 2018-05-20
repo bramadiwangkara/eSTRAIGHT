@@ -51,3 +51,4 @@ Route::get('/pelanggan/tetap', 'PelangganController@tetap')->name('pelangganteta
 Route::get('/pelanggan/turun', 'PelangganController@turun')->name('pelangganturun');
 Route::get('/pelanggan/chart', 'PelangganController@chart')->name('chart');
 Route::get('/pelanggan/curang', 'PelangganController@pln')->name('pln');
+Route::get('/pelanggan/chart/export', 'PelangganController@export')->name('export');
