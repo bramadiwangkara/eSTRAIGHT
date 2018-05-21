@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\pelanggan;
 use App\jam_nyala;
 use App\area;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -26,12 +27,14 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        return view('pelanggan.index');
+        return view('pelanggan.index', ['pelanggans' => pelanggan::whereHas('jam_nyala', function($query){
+            $query->where('bulan', '12')->where('tahun', '2013');
+        })->paginate(25)]);
     }
 
     public function index2(Request $request)
     {
-        return view('pelanggan.index2', ['pelanggans' => pelanggan::whereHas('jam_nyala', function($query){
+        return view('pelanggan.index', ['pelanggans' => pelanggan::whereHas('jam_nyala', function($query){
             $query->where('bulan', '12')->where('tahun', '2013');
         })->paginate(25)]);
     }
@@ -184,7 +187,7 @@ class PelangganController extends Controller
             $pelanggan = pelanggan::where('id', 'LIKE', "%".$request->searchstring.'%')->paginate(25);
         else
             $pelanggan = pelanggan::paginate(25);
-        return view('pelanggan.index2', ['pelanggans' => $pelanggan]);
+        return view('pelanggan.index', ['pelanggans' => $pelanggan]);
     }
 
     public function tahunan(Request $request)
@@ -201,7 +204,7 @@ class PelangganController extends Controller
         ->paginate(25)
         ->appends(request()->input);
 
-        return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
+        return view('pelanggan.index', ['pelanggans' => $pelanggans]);
     }
 
     public function tetap(Request $request)
@@ -220,8 +223,9 @@ class PelangganController extends Controller
             $thn_bef = $thn_now;
         }
 
-        $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
-                       SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
+        $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) <> AND
+                   SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
+                   SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
 
         $unitup = area::whereRaw('area = "'.$request->area.'"')->get(); 
 
@@ -241,7 +245,7 @@ class PelangganController extends Controller
                 });
             })->export('xls');
         }
-        return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
+        return view('pelanggan.index', ['pelanggans' => $pelanggans]);
     }
 
     public function turun(Request $request)
@@ -282,7 +286,7 @@ class PelangganController extends Controller
                   ->havingRaw($having);
         })->paginate(25);
 
-        return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
+        return view('pelanggan.index', ['pelanggans' => $pelanggans]);
     }
 
     public function pln(Request $request)
@@ -338,7 +342,7 @@ class PelangganController extends Controller
                       ->havingRaw($having);
             })->paginate(25);
 
-            return view('pelanggan.index2', ['pelanggans' => $pelanggans]);
+            return view('pelanggan.index', ['pelanggans' => $pelanggans]);
         }
     }
 
@@ -369,8 +373,14 @@ class PelangganController extends Controller
 
         echo Lava::render('LineChart', 'sorek');
 
-        return;
-        //return view('admin2.workpage');
+        $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
+        $bjn_bln = jam_nyala::selectRaw('bulan')
+                              ->groupBy('bulan')
+                              ->groupBy('tahun')
+                              ->havingRaw('tahun=MAX(tahun)')
+                              ->get();
+
+      return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
     }
 
     public function export(Request $request)

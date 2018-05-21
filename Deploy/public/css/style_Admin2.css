@@ -229,10 +229,10 @@ td {
   line-height: 30px;
 }
 
-/*.add_cust_form input {
+.add_cust_form input {
   display: none;
 }
-*/
+
 .add_cust_form label {
   display: inline-block;
   max-width: 50%;

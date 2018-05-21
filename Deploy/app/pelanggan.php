@@ -10,4 +10,9 @@ class pelanggan extends Model
     {
     	return $this->hasMany('App\jam_nyala', 'idpel', 'id');
     }
+
+    public function area()
+    {
+    	return $this->belongsTo('App\area', 'unitup', 'unitup');
+    }
 }

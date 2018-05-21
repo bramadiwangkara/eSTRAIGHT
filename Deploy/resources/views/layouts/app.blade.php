@@ -51,7 +51,7 @@
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @if (Auth::user()->level == 1)
-                                    <a class="dropdown-item" href="{{ route('admin') }}">Admin</a>
+                                    <a class="dropdown-item" href="{{ route('adminIndex') }}">Admin</a>
                                 @endif
                                     <a class="dropdown-item" href="{{ route('pelanggan') }}">Workpage</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

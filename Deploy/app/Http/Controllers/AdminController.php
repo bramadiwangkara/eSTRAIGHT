@@ -10,31 +10,33 @@ use Illuminate\Http\Request;
 use App\User;
 use App\pelanggan;
 use App\jam_nyala;
+use App\area;
 
 class adminController extends Controller
 {
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function adminhome(){
+    public function index(Request $request){
       $datauser = User::all();
+
+      if($request == null)
+        $area = 'BANYUWANGI';
+      else
+        $area = $request->area;
 
       $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
         $query->where('bulan', '12')->where('tahun', '2013');
-      })->get()->take(25);
+      })
+      ->whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->get()
+      ->take(25);
 
-        return view('admin2.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans]); 
-    }
+      $area = area::select('area')->groupBy('area')->get();
 
-    public function workpage(){
-      $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
-      $bjn_bln = jam_nyala::selectRaw('bulan')
-                              ->groupBy('bulan')
-                              ->groupBy('tahun')
-                              ->havingRaw('tahun=MAX(tahun)')
-                              ->get();
-
-      return view('admin2.workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
+      return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
     }
 
     public function adduser(Request $request){
@@ -47,6 +49,17 @@ class adminController extends Controller
 
       $datauser = User::all();
       // return view('admin2.layouts.masteradmin', ['datauser' => $datauser]);
-        return redirect('admin2');
+        return redirect('admin');
+    }
+
+    public function deleteuser(Request $request){
+      $user = User::find($request->id);
+      $user->delete();
+
+      return redirect('admin');
+    }
+
+    public function addpelanggan(Request $request){
+
     }
 }

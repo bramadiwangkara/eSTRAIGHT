@@ -1,7 +1,10 @@
 {{-- User Management --}}
 <div class="wrapper">
   <button type="button" name="add-user" class="btn add_user"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
-  <button type="button" name="del-user" class="btn del_user"><i class="fa fa-user-times" aria-hidden="true"></i></button>
+  <form method="GET" action="{{ route('deleteuser') }}">
+    <input type="hidden" id="id_user" name="id" value="">
+    <button type="submit" class="btn del_user"><i class="fa fa-user-times" aria-hidden="true"></i></button>
+  </form>
   <button type="button" name="edit-user" class="btn edit_user"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
   <table class="user_list">
     <tr>
@@ -140,6 +143,7 @@
 
   $('.del_user').on('click', function() {
     if (confirm("Are you Sure?")) {
+      $('id_user').val()
       // for (var i = 0; i < )
       // console.log('hapus user');
     }

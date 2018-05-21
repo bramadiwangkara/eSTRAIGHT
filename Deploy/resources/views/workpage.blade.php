@@ -16,9 +16,7 @@
     <ul>
       <li class="nav-button curr_nav"data-id="profile_menu">Home</li>
       <li class="nav-button" data-id="workpage_menu_box">Workpage</li>
-      @if(Auth::user()->level == 1)
-      <a href="/admin2"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
-      @endif
+      <a href="{{ route('adminIndex') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
     </ul>
   </div>
   <div id="workpage_menu_box">
@@ -201,6 +199,10 @@
               <input type="hidden" name="bulan" value="" id="turun_bulan">
               <input type="hidden" name="tahun" value="" id="turun_tahun">
               Turun
+            <!-- <select id="export_turun_select">
+              <option value="3">3</option>
+              <option value="6">6</option>
+            </select> -->
               <input type="number" name="jumlah_bulan" min="1">
               Bulan <br>
               <button type="submit">Export</button>
@@ -212,6 +214,11 @@
             <input type="number" name="id" id="ID">
             <label for="ID">ID</label>
             <br>
+            <!-- <select id="tahunChart">
+              <option value="2016">2016</option>
+              <option value="2017">2017</option>
+            </select>
+            <label for="tahunChart">Tahun</label> -->
             <br>
             <button type="submit">Buat Chart</button>
             </form>

@@ -226,79 +226,24 @@
 
 .Areaname {
   grid-area: Areaname;
-  padding: 5px;
-  font-weight: 700;
-  font-size: 25px;
 }
 .export {
   grid-area: export;
 }
-.export_box {
-  display: flex;
-  flex-direction: row;
+.lastUpdate {
+  grid-area: lastUpdate;
 }
-.tahun, .bulan {
-  display: flex;
-  flex-direction: column;
-  width: 45%;
-  margin-right: 10px;
+.sorek {
+  grid-area: sorek;
 }
-.minmax {
-  grid-area: minmax;
-  display: flex;
-  flex-direction: row;
-}
-.minmax_box {
-  margin-right: 10px;
-}
-.minmax_box *{
-  display: block;
-  margin: 0 auto;
-}
-.minmax_box div {
-  text-align: center;
-}
-.minmax_box button {
-  margin-top: 10px;
-}
-.sorek_pemakaian {
-  grid-area: sorek_pemakaian;
-}
-.sorek_pemakaian button{
-  width: 200px;
-  margin-bottom: 25px;
-}
-.export_turun {
-  grid-area: export_turun;
-}
-.export_turun select {
-  margin: 0 5px;
-}
-.export_turun select {
-  width: 50px;
-}
-.export_turun button {
-  width: 200px;
-  margin-top: 5px;
+.pemakaian {
+  grid-area: pemakaian;
 }
 .chartProp {
   grid-area: chartProp;
 }
-.chartProp input[type=number]::-webkit-inner-spin-button,
-.chartProp input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.chartProp input, .chartProp button, .chartProp select {
-  width: 150px;
-  margin-bottom: 3px;
-}
-
 .chart {
   grid-area: chart;
-  margin: 50px;
-  background-color: white;
-  text-align: center;
 }
 
 
@@ -308,36 +253,17 @@
   height: 100%;
   display: grid;
   grid-template-columns: 25% 1fr;
-  grid-template-rows: repeat(7 ,1fr);
+  grid-template-rows: repeat(6 ,1fr);
   grid-template-areas:
   "Areaname chart"
+  "lastUpdate chart"
   "export chart"
-  "sorek_pemakaian chart"
-  "minmax chart"
-  "export_turun chart"
-  "chartProp chart"
-  ". chart";
+  "sorek chart"
+  "pemakaian chart"
+  "chartProp chart";
   box-sizing: border-box;
   padding: 40px 10px;
 }
-
-
-.wrapper button, .wrapper select, .wrapper input {
-  font-size: 16px;
-}
-
-.wrapper button, .wrapper select {
-  cursor: pointer;
-}
-.wrapper #EXPORT_ {
-  font-size: 20px;
-}
-
-.minmax input[type=number] {
-  width: 50px;
-  font-size: 16px;
-}
-
 
 .close {
   padding: 5px;
@@ -350,3 +276,14 @@
 }
 
 
+.Areaname {
+  padding: 5px;
+  font-weight: 700;
+  font-size: 25px;
+}
+
+.chart {
+  margin: 50px;
+  background-color: white;
+  text-align: center;
+}

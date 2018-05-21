@@ -1,6 +1,6 @@
 Customer
 <div class="wrapper">
-  <form method="GET" action="{{ route('adminhome') }}">
+  <form method="GET" action="{{ route('adminIndex') }}">
     <input type="hidden" name="area" id="select_area" value="">
     <input type="submit" id="button_area" style="display: none;">
   </form>
@@ -116,7 +116,7 @@ Customer
 <div class="add_cust_form_box">
 <div class="add_cust_form">
   <h3><span></span> Pelanggan</h3>
-  <form action="{{ route('tambahdata') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ route('addpelanggan') }}" method="post" enctype="multipart/form-data">
   <input type="hidden" value="{{ csrf_token() }}" name="_token" /><br>
   <input type="file" name="add_cust" value="" accept=".xls,.xlsx"/>
 <!--   <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\User;
+use App\jam_nyala;
 
 
 class Controller extends BaseController
@@ -62,5 +63,16 @@ class Controller extends BaseController
 
     public function tambahdata(){
       
+    }
+
+    public function workpage(){
+      $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
+      $bjn_bln = jam_nyala::selectRaw('bulan')
+                              ->groupBy('bulan')
+                              ->groupBy('tahun')
+                              ->havingRaw('tahun=MAX(tahun)')
+                              ->get();
+
+      return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
     }
 }
