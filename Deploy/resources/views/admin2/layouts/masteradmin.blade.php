@@ -41,7 +41,7 @@
 
   <script>
     $(function() {
-      var curr = "About";
+      var curr = "Customer";
 
       $('.page').hide();
       $('#'+curr).show();

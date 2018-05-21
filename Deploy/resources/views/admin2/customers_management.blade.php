@@ -20,15 +20,10 @@ Customer
       <td><input type="checkbox" class="opt">{{ $p->id }}</td>
       <td>{{ $p->nama }}</td>
     </tr>
-    <tr class="cust_details_box">
+    <tr class="cust_details_box" id="{{ $p->id }}">
       <td colspan="3">
         <div class="cust_details">
           <table class="sub_table">
-            <tr>
-              <td>unitap</td>
-              <td colspan="2">'+new_unitap+'</td>
-            </tr>
-            <tr>
               <td>Alamat Pelanggan</td>
               <td colspan="2">{{ $p->alamat }}</td>
             </tr>
@@ -49,6 +44,11 @@ Customer
               <td colspan="2">{{ $p->fakmvarh }}</td>
             </tr>
             <tr>
+              <td>Unitup</td>
+              <td colspan="2">{{ $p->unitup }}</td>
+            </tr>
+            <tr>
+            <tr>
               <td>Kdgardu Pelanggan</td>
               <td colspan="2">{{ $p->kdgardu }}</td>
             </tr>
@@ -67,20 +67,35 @@ Customer
             <tr>
               <td rowspan="3">
                 <select class="jam_nyala_opt" name="jam_nyala_opt">
-                  <option value="jamNyala_0">Jam Nyala bulan X</option>
-                  <option value="jamNyala_1">Jam Nyala bulan Y</option>
+                  <?php $ctr = 0; ?>
+                  @foreach($p->jam_nyala as $j)
+                  <?php $ctr++; ?>
+                  <option value="{{ $ctr }}">Jam Nyala {{ strftime('%B %G', mktime(0, 0, 0, $j->bulan, 1, $j->tahun)) }}</option>
+                  @endforeach
                 </select>
               </td>
               <td>Jam Nyala</td>
-              <td>'+cust['new_jam_nyala']['jam_pemakaian']+'</td>
+              <?php $ctr = 0; ?>
+                  @foreach($p->jam_nyala as $j)
+              <?php $ctr++; ?>
+              <td class="jam" id="jam_nyala_{{ $ctr }}_{{ $p->id }}">{{ $j->jam_nyala }}</td>
+              @endforeach
             </tr>
             <tr>
               <td>Bulan</td>
-              <td>'+cust['new_jam_nyala']['bulan']+'</td>
+              <?php $ctr = 0; ?>
+              @foreach($p->jam_nyala as $j)
+              <?php $ctr++; ?>
+              <td class="bl" id="bulan_{{ $ctr }}_{{ $p->id }}">{{ strftime('%B', mktime(0, 0, 0, $j->bulan, 1, $j->tahun)) }}</td>
+              @endforeach
             </tr>
             <tr>
               <td>Tahun</td>
-              <td>'+cust['new_jam_nyala']['tahun']+'</td>
+              <?php $ctr = 0; ?>
+              @foreach($p->jam_nyala as $j)
+              <?php $ctr++; ?>
+              <td class="th" id="tahun_{{ $ctr }}_{{ $p->id }}">{{ strftime('%G', mktime(0, 0, 0, 1, 1, $j->tahun)) }}</td>
+              @endforeach
             </tr>
           </table>
         </div>
@@ -175,12 +190,23 @@ $(document).on('click', '.cust td:not(:first-child)', function(e) {
     parent.next().show();
     parent.css('border-bottom', 'none');
     parent.find('td').css('border-bottom', 'none');
+    var jn_id = parent.next().attr('id');
+    var jn_val = '1';
+    $('#jam_nyala_' + jn_val + '_' + jn_id).show();
+    $('#bulan_' + jn_val + '_' + jn_id).show();
+    $('#tahun_' + jn_val + '_' + jn_id).show();
+
+
   }
   else {
     //$('.cust_details_box').hide();
     parent.next().hide();
     parent.css('border-bottom', '1px solid #607D8B');
     parent.find('td').css('border-bottom', '1px solid #607D8B');
+      $('.jam').hide();
+  $('.bl').hide();
+  $('.th').hide();
+
   }
 });
 
@@ -224,9 +250,20 @@ $(document).on('click', '.select_rowc', function() {
   }
 });
 
+var show_jam_nyala = function() {
+  //asu 
+}
+
 $('.jam_nyala_opt').on('change', function() {
-  //alert($(this).val());
-  console.log($(this).val());
+  $('.jam').hide();
+  $('.bl').hide();
+  $('.th').hide();
+
+  var jn_id = $(this).parent().parent().parent().parent().parent().parent().parent().attr('id');
+  var jn_val = $(this).val();
+  $('#jam_nyala_' + jn_val + '_' + jn_id).show();
+  $('#bulan_' + jn_val + '_' + jn_id).show();
+  $('#tahun_' + jn_val + '_' + jn_id).show();
 });
 
 
@@ -243,6 +280,14 @@ $(function() {
     'border-right': '1px solid #607D8B',
     'vertical-align': 'top'
   });
+
+  $('.jam').hide();
+  $('.bl').hide();
+  $('.th').hide();
+  // $('.jam').next().hide();
+  // $('.bl').next().hide();
+  // $('.th').next().hide();
+
 
 
 })

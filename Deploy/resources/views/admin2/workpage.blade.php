@@ -209,21 +209,22 @@
             </form>
           </div>
           <div class="chartProp">
-            <form>
-            <input type="number" name="char_id" id="ID">
+            <form action="{{ route('chart') }}" method="GET">
+            <input type="hidden" name="tahun" id="chart_tahun" value="">
+            <input type="number" name="id" id="ID">
             <label for="ID">ID</label>
             <br>
-            <select id="tahunChart">
+            <!-- <select id="tahunChart">
               <option value="2016">2016</option>
               <option value="2017">2017</option>
             </select>
-            <label for="tahunChart">Tahun</label>
+            <label for="tahunChart">Tahun</label> -->
             <br>
-            <button type="button" name="buat">Buat Chart</button>
+            <button type="submit">Buat Chart</button>
             </form>
           </div>
 
-        <div class="chart">
+        <div class="chart" id="chart">
           CHART
         </div>
       </div>
@@ -302,6 +303,7 @@
           $('#tahunan_tahun').val($('#select_tahun').val());
           $('#pln_tahun').val($('#select_tahun').val());
           $('#turun_tahun').val($('#select_tahun').val());
+          $('#chart_tahun').val($('#select_tahun').val());
       })
 
       $('.close').on('click', function(e) {

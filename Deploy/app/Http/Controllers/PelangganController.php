@@ -345,16 +345,17 @@ class PelangganController extends Controller
     public function chart(Request $request)
     {
         $id = $request->id;
+        $tahun = $request->tahun;
         $pelanggan = pelanggan::find($id);
 
         Lava::DateFormat(['pattern' => 'MMMyy']);
 
         $table = Lava::Datatable();
-        $table  ->addDateColumn('Bulan')
-                ->addNumberColumn('Jam Nyala');
+        $table->addDateColumn('Bulan')
+              ->addNumberColumn('Jam Nyala');
 
         for($i = 1; $i <= 12; $i++){
-            $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala']]);
+            $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala']]);
         }
 
         $title = $id . ' - ' . $pelanggan->nama;
@@ -368,7 +369,8 @@ class PelangganController extends Controller
 
         echo Lava::render('LineChart', 'sorek');
 
-        return view('pelanggan.chart');
+        return;
+        //return view('admin2.workpage');
     }
 
     public function export(Request $request)
