@@ -348,6 +348,8 @@ class PelangganController extends Controller
 
     public function chart(Request $request)
     {
+        // $msg = $request->id;
+        // return response()->json(array('msg' => $msg), 200);
         $id = $request->id;
         $tahun = $request->tahun;
         $pelanggan = pelanggan::find($id);
@@ -371,16 +373,16 @@ class PelangganController extends Controller
             'png' => true,
         ]);
 
-        echo Lava::render('LineChart', 'sorek');
+        return response()->json(array('msg' => Lava::render('LineChart', 'sorek'), 200));
 
-        $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
-        $bjn_bln = jam_nyala::selectRaw('bulan')
-                              ->groupBy('bulan')
-                              ->groupBy('tahun')
-                              ->havingRaw('tahun=MAX(tahun)')
-                              ->get();
+      //   $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
+      //   $bjn_bln = jam_nyala::selectRaw('bulan')
+      //                         ->groupBy('bulan')
+      //                         ->groupBy('tahun')
+      //                         ->havingRaw('tahun=MAX(tahun)')
+      //                         ->get();
 
-      return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
+      // return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
     }
 
     public function export(Request $request)
@@ -414,5 +416,9 @@ class PelangganController extends Controller
         return $pdf->stream();
 
         //return view('pelanggan.chart');
+    }
+
+    public function test(){
+        return "halo";
     }
 }

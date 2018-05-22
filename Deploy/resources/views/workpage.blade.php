@@ -209,8 +209,8 @@
             </form>
           </div>
           <div class="chartProp">
-            <form action="{{ route('chart') }}" method="GET">
-            <input type="hidden" name="tahun" id="chart_tahun" value="">
+            <!-- <form action="{{ route('chart') }}" method="GET"> -->
+            <!-- <input type="hidden" name="tahun" id="chart_tahun" value=""> -->
             <input type="number" name="id" id="ID">
             <label for="ID">ID</label>
             <br>
@@ -220,8 +220,8 @@
             </select>
             <label for="tahunChart">Tahun</label> -->
             <br>
-            <button type="submit">Buat Chart</button>
-            </form>
+            <button type="submit" id="chart_btn">Buat Chart</button>
+            <!-- </form> -->
           </div>
 
         <div class="chart" id="chart">
@@ -239,8 +239,6 @@
       <button type="submit" name="submit_new_pass">Submit</button>
     </div>
   </div>
-
-
   <script>
     $(function() {
 
@@ -377,10 +375,30 @@
       $('#change_password').click(function() {
         $('.change_pass_form').toggle();
       })
+      
+      function getChart(){
+        var id = $('#ID').val();
+        var tahun = $('#select_tahun').val();
+
+        $.ajax({
+          url: "/pelanggan/chart",
+          data: {
+            id: id, 
+            tahun: tahun},
+          success: function(data){
+            $('#chart').html(data.msg);
+          }
+        });
+      };
+
+      $('#chart_btn').on('click', function() {
+        getChart();
+      })
 
 
 
     });
+
   </script>
 
 </body>
