@@ -230,17 +230,60 @@
 .export {
   grid-area: export;
 }
-.lastUpdate {
-  grid-area: lastUpdate;
+#EXPORT_ {
+  font-size: 20px;
 }
-.sorek {
-  grid-area: sorek;
+.export_box select {
+  width: 100px;
 }
-.pemakaian {
-  grid-area: pemakaian;
+.tahun, .bulan {
+  width: 170px;
+  display: flex;
+  justify-content: space-between;
+}
+.sorek_pemakaian {
+  grid-area: sorek_pemakaian;
+}
+.sorek_pemakaian button {
+  width: 200px;
+  margin-bottom: 20px;
+}
+.minmax {
+  grid-area: minmax;
+}
+.minmax_box {
+  width: 150px;
+  float: left;
+  display: flex;
+  flex-flow: column;
+  margin-right: 5px;
+}
+.minmax_box * {
+  margin: 0 auto;
+}
+.minmax_box input[type=number] {
+  width: 50px;
+}
+.minmax_box button {
+  width: 150px;
+}
+
+.export_turun {
+  grid-area: export_turun;
+}
+.export_turun input[type=number]{
+  width: 50px;
 }
 .chartProp {
   grid-area: chartProp;
+}
+.chartProp input, .chartProp button {
+  width: 150px;
+}
+.chartProp input[type=number]::-webkit-outer-spin-button,
+.chartProp input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .chart {
   grid-area: chart;
@@ -253,16 +296,21 @@
   height: 100%;
   display: grid;
   grid-template-columns: 25% 1fr;
-  grid-template-rows: repeat(6 ,1fr);
+  grid-template-rows: repeat(7 ,1fr);
   grid-template-areas:
   "Areaname chart"
-  "lastUpdate chart"
   "export chart"
-  "sorek chart"
-  "pemakaian chart"
-  "chartProp chart";
+  "sorek_pemakaian chart"
+  "minmax chart"
+  "export_turun chart"
+  "chartProp chart"
+  ". chart";
   box-sizing: border-box;
   padding: 40px 10px;
+}
+
+.wrapper button, .wrapper select, .wrapper input {
+  font-size: 16px;
 }
 
 .close {
