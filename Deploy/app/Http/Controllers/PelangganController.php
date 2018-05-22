@@ -223,7 +223,7 @@ class PelangganController extends Controller
             $thn_bef = $thn_now;
         }
 
-        $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) <> AND
+        $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) <> 0 AND
                    SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
                    SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
 
@@ -315,7 +315,7 @@ class PelangganController extends Controller
                       ->havingRaw($having);
             })->paginate(25);
 
-            return view('pelanggan.index2', ['pelanggans' => $pelanggans]);            
+            return view('pelanggan.index', ['pelanggans' => $pelanggans]);            
         }
         else if($request->btn == '3')
         {
@@ -354,26 +354,36 @@ class PelangganController extends Controller
         $tahun = $request->tahun;
         $pelanggan = pelanggan::find($id);
 
-        Lava::DateFormat(['pattern' => 'MMMyy']);
+        // Lava::DateFormat(['pattern' => 'MMMyy']);
 
-        $table = Lava::Datatable();
-        $table->addDateColumn('Bulan')
-              ->addNumberColumn('Jam Nyala');
+        // $table = Lava::Datatable();
+        // $table->addDateColumn('Bulan')
+        //       ->addNumberColumn('Jam Nyala');
 
-        for($i = 1; $i <= 12; $i++){
-            $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala']]);
-        }
+        // for($i = 1; $i <= 12; $i++){
+        //     $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala']]);
+        // }
+
+        // $title = $id . ' - ' . $pelanggan->nama;
+
+        // $chart = Lava::LineChart('sorek', $table, [
+        //     'elementId' => 'chart',
+        //     'title' => $title,
+        //     'pointsize' => 100,
+        //     'png' => true,
+        // ]);
 
         $title = $id . ' - ' . $pelanggan->nama;
+        $jamnyala = array();
+        for($i = 1; $i <= 12; $i++){
+            $jamnyala[$i-1]['x']['tahun'] = 2013;
+            $jamnyala[$i-1]['x']['bulan'] = $i;
+            $jamnyala[$i-1]['y'] = $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala'];
+        }
 
-        $chart = Lava::LineChart('sorek', $table, [
-            'elementId' => 'chart',
-            'title' => $title,
-            'pointsize' => 100,
-            'png' => true,
-        ]);
 
-        return response()->json(array('msg' => $chart, 200));
+
+        return response()->json(array('title' => $title, 'jamnyala' => $jamnyala), 200);
 
       //   $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
       //   $bjn_bln = jam_nyala::selectRaw('bulan')

@@ -386,7 +386,52 @@
             id: id, 
             tahun: tahun},
           success: function(data){
-            $('#chart').html(data.msg);
+            var title = data.title;
+            var jamnyala = [];
+
+            for(i=0; i<12; i++){
+              // jamnyala[i] = { x: new Date(data.jamnyala[i].x.tahun, data.jamnyala[i].x.bulan, 1),
+              //                 y: data.jamnyala[i].y };
+
+              jamnyala.push({ x: new Date(data.jamnyala[i].x.tahun, data.jamnyala[i].x.bulan, 1), y: data.jamnyala[i].y });
+            }
+
+            console.log(jamnyala);
+
+            var options = {
+              animationEnabled: true,
+              theme: "light2",
+              title:{
+                text: title
+              },
+              axisX:{
+                 valueFormatString: "MMM"
+              },
+              axisY: {
+                title: "Jam Nyala",
+              },
+              toolTip:{
+                shared:true
+              },  
+              legend:{
+                cursor:"pointer",
+                verticalAlign: "bottom",
+                horizontalAlign: "left",
+                dockInsidePlotArea: true,
+                itemclick: toogleDataSeries
+              },
+              data: [{
+                type: "line",
+                showInLegend: true,
+                name: "Jam Nyala",
+                xValueFormatString: "MMM",
+                color: "#F08080",
+                yValueFormatString: "# Jam",
+                dataPoints: jamnyala
+              }]
+            };
+
+            $('#chart').CanvasJSChart(options);
           }
         });
       };
@@ -395,12 +440,20 @@
         getChart();
       })
 
-
+      function toogleDataSeries(e){
+        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+        } else{
+          e.dataSeries.visible = true;
+        }
+        e.chart.render();
+      }
 
     });
 
   </script>
-
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 </body>
 
 </html>
