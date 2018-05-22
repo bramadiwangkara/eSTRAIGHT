@@ -230,17 +230,41 @@
 .export {
   grid-area: export;
 }
-.lastUpdate {
-  grid-area: lastUpdate;
+#EXPORT_ {
+  font-size: 18px;
 }
-.sorek {
-  grid-area: sorek;
+#select_tahun, #select_bulan {
+  width: 50px;
 }
-.pemakaian {
-  grid-area: pemakaian;
+.sorek _pemakaian {
+  grid-area: sorek_pemakaian;
+}
+.minmax {
+  grid-area: minmax;
+  display: flex;
+  flex-direction: row;
+}
+.minmax_box {
+  display: flex;
+  flex-direction: column;
+}
+.minmax_box div {
+  text-align: center;
+}
+.export_turun {
+  grid-area: export_turun;
+}
+.export_turun button {
+  width: 150px;
+}
+.sorek_pemakaian button {
+  width: 150px;
 }
 .chartProp {
   grid-area: chartProp;
+}
+.chartProp button, .chartProp input {
+  width: 150px;
 }
 .chart {
   grid-area: chart;
@@ -253,16 +277,21 @@
   height: 100%;
   display: grid;
   grid-template-columns: 25% 1fr;
-  grid-template-rows: repeat(6 ,1fr);
+  grid-template-rows: repeat(7 ,1fr);
   grid-template-areas:
   "Areaname chart"
-  "lastUpdate chart"
   "export chart"
-  "sorek chart"
-  "pemakaian chart"
-  "chartProp chart";
+  "sorek_pemakaian chart"
+  "minmax chart"
+  "export_turun chart"
+  "chartProp chart"
+  ". chart";
   box-sizing: border-box;
   padding: 40px 10px;
+}
+
+.wrapper button, .wrapper select, .wrapper input {
+  font-size: 18px;
 }
 
 .close {
