@@ -18,7 +18,8 @@
       <a href="{{ route('adminIndex') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
     </ul>
     <div class="user_profile">
-      <span id="user_name">Nama User</span>
+      <span id="user_name">{{ Auth::user()->nip }} <i class="fa fa-caret-down" aria-hidden="true"></i>
+</span>
       <div id="user_option">
         <button class="user_profile_button" id="open_profile">Profile</button><br>
         <button class="user_profile_button">Logout</button>
@@ -30,11 +31,11 @@
       <div id="profile_images"></div>
       <div id="profile_details">
         <br>
-        Nama <span></span><br>
-        NIP <span></span>
+        <span>NIP : {{ Auth::user()->nip }}</span>
         <hr>
         <button id="reset_password_button">Reset Password</button>
         <div id="reset_password">
+          <form method="POST" action="">
           <label for="reset_pwd_curr">Current Password</label>
           <input type="text" name="" id="reset_pwd_curr">
           <label for="reset_pwd_new">New Password</label>
@@ -42,6 +43,7 @@
           <label for="reset_pwd_renew">Repeat New Password</label>
           <input type="text" name="" id="reset_pwd_renew">
           <button type="submit" id="reset_password_submit">Submit</button>
+          </form>
         </div>
       </div>
     </div>
