@@ -366,14 +366,14 @@ class PelangganController extends Controller
 
         $title = $id . ' - ' . $pelanggan->nama;
 
-        Lava::LineChart('sorek', $table, [
+        $chart = Lava::LineChart('sorek', $table, [
             'elementId' => 'chart',
             'title' => $title,
             'pointsize' => 100,
             'png' => true,
         ]);
 
-        return response()->json(array('msg' => Lava::render('LineChart', 'sorek'), 200));
+        return response()->json(array('msg' => $chart, 200));
 
       //   $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
       //   $bjn_bln = jam_nyala::selectRaw('bulan')
