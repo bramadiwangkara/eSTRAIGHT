@@ -8,21 +8,48 @@
   <link rel="stylesheet" href="{{asset('css/style_Workpage.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title>Workpage |</title>
+  <title>Workpage</title>
 </head>
 
 <body>
   <div class="nav">
     <ul>
-      <li class="nav-button curr_nav"data-id="profile_menu">Home</li>
-      <li class="nav-button" data-id="workpage_menu_box">Workpage</li>
+      <li class="nav-button curr_nav" data-id="workpage_menu_box">Workpage</li>
       <a href="{{ route('adminIndex') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
     </ul>
+    <div class="user_profile">
+      <span id="user_name">Nama User</span>
+      <div id="user_option">
+        <button class="user_profile_button" id="open_profile">Profile</button><br>
+        <button class="user_profile_button">Logout</button>
+      </div>
+    </div>
+  </div>
+  <div class="profile_box">
+    <div class="profile_modal">
+      <div id="profile_images"></div>
+      <div id="profile_details">
+        <br>
+        Nama <span></span><br>
+        NIP <span></span>
+        <hr>
+        <button id="reset_password_button">Reset Password</button>
+        <div id="reset_password">
+          <label for="reset_pwd_curr">Current Password</label>
+          <input type="text" name="" id="reset_pwd_curr">
+          <label for="reset_pwd_new">New Password</label>
+          <input type="text" name="" id="reset_pwd_new">
+          <label for="reset_pwd_renew">Repeat New Password</label>
+          <input type="text" name="" id="reset_pwd_renew">
+          <button type="submit" id="reset_password_submit">Submit</button>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="workpage_menu_box">
     <div class="sa">
       <h2>
-        Select Area <i class="fa fa-toggle-down" ></i>
+        Select Area <i class="fa fa-angle-down fa-lg" ></i>
       </h2>
       <div class="saSelect">
         <div class="saItems" data-id="Bangkalan">Bangkalan</div>
@@ -140,97 +167,125 @@
     <div class="workspace">
       <div class="close"><i class="fa fa-close"></i></div>
       <div class="wrapper">
-          <h2 class="Areaname">...</h2><br>
-          <div class="export">
-            <span id="EXPORT_">Export</span><br><br>
-            <div class="export_box">
-              <div class="tahun">
-              Tahun
-              <select name="tahun" id="select_tahun">
-                @foreach($bjn_thn as $a)
-                  <option value="{{ $a->tahun }}">{{ $a->tahun }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="bulan">
-              Bulan
-              <select name="Bulan" id="select_bulan">
-                @foreach($bjn_bln as $a)
-                  <option value="{{ $a->bulan }}">{{ strtoupper(date('M', mktime(0, 0, 0, $a->bulan, 1, 2013))) }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            </div>
-          </div>
-          <div class="sorek_pemakaian">
-            <form action="{{ route('pelanggantahunan') }}" method="GET">
-              <input type="hidden" name="area" value="" id="tahunan_area">
-              <input type="hidden" name="tahun" value="" id="tahunan_tahun">
-              <button type="submit">SOREK Tahunan</button>
-            </form>
-            <form action="{{ route('pelanggantetap') }}" method="GET">
-              <input type="hidden" name="area" value="" id="tetap_area">
-              <input type="hidden" name="bulan" value="" id="tetap_bulan">
-              <input type="hidden" name="tahun" value="" id="tetap_tahun">
-              <button type="submit" name="pemakaian" value="query" >Pemakaian Tetap</button>
-            </form>
-          </div>
-          <div class="minmax">
-            <form action="{{ route('pln') }}" method="GET">
-                <input type="hidden" name="area" value="" id="pln_area">
-                <input type="hidden" name="bulan" value="" id="pln_bulan">
-                <input type="hidden" name="tahun" value="" id="pln_tahun">
-              <div class="minmax_box">
-                <div>Min</div>
-                <input type="number" name="bBawah">
-                <button type="submit" name="btn" value="1" >Turun 1 Bulan</button>
-              </div>
-              <div class="minmax_box">
-                <div>Max</div>
-                <input type="number" name="bAtas">
-                <button type="submit" name="btn" value="3">Turun 3 Bulan</button>
-              </div>
-            </form>
-          </div>
-          <div class="export_turun">
-            <form action="{{ route('pelangganturun') }}" method="GET">
-              <input type="hidden" name="area" value="" id="turun_area">
-              <input type="hidden" name="bulan" value="" id="turun_bulan">
-              <input type="hidden" name="tahun" value="" id="turun_tahun">
-              Turun
-            <!-- <select id="export_turun_select">
-              <option value="3">3</option>
-              <option value="6">6</option>
-            </select> -->
-              <input type="number" name="jumlah_bulan" min="1">
-              Bulan <br>
-              <button type="submit">Export</button>
-            </form>
-          </div>
-          <div class="chartProp">
-            <!-- <form action="{{ route('chart') }}" method="GET"> -->
-            <!-- <input type="hidden" name="tahun" id="chart_tahun" value=""> -->
-            <input type="number" name="id" id="ID">
-            <label for="ID">ID</label>
-            <br>
-            <!-- <select id="tahunChart">
-              <option value="2016">2016</option>
-              <option value="2017">2017</option>
+        <h2 class="Areaname">...</h2><br>
+        <div class="export">
+          <span id="EXPORT_">Export</span><br><br>
+          <div class="export_box">
+            <div class="tahun">
+            Tahun
+            <select name="tahun" id="select_tahun">
+              @foreach($bjn_thn as $a)
+                <option value="{{ $a->tahun }}">{{ $a->tahun }}</option>
+              @endforeach
             </select>
-            <label for="tahunChart">Tahun</label> -->
-            <br>
-            <button type="submit" id="chart_btn">Buat Chart</button>
-            <!-- </form> -->
+          </div>
+          <div class="bulan">
+            Bulan
+            <select name="Bulan" id="select_bulan">
+              @foreach($bjn_bln as $a)
+                <option value="{{ $a->bulan }}">{{ strtoupper(date('M', mktime(0, 0, 0, $a->bulan, 1, 2013))) }}</option>
+              @endforeach
+            </select>
           </div>
 
-        <div class="chart" id="chart">
-          CHART
+          </div>
+        </div>
+        <div class="sorek_pemakaian">
+          <form action="{{ route('pelanggantahunan') }}" method="GET">
+            <input type="hidden" name="area" value="" id="tahunan_area">
+            <input type="hidden" name="tahun" value="" id="tahunan_tahun">
+            <button type="submit">SOREK Tahunan</button>
+          </form>
+          <form action="{{ route('pelanggantetap') }}" method="GET">
+            <input type="hidden" name="area" value="" id="tetap_area">
+            <input type="hidden" name="bulan" value="" id="tetap_bulan">
+            <input type="hidden" name="tahun" value="" id="tetap_tahun">
+            <button type="submit" name="pemakaian" value="query" >Pemakaian Tetap</button>
+          </form>
+        </div>
+        <div class="minmax">
+          <form action="{{ route('pln') }}" method="GET">
+              <input type="hidden" name="area" value="" id="pln_area">
+              <input type="hidden" name="bulan" value="" id="pln_bulan">
+              <input type="hidden" name="tahun" value="" id="pln_tahun">
+            <div class="minmax_box">
+              <div>Min</div>
+              <input type="number" name="bBawah">
+              <button type="submit" name="btn" value="1" >Turun 1 Bulan</button>
+            </div>
+            <div class="minmax_box">
+              <div>Max</div>
+              <input type="number" name="bAtas">
+              <button type="submit" name="btn" value="3">Turun 3 Bulan</button>
+            </div>
+          </form>
+        </div>
+        <div class="export_turun">
+          <form action="{{ route('pelangganturun') }}" method="GET">
+            <input type="hidden" name="area" value="" id="turun_area">
+            <input type="hidden" name="bulan" value="" id="turun_bulan">
+            <input type="hidden" name="tahun" value="" id="turun_tahun">
+            Turun
+          <!-- <select id="export_turun_select">
+            <option value="3">3</option>
+            <option value="6">6</option>
+          </select> -->
+            <input type="number" name="jumlah_bulan" min="1">
+            Bulan <br><br>
+            <button type="submit">Export</button>
+          </form>
+        </div>
+        <div class="chartProp">
+          <!-- <form action="{{ route('chart') }}" method="GET"> -->
+          <!-- <input type="hidden" name="tahun" id="chart_tahun" value=""> -->
+          <input type="number" name="id" id="ID">
+          <label for="ID">ID</label>
+          <br>
+          <!-- <select id="tahunChart">
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+          </select>
+          <label for="tahunChart">Tahun</label> -->
+          <br>
+          <button type="submit" id="chart_btn">Buat Chart</button>
+          <!-- </form> -->
+        </div>
+        <div class="cust_details">
+          <div class="cust_tools">
+            <input type="text" name="test" placeholder="Cari" id="cari_cust">
+            <label><i class="fa fa-search" aria-hidden="true" id="cari_cust_logo"></i></label>
+          </div>
+          <div class="cust_table">
+            <table>
+              <thead>
+                  <td>A1</td>
+                  <td>A2</td>
+              </thead>
+              <tbody>
+                <tr class="cust" id="NIPnyabeb123">
+                  <td>B1</td>
+                  <td>B2</td>
+                </tr>
+                <tr class="cust" id="NIPnyabeb456">
+                  <td>C1</td>
+                  <td>C2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="chart" id="chart">
+        <div class="chart_box">
+          <div class="chart_real">
+            CHARTNYA DISINI...
+          </div>
+          <button>Export ke PDF</button>
         </div>
       </div>
     </div>
   </div>
-  <div id="profile_menu">
+<!--   <div id="profile_menu">
     <button type="button" name="change_password" id="change_password">Change Password</button>
     <div class="change_pass_form">
       <input type="password" name="old_pass" value="" placeholder="Password Lama"> <span>*</span>
@@ -239,12 +294,12 @@
       <button type="submit" name="submit_new_pass">Submit</button>
     </div>
   </div>
-  <script>
+ -->  <script>
     $(function() {
 
       var show_area = false;
-      var curr_page = "workpage_menu_box";
-      $("#"+curr_page).siblings().not('.nav').hide();
+      // var curr_page = "workpage_menu_box";
+      // $("#"+curr_page).siblings().not('.nav').hide();
 
       $('.cls, .group').hover(function(e) {
         $(this).addClass("hovered");
@@ -288,7 +343,29 @@
           //   $('.map2disp').fadeIn(500);
           // }, 100);
         }
-      })
+      });
+
+      $('#open_profile').on('click', function() {
+        $('.profile_box').show();
+      });
+
+      $('.profile_box').on('click', function() {
+        $(this).hide();
+      });
+
+      $('.profile_box *').on('click', function(e) {
+        e.stopPropagation();
+      });
+
+      $('#reset_password_button').on('click', function() {
+        $(this).slideUp(100);
+        $('#reset_password').slideDown(100).css('display', 'flex');
+      });
+
+      $('#reset_password_submit').on('click', function() {
+        $('#reset_password').slideUp(100).css('display', 'flex');
+        $('#reset_password_button').slideDown(100);
+      });
 
       $('#select_bulan').on('change', function() {
           $('#tetap_bulan').val($('#select_bulan').val());
@@ -366,15 +443,14 @@
         // console.log($(this).attr('class'));
       })
 
-      $('.admin_only').on('click', function () {
+      // $('.admin_only').on('click', function () {
 
-      })
+      // });
 
 
-
-      $('#change_password').click(function() {
-        $('.change_pass_form').toggle();
-      })
+      // $('#change_password').click(function() {
+      //   $('.change_pass_form').toggle();
+      // })
       
       function getChart(){
         var id = $('#ID').val();
@@ -447,13 +523,28 @@
           e.dataSeries.visible = true;
         }
         e.chart.render();
-      }
+      };
+
+      $('.cust').on('click', function() {
+        var idBuatChart = console.log($(this).attr('id'));
+
+        $('.chart').show();
+
+      });
+
+      $('.chart').on('click', function() {
+        $(this).hide();
+      });
+      $('.chart *').on('click', function(e) {
+        e.stopPropagation();
+      });
+
 
     });
 
   </script>
-  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<!--   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+ --><script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 </body>
 
 </html>
