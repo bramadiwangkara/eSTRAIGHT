@@ -159,7 +159,7 @@ td {
   font-style: none;
 }
 
-.add_user_form_box, .add_cust_form_box {
+.edit_user_form_box, .add_user_form_box, .add_cust_form_box {
   display: none;
   position: fixed;
   top: 0;
@@ -169,7 +169,7 @@ td {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.add_user_form, .add_cust_form {
+.edit_user_form, .add_user_form, .add_cust_form {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -185,15 +185,16 @@ td {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-.add_user_form h3, .add_cust_form h3 {
+.edit_user_form h3, .add_user_form h3, .add_cust_form h3 {
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 10px;
 }
 
-.add_user_form input, .add_user_form select {
+.edit_user_form input, .add_user_form input, .edit_user_form select, .add_user_form select {
   font-size: 18px;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .form_button {
@@ -208,21 +209,23 @@ td {
  margin-left: 5px;
 }
 
+.edit_user_form input[type=number]::-webkit-inner-spin-button,
+.edit_user_form input[type=number]::-webkit-outer-spin-button,
 .add_user_form input[type=number]::-webkit-inner-spin-button,
 .add_user_form input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-#add_user_pass_show {
+#edit_user_pass_show, #add_user_pass_show {
   display: none;
 }
 
-#add_user_pass_show:checked~label[for="add_user_pass_show"] {
+#edit_user_pass_show:checked~label[for="edit_user_pass_show"], #add_user_pass_show:checked~label[for="add_user_pass_show"] {
   text-decoration: none;
 }
 
-.add_user_form label[for="add_user_pass_show"] {
+.edit_user_form label[for="edit_user_pass_show"], .add_user_form label[for="add_user_pass_show"] {
   font-size: 12px;
   text-decoration: line-through;
   cursor: pointer;

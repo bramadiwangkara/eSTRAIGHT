@@ -17,7 +17,84 @@ class adminController extends Controller
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index(Request $request){
+    // public function index(Request $request){
+    //   $datauser = User::all();
+
+    //   if($request == null)
+    //     $area = 'BANYUWANGI';
+    //   else
+    //     $area = $request->area;
+
+    //   $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
+    //     $query->where('bulan', '12')->where('tahun', '2013');
+    //   })
+    //   ->whereHas('area', function($query) use($area){
+    //     $query->where('area', $area);
+    //   })
+    //   ->get()
+    //   ->take(25);
+
+    //   $area = area::select('area')->groupBy('area')->get();
+
+    //   return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
+    // }
+
+    // public function cust_area_change(Request $request){
+    //   $area = $request->area;
+    //   $pelanggans = pelanggan::whereHas('jam_nyala')
+    //                   ->whereHas('area', function($query) use($area){
+    //                     $query->where('area', $area);
+    //                   })
+    //                   ->get()
+    //                   ->take(25);
+
+    //   return response()->json(array('pelanggan' => $pelanggans), 200);
+    // }
+
+    // public function deleteuser(Request $request){
+    //   $user = User::find($request->id);
+    //   $user->delete();
+
+    //   return redirect('admin');
+    // }
+
+    // public function addpelanggan(Request $request){
+
+    // }
+
+    public function pegawai(){
+      $user = User::all();
+
+      return view('admin.pegawai', ['datauser' => $user]);
+    }
+
+    public function tambahpegawai(Request $request){
+      $newadmin = new User();
+      $newadmin->nip = $request->nip;
+      if(empty($request->password))
+        $newadmin->password = bcrypt("pegawaiPLN");
+      else
+        $newadmin->password = bcrypt($request->password);
+
+      $newadmin->level = $request->level;
+      $newadmin->save();
+
+      $datauser = User::all();
+      return redirect('admin/manajemenpegawai');
+    }
+
+    public function hapuspegawai(User $id){
+      $id->delete();
+
+      return redirect('admin/manajemenpegawai');
+    }
+
+    public function edit(Request $request){
+      //$pelanggan = pelanggan::first('nip', $request->nip);
+      print_r($request->toArray());
+    }
+
+    public function pelanggan(Request $request){
       $datauser = User::all();
 
       if($request == null)
@@ -36,30 +113,7 @@ class adminController extends Controller
 
       $area = area::select('area')->groupBy('area')->get();
 
-      return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
+      return view('admin.pelanggan', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
     }
 
-    public function adduser(Request $request){
-      $newadmin = new User();
-      $newadmin->nip = $request->nip;
-      $newadmin->password = $request->password;
-      $newadmin->level = $request->level;
-
-      $newadmin->save();
-
-      $datauser = User::all();
-      // return view('admin2.layouts.masteradmin', ['datauser' => $datauser]);
-        return redirect('admin');
-    }
-
-    public function deleteuser(Request $request){
-      $user = User::find($request->id);
-      $user->delete();
-
-      return redirect('admin');
-    }
-
-    public function addpelanggan(Request $request){
-
-    }
 }

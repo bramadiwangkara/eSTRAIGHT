@@ -348,30 +348,9 @@ class PelangganController extends Controller
 
     public function chart(Request $request)
     {
-        // $msg = $request->id;
-        // return response()->json(array('msg' => $msg), 200);
         $id = $request->id;
         $tahun = $request->tahun;
         $pelanggan = pelanggan::find($id);
-
-        // Lava::DateFormat(['pattern' => 'MMMyy']);
-
-        // $table = Lava::Datatable();
-        // $table->addDateColumn('Bulan')
-        //       ->addNumberColumn('Jam Nyala');
-
-        // for($i = 1; $i <= 12; $i++){
-        //     $table->addRow(['2013-' . $i . '-1', $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala']]);
-        // }
-
-        // $title = $id . ' - ' . $pelanggan->nama;
-
-        // $chart = Lava::LineChart('sorek', $table, [
-        //     'elementId' => 'chart',
-        //     'title' => $title,
-        //     'pointsize' => 100,
-        //     'png' => true,
-        // ]);
 
         $title = $id . ' - ' . $pelanggan->nama;
         $jamnyala = array();
@@ -381,18 +360,7 @@ class PelangganController extends Controller
             $jamnyala[$i-1]['y'] = $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala'];
         }
 
-
-
         return response()->json(array('title' => $title, 'jamnyala' => $jamnyala), 200);
-
-      //   $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
-      //   $bjn_bln = jam_nyala::selectRaw('bulan')
-      //                         ->groupBy('bulan')
-      //                         ->groupBy('tahun')
-      //                         ->havingRaw('tahun=MAX(tahun)')
-      //                         ->get();
-
-      // return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
     }
 
     public function export(Request $request)
