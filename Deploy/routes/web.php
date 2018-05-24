@@ -23,6 +23,8 @@ Route::get('/workpage/search', 'Controller@search')->name('workpage.search');
 Route::get('/workpage/getTime', 'Controller@getTime')->name('workpage.getTime');
 Route::get('/workpage/getChart', 'Controller@getChart')->name('workpage.getChart');
 
+Route::post('/pegawai/changepassword', 'Controller@changePasswordPegawai')->name('workpage.pegawai.changepassword');
+
 
 Route::get('/admin/dashboard', function(){ return view('admin.dashboard'); })->name('admin.dashboard');
 Route::get('/admin', 'AdminController@index')->name('adminIndex'); 

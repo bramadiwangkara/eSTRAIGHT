@@ -167,4 +167,22 @@ class Controller extends BaseController
 
       return response()->json(array('pelanggan' => $pelanggan), 200);
     }
+
+
+
+    public function changePasswordPegawai(Request $request){
+      $calon = User::where('nip', $request->nip)->first();
+
+      if($request->current_pass = $calon->password && $request->new_pass == $request->repeat_new_pass){
+        $calon->password = bcrypt($request->new_pass);
+        $calon->save();
+
+        return view('workpage')->with('alert', 'Password telah berhasil diganti !');
+      }
+      else{
+        return view('workpage')->with('alert', 'Password gagal terganti');
+      }
+
+
+    }
 }

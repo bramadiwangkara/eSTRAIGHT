@@ -16,7 +16,11 @@
   <div class="nav">
     <ul>
       <li class="nav-button curr_nav" data-id="workpage_menu_box">Workpage</li>
+
+      @if( Auth::user()->level == 1)
       <a href="{{ route('admin.dashboard') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
+      @endif
+
     </ul>
     <div class="user_profile">
       <span id="user_name">{{ Auth::user()->nip }} <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -45,13 +49,15 @@
         <hr>
         <button id="reset_password_button">Reset Password</button>
         <div id="reset_password">
-          <form method="POST" action="">
+          <form method="POST" action="{{ route('workpage.pegawai.changepassword') }}">
+            {{ csrf_field() }}
+          <input type="hidden" name="nip" value="{{ Auth::user()->nip }}">
           <label for="reset_pwd_curr">Current Password</label>
-          <input type="text" name="" id="reset_pwd_curr">
+          <input type="password" name="current_pass" id="reset_pwd_curr">
           <label for="reset_pwd_new">New Password</label>
-          <input type="text" name="" id="reset_pwd_new">
+          <input type="password" name="new_pass" id="reset_pwd_new">
           <label for="reset_pwd_renew">Repeat New Password</label>
-          <input type="text" name="" id="reset_pwd_renew">
+          <input type="password" name="repeat_new_pass" id="reset_pwd_renew">
           <button type="submit" id="reset_password_submit">Submit</button>
           </form>
         </div>
