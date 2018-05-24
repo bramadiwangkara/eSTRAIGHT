@@ -30,7 +30,7 @@ Route::get('/admin/dashboard', function(){ return view('admin.dashboard'); })->n
 Route::get('/admin', 'AdminController@index')->name('adminIndex'); 
 // Route::post('/admin/adduser', 'AdminController@adduser')->name('adduser');
 // Route::get('/admin/deleteuser', 'AdminController@deleteuser')->name('deleteuser');
-Route::post('/admin/addpelanggan', 'AdminController@addpelanggan')->name('addpelanggan');
+// Route::post('/admin/addpelanggan', 'AdminController@addpelanggan')->name('addpelanggan');
 
 Route::get('/admin/dashboard', function(){return view('admin.dashboard');})->name('admin.dashboard');
 Route::get('/admin/manajemenpegawai', 'AdminController@pegawai')->name('admin.pegawai');
@@ -40,6 +40,7 @@ Route::get('/admin/manajemenpegawai/hapus/{id}', 'AdminController@hapuspegawai')
 Route::post('/admin/manajemenpegawai/edit', 'AdminController@edit')->name('admin.pegawai.edit');
 Route::get('/admin/manajemenpelanggan', 'AdminController@pelanggan')->name('admin.pelanggan');
 Route::get('/admin/manajemenpelanggan/get', 'AdminController@getPelanggan')->name('admin.pelanggan.get');
+Route::get('/admin/manajemenpelanggan/tambah', 'AdminController@tambahPelanggan')->name('admin.pelanggan.tambah');
 Route::get('/admin/about', function(){ return view('admin.about'); })->name('admin.about');
 Route::get('/admin/version', function(){ return view('admin.version'); })->name('admin.version');
 

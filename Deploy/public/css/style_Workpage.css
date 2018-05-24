@@ -415,6 +415,7 @@
 .cust_details {
   grid-area: chart;
   padding: 5px;
+  width: 100%;
 }
 
 .cust_tools {
@@ -424,8 +425,8 @@
 .cust_table {
   height: calc(100% - 40px);
   width: 100%;
-  /*width: 86%;*/
-  /*white-space: nowrap;*/
+  width: 86%;
+  white-space: nowrap;
   overflow: auto;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
@@ -461,7 +462,7 @@
 
 
 .wrapper {
-  width: 100%;
+  max-width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: 25% 1fr;

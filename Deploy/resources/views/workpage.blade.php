@@ -290,9 +290,9 @@
           </div>
         </div>
       </div>
-      <div class="chart" id="chart">
+      <div class="chart">
         <div class="chart_box">
-          <div class="chart_real">
+          <div class="chart_real" id="chart">
           </div>
           <button>Export ke PDF</button>
         </div>
@@ -351,10 +351,10 @@
                      "<td>" + val.kdgardu + "</td>" +
                      "<td>" + val.dlpd + "</td>" +
                      "<td>" + val.dlpd_fkm + "</td>" +
-                     "<td>" + val.dlpd_jnsmutasi + "</td>";
+                     "<td>" + val.dlpd_jnsmutasi + "</td></tr>";
           });
 
-          $('#tbody_data').html(tdata);
+          $('#tbody_data').append(tdata);
         }
       })
     }
