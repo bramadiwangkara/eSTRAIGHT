@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\jam_nyala;
 use App\pelanggan;
-
+use Excel;
 
 class Controller extends BaseController
 {
@@ -287,9 +287,9 @@ class Controller extends BaseController
 
         $jamnyala = array();
         for($i = 1; $i <= 12; $i++){
-            $jamnyala[$i-1]['tahun'] = 2013;
+            $jamnyala[$i-1]['tahun'] = $tahun;
             $jamnyala[$i-1]['bulan'] = $i;
-            $jamnyala[$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala'];
+            $jamnyala[$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala'];
         } 
 
         return response()->json(array('pelanggan' => $pelanggan, 'jamnyala' => $jamnyala), 200);
@@ -356,5 +356,9 @@ class Controller extends BaseController
       $tahun = $request->tahun;
 
       return view('pdf.chart', ['id' => $id, 'tahun' => $tahun]);
+    }
+
+    public function excel(Request $request){
+      echo $request;
     }
 }

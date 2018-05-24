@@ -19,20 +19,20 @@ class CreatePelanggansTable extends Migration
             $table->string('alamat');
             $table->string('tarif');
             $table->integer('daya');
-            $table->integer('fakm');
-            $table->integer('fakmvarh');
-            $table->double('slalwbp');
-            $table->double('sahlwbp');
-            $table->double('slawbp');
-            $table->double('sahwbp');
-            $table->double('slakvarh');
-            $table->double('sahkvarh');
-            $table->integer('pemkwh');
+            $table->integer('fakm')->nullable();
+            $table->integer('fakmvarh')->nullable();
+            $table->double('slalwbp')->nullable();
+            $table->double('sahlwbp')->nullable();
+            $table->double('slawbp')->nullable();
+            $table->double('sahwbp')->nullable();
+            $table->double('slakvarh')->nullable();
+            $table->double('sahkvarh')->nullable();
+            $table->integer('pemkwh')->nullable();
             $table->char('unitup', 5);
-            $table->string('kdgardu');
-            $table->string('dlpd');
-            $table->string('dlpd_fkm');
-            $table->string('dlpd_jnsmutasi');
+            $table->string('kdgardu')->nullable();
+            $table->string('dlpd')->nullable();
+            $table->string('dlpd_fkm')->nullable();
+            $table->string('dlpd_jnsmutasi')->nullable();
         });
 
         Schema::table('pelanggans', function($table){

@@ -2,8 +2,8 @@
 @section('content')
 <div class="wrapper">
   <button type="button" name="add-cust" class="btn add_cust"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
-  <button type="button" name="del-cust" class="btn del_cust"><i class="fa fa-user-times" aria-hidden="true"></i></button>
-  <button type="button" name="edit-cust" class="btn edit_cust"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+  <a href="{{ route('admin.pelanggan.hapus') }}"><button type="button" name="del-cust" class="btn del_cust"><i class="fa fa-user-times" aria-hidden="true"></i></button></a>
+  <!-- <button type="button" name="edit-cust" class="btn edit_cust"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button> -->
   <select class="customer_area_select" name="customer_area_select" id="customer_area_select">
     @foreach($area as $a)
         <option value="{{ $a->area }}" class="option_area">{{ $a->area }}</option>
@@ -126,7 +126,7 @@ $(document).on('click', '.cust td', function(e) {
 
 $('#select_allc').on('change', function() {
   $('.select_rowc').prop("checked", $('#select_allc').prop("checked"));
-  $('.del_cust').prop('disabled', !$('#select_allc').prop("checked"));
+  // $('.del_cust').prop('disabled', !$('#select_allc').prop("checked"));
   selected_rows_numberc = $('.cust_list input:checked').length - Number($('#select_allc').prop("checked"));
   if (selected_rows_numberc <= 1) {
     $('.edit_cust').prop('disabled', !$('#select_allc').prop("checked"));
@@ -147,18 +147,18 @@ $(document).on('click', '.select_rowc', function() {
   console.log(selected_rows_numberc);
   if (selected_rows_numberc != 0 ) {
     if (selected_rows_numberc == 1) {
-      $('.del_cust').prop('disabled', false);
+      // $('.del_cust').prop('disabled', false);
       $('.edit_cust').prop('disabled', false);
       selected_rows_idc = $(this).parent().parent().attr('id');
       // console.log(selected_rows_id);
     }
     else {
-      $('.del_cust').prop('disabled', false);
+      // $('.del_cust').prop('disabled', false);
       $('.edit_cust').prop('disabled', true);
     }
   }
   else {
-    $('.del_cust').prop('disabled', true);
+    // $('.del_cust').prop('disabled', true);
     $('.edit_cust').prop('disabled', true);
   }
 });
@@ -256,7 +256,7 @@ function getPelanggan(){
 
 // WHEN DOCUMENT IS READY
 $(function() {
-  $('.del_cust').prop('disabled', true);
+  // $('.del_cust').prop('disabled', true);
   $('.edit_cust').prop('disabled', true);
   //$('#select_allc').prop('disabled', true);
 

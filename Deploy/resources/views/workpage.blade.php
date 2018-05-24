@@ -232,13 +232,16 @@
             Bulan <br><br>
             <button id="btn_turun">Export</button>
         </div>
+        <div>
+          <button id="export_excel">Export excel</button>
+        </div>
         <div class="cust_details">
           <div class="cust_tools">
             <input type="text" name="test" placeholder="Cari" id="cari_cust">
             <label><i class="fa fa-search" aria-hidden="true" id="cari_cust_logo"></i></label>
           </div>
           <!-- cust_table -->
-          <div class="cust_table">
+          <div class="cust_table" id="table_pelanggan">
             <table class="table table-condensed">
               <thead id="thead_data">
               </thead>
@@ -260,6 +263,7 @@
  <script>
     var selected_id = "";
     var global_area = "";
+    var datatable;
 
     $(document).ready(function() {
       var timeout = null;
@@ -588,6 +592,8 @@
           tahun: thn
         },
         success: function(response){
+          datatable = response;
+          console.log(datatable);
           printTable(response, area, bln, thn);
         }
       });
@@ -784,6 +790,18 @@
 
           $('#tbody_data').html(tdata);
     }
+
+    $('#export_excel').on('click', function(){
+      var table_data = $('#table_pelanggan').html();
+      var uri = 'data:application/vnd.ms-excel,' + encodeURIComponent(table_data);
+      var downloadLink = document.createElement("a");
+      downloadLink.href = uri;
+      downloadLink.download = "datapelanggan.xlsx";
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
 
   </script>
 <!--   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

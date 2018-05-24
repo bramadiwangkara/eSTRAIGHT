@@ -6,61 +6,19 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\pelanggan;
 use App\jam_nyala;
 use App\area;
+use Excel;
 
 class adminController extends Controller
 {
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    public function index(Request $request){
-      $datauser = User::all();
-
-      if($request == null)
-        $area = 'BANYUWANGI';
-      else
-        $area = $request->area;
-
-      $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
-        $query->where('bulan', '12')->where('tahun', '2013');
-      })
-      ->whereHas('area', function($query) use($area){
-        $query->where('area', $area);
-      })
-      ->get()
-      ->take(25);
-
-      $area = area::select('area')->groupBy('area')->get();
-
-      return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
-    }
-
-    // public function cust_area_change(Request $request){
-    //   $area = $request->area;
-    //   $pelanggans = pelanggan::whereHas('jam_nyala')
-    //                   ->whereHas('area', function($query) use($area){
-    //                     $query->where('area', $area);
-    //                   })
-    //                   ->get()
-    //                   ->take(25);
-
-    //   return response()->json(array('pelanggan' => $pelanggans), 200);
-    // }
-
-    // public function deleteuser(Request $request){
-    //   $user = User::find($request->id);
-    //   $user->delete();
-
-    //   return redirect('admin');
-    // }
-
-    // public function addpelanggan(Request $request){
-
-    // }
 
     public function pegawai(){
       $user = User::all();
@@ -125,9 +83,73 @@ class adminController extends Controller
       return response()->json(array('pelanggan' => $pelanggan), 200);
     }
 
-    public function tambahPelanggan(){
-
+    public function tambahPelanggan(Request $request){
+      $waktu = jam_nyala::waktu_terakhir();
       
+      if($waktu[0]->bulan == 12){
+        $bulan = 1;
+        $tahun = $waktu[0]->tahun + 1;
+      } else{
+        $bulan = $waktu[0]->bulan + 1;
+        $tahun = $waktu[0]->tahun;
+      }
+      
+      $file = Input::file('add_cust');
+      $file_name = $file->getClientOriginalName();
+      $file->move('files', $file_name);
+      Excel::load("files/".$file_name, function($reader) use($bulan, $tahun){
+            $array = $reader->toArray();
+            foreach ($array as $row) {
+                $alamat = trim($row["alamat"]);
+                if($row["rt"] != null && $row["rt"] != 0)
+                    $alamat = $alamat . " RT " . trim($row["rt"]);
+                if($row["rw"] != null && $row["rw"] != 0)
+                    $alamat = $alamat . " RW " . trim($row["rw"]);
+
+              $arr = array('id' => $row['idpel'],
+                           'nama' => $row['nama'],
+                           'alamat' => $alamat,
+                           'tarif' => $row['tarif'],
+                           'daya' => $row['daya'],
+                           'fakm' => $row['fakm'],
+                           'fakmvarh' => $row['fakmkvarh'],
+                           'slalwbp' => $row['slalwbp'],
+                           'sahlwbp' => $row['sahlwbp'],
+                           'slawbp' => $row['slawbp'],
+                           'sahwbp' => $row['sahwbp'],
+                           'slakvarh' => $row['slakvarh'],
+                           'sahkvarh' => $row['sahkvarh'],
+                           'pemkwh' => $row['pemkwh'],
+                           'unitup' => $row['unitup'],
+                           'kdgardu' => $row['kdgardu'],
+                           'dlpd' => $row['dlpd'],
+                           'dlpd_fkm' => $row['dlpd_fkm'],
+                           'dlpd_jnsmutasi' => $row['dlpd_jnsmutasi'],
+                          );
+              pelanggan::updateOrCreate($arr);
+
+              $jamnyala = new jam_nyala;
+              $jamnyala->idpel = $row['idpel'];
+              $jamnyala->jam_nyala = $row['jam_nyala'];
+              $jamnyala->bulan = $bulan;
+              $jamnyala->tahun = $tahun;
+
+              // $arr_jn = array('idpel' => $row['idpel'], "jam_nyala" => $row["jamnyala"], "bulan" => $bulan, "tahun" => $tahun);
+              // jam_nyala::insert($arr_jn);
+            }
+        });
+
+      return redirect('/admin/manajemenpelanggan');
+    }
+
+    public function hapusPelanggan(Request $request){
+      $waktu = jam_nyala::waktu_terakhir();
+      $bulan = $waktu[0]->bulan;
+      $tahun = $waktu[0]->tahun;
+
+      jam_nyala::where('bulan', $bulan)->where('tahun', $tahun)->delete();
+
+      return redirect('/admin/manajemenpelanggan');
     }
 
 }
