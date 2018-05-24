@@ -16,7 +16,11 @@
   <div class="nav">
     <ul>
       <li class="nav-button curr_nav" data-id="workpage_menu_box">Workpage</li>
+
+      @if( Auth::user()->level == 1)
       <a href="{{ route('admin.dashboard') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
+      @endif
+
     </ul>
     <div class="user_profile">
       <span id="user_name">{{ Auth::user()->nip }} <i class="fa fa-caret-down" aria-hidden="true"></i></span>
@@ -44,14 +48,24 @@
         <hr>
         <button id="reset_password_button">Reset Password</button>
         <div id="reset_password">
-          <form method="POST" action="">
+          <!-- <form method="POST" action="">
             <label for="reset_pwd_curr">Current Password</label>
             <input type="text" name="" id="reset_pwd_curr">
             <label for="reset_pwd_new">New Password</label>
             <input type="text" name="" id="reset_pwd_new">
             <label for="reset_pwd_renew">Repeat New Password</label>
             <input type="text" name="" id="reset_pwd_renew">
-            <button type="submit" id="reset_password_submit">Submit</button>
+            <button type="submit" id="reset_password_submit">Submit</button> -->
+          <form method="POST" action="{{ route('workpage.pegawai.changepassword') }}">
+            {{ csrf_field() }}
+          <input type="hidden" name="nip" value="{{ Auth::user()->nip }}">
+          <label for="reset_pwd_curr">Current Password</label>
+          <input type="password" name="current_pass" id="reset_pwd_curr">
+          <label for="reset_pwd_new">New Password</label>
+          <input type="password" name="new_pass" id="reset_pwd_new">
+          <label for="reset_pwd_renew">Repeat New Password</label>
+          <input type="password" name="repeat_new_pass" id="reset_pwd_renew">
+          <button type="submit" id="reset_password_submit">Submit</button>
           </form>
         </div>
       </div>
@@ -287,7 +301,7 @@
         <div class="chart_box">
           <div class="chart_real" id="chart">
           </div>
-          <button id="export_pdf">Export ke PDF</button>
+          <button id='export_pdf'>Export ke PDF</button>
         </div>
       </div>
     </div>
@@ -301,9 +315,10 @@
       <button type="submit" name="submit_new_pass">Submit</button>
     </div>
   </div>
- -->  
- <script>
+ -->
 
+ <script>
+    var selected_id = "";
     var global_area = "";
 
     $(document).ready(function() {
@@ -525,13 +540,14 @@
               jamnyala[i] = { x: new Date(jn.tahun, jn.bulan - 1, 1), y: jn.jam_nyala, label: months[i] };
             }
 
-            console.log(jamnyala);
+            var title = "Jam Nyala " + tahun;
 
-            var options = {
+            // console.log(jamnyala);
+            var chart = new CanvasJS.Chart('chart',{
               animationEnabled: true,
               theme: "light2",
               title:{
-                text: "Jam Nyala " + tahun
+                text: title
               },
               axisX:{
                  title: "Bulan",
@@ -555,12 +571,25 @@
                 yValueFormatString: "# Jam",
                 dataPoints: jamnyala
               }]
-            };
+            });
 
-            $('#chart').CanvasJSChart(options);
+            chart.render();
           }
         });
       };
+
+      $('#export_pdf').on('click', function(){
+        // console.log("halo");
+
+        var canvas = $("#chart .canvasjs-chart-canvas").get(0);
+        var dataURL = canvas.toDataURL('image/png');
+
+        var pdf = new jsPDF("landscape", "cm", "a4");
+        var width = pdf.internal.pageSize.width;
+        var height = pdf.internal.pageSize.height;
+        pdf.addImage(dataURL, 'png', 4, 3);
+        pdf.save(selected_id + ".pdf");
+      });
 
       $('#chart_btn').on('click', function() {
         getChart();
@@ -577,9 +606,13 @@
 
       $(document).on('click', '.cust', function(){
         var id = $(this).attr('id');
+        selected_id = id;
 
         getChart(id, $('#select_tahun').val());
         $('.chart').show();
+
+        $('#export_id').val(id);
+        $('#export_tahun').val($('#select_tahun').val());
       });
 
       $('.chart').on('click', function() {
@@ -670,6 +703,7 @@
   </script>
 <!--   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
  --><script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
 </body>
 
 </html>
