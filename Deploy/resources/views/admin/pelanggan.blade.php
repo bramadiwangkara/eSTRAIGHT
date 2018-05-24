@@ -1,123 +1,26 @@
 @extends('admin.layouts.masteradmin')
 @section('content')
 <div class="wrapper">
-  <form method="GET" action="{{ route('adminIndex') }}">
+  <!-- <form method="GET" action="">
     <input type="hidden" name="area" id="select_area" value="">
     <input type="submit" id="button_area" style="display: none;">
-  </form>
+  </form> -->
   <button type="button" name="add-cust" class="btn add_cust"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
   <button type="button" name="del-cust" class="btn del_cust"><i class="fa fa-user-times" aria-hidden="true"></i></button>
   <button type="button" name="edit-cust" class="btn edit_cust"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
   <select class="customer_area_select" name="customer_area_select" id="customer_area_select">
     @foreach($area as $a)
-      @if(!empty($_GET['area']) && $a->area == $_GET['area'])
-        <option value="{{ $a->area }}" class="option_area" selected="selected">{{ $a->area }}</option>
-      @else
         <option value="{{ $a->area }}" class="option_area">{{ $a->area }}</option>
-      @endif
     @endforeach
   </select>
-  <table class="cust_list">
-    <tr>
-      <th><input type="checkbox" id="select_allc"/></th>
-      <th>Id</th>
-      <th>Nama Pelanggan</th>
-    </tr>
-    @foreach($pelanggans as $p)
-    <tr id='+new_id+' class="cust">
-      <td><input type="checkbox" class="select_rowc"></td>
-      <td><input type="checkbox" class="opt">{{ $p->id }}</td>
-      <td>{{ $p->nama }}</td>
-    </tr>
-    <tr class="cust_details_box" id="{{ $p->id }}">
-      <td colspan="3">
-        <div class="cust_details">
-          <table class="sub_table">
-              <td>Alamat Pelanggan</td>
-              <td colspan="2">{{ $p->alamat }}</td>
-            </tr>
-            <tr>
-              <td>Tarif Pelanggan</td>
-              <td colspan="2">{{ $p->tarif }}</td>
-            </tr>
-            <tr>
-              <td>Daya Pelanggan</td>
-              <td colspan="2">{{ $p->daya }}</td>
-            </tr>
-            <tr>
-              <td>Fakm Pelanggan</td>
-              <td colspan="2">{{ $p->fakm }}</td>
-            </tr>
-            <tr>
-              <td>Fakmvarh Pelanggan</td>
-              <td colspan="2">{{ $p->fakmvarh }}</td>
-            </tr>
-            <tr>
-              <td>Unitup</td>
-              <td colspan="2">{{ $p->unitup }}</td>
-            </tr>
-            <tr>
-            <tr>
-              <td>Kdgardu Pelanggan</td>
-              <td colspan="2">{{ $p->kdgardu }}</td>
-            </tr>
-            <tr>
-              <td>dlpd pelanggan</td>
-              <td colspan="2">{{ $p->dlpd }}</td>
-            </tr>
-            <tr>
-              <td>dlpd fkm pelanggan</td>
-              <td colspan="2">{{ $p->dlpd_fkm }}</td>
-            </tr>
-            <tr>
-              <td>dlpd jenis mutasi pelanggan</td>
-              <td colspan="2">{{ $p->dlpd_jnsmutasi }}</td>
-            </tr>
-            <tr>
-              <td rowspan="3">
-                <select class="jam_nyala_opt" name="jam_nyala_opt">
-                  <?php $ctr = 0; ?>
-                  @foreach($p->jam_nyala as $j)
-                  <?php $ctr++; ?>
-                  <option value="{{ $ctr }}">Jam Nyala {{ strftime('%B %G', mktime(0, 0, 0, $j->bulan, 1, $j->tahun)) }}</option>
-                  @endforeach
-                </select>
-              </td>
-              <td>Jam Nyala</td>
-              <?php $ctr = 0; ?>
-                  @foreach($p->jam_nyala as $j)
-              <?php $ctr++; ?>
-              <td class="jam" id="jam_nyala_{{ $ctr }}_{{ $p->id }}">{{ $j->jam_nyala }}</td>
-              @endforeach
-            </tr>
-            <tr>
-              <td>Bulan</td>
-              <?php $ctr = 0; ?>
-              @foreach($p->jam_nyala as $j)
-              <?php $ctr++; ?>
-              <td class="bl" id="bulan_{{ $ctr }}_{{ $p->id }}">{{ strftime('%B', mktime(0, 0, 0, $j->bulan, 1, $j->tahun)) }}</td>
-              @endforeach
-            </tr>
-            <tr>
-              <td>Tahun</td>
-              <?php $ctr = 0; ?>
-              @foreach($p->jam_nyala as $j)
-              <?php $ctr++; ?>
-              <td class="th" id="tahun_{{ $ctr }}_{{ $p->id }}">{{ strftime('%G', mktime(0, 0, 0, 1, 1, $j->tahun)) }}</td>
-              @endforeach
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    @endforeach
+  <table class="cust_list" id="cust_list">
   </table>
 </div>
 
 <div class="add_cust_form_box">
   <div class="add_cust_form">
     <h3><span></span> Pelanggan</h3>
-    <form action="{{ route('addpelanggan') }}" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
     <input type="hidden" value="{{ csrf_token() }}" name="_token" /><br>
     <input type="file" name="add_cust" value="" accept=".xls,.xlsx"/>
   <!--   <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
@@ -263,23 +166,90 @@ var show_jam_nyala = function() {
   //asu 
 }
 
-$('.jam_nyala_opt').on('change', function() {
+$(document).on('change', '.jam_nyala_opt', function() {
   $('.jam').hide();
-  $('.bl').hide();
-  $('.th').hide();
+  // $('.bl').hide();
+  // $('.th').hide();
 
   var jn_id = $(this).parent().parent().parent().parent().parent().parent().parent().attr('id');
   var jn_val = $(this).val();
+
   $('#jam_nyala_' + jn_val + '_' + jn_id).show();
-  $('#bulan_' + jn_val + '_' + jn_id).show();
-  $('#tahun_' + jn_val + '_' + jn_id).show();
+  // $('#bulan_' + jn_val + '_' + jn_id).show();
+  // $('#tahun_' + jn_val + '_' + jn_id).show();
 });
 
 $('#customer_area_select').on('change', function(){
-  $('#select_area').val($('#customer_area_select').val());
-  $('#button_area').click();
+  getPelanggan();
+  $('.jam_nyala_opt').parent().css({
+    'border-right': '1px solid #607D8B',
+    'vertical-align': 'top'
+  });
+
+  // $('.jam').hide();
+  // $('.bl').hide();
+  // $('.th').hide();
 });
 
+function getPelanggan(){
+    var area = $('#customer_area_select').val();
+    $.ajax({
+      url: "{{ route('admin.pelanggan.get') }}",
+      data: {
+        area: area
+      },
+      success: function(response){
+        // console.log(response);
+        $('#cust_list').html("<tr><th>Id</th><th>Nama Pelanggan</th></tr>");
+
+        var pelanggan = response.pelanggan;
+        $.each(pelanggan, function(index, val){
+          // alert(index + " : " + value.id);
+
+          var months = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+               "Juli", "Agustus", "September", "Oktober", "November", "Desember" ];
+
+          var jamnyalaopt = "";
+          var jamnyala = "";
+          $.each(val.jam_nyala, function(index, val){
+            jamnyalaopt += "<option value='"+ index +"'>"+ months[val.bulan-1] +" - "+ val.tahun +"</option>";
+            jamnyala += "<td class='jam' style='display: none;' id='jam_nyala_"+ index +"_"+ val.idpel +"'>"+ val.jam_nyala +"</td>"
+          });
+
+          // console.log(jamnyala);
+
+          var custlist = $('#cust_list').html();
+          $('#cust_list').html(custlist +
+                               "<tr class='cust'>" +
+                               "<td><input type='checkbox' class='opt'>" + val.id + "</td>" +
+                               "<td>" + val.nama + "</td>" +
+                               "</tr>" +
+                               "<tr class='cust_details_box' id='"+ val.id +"'>" +
+                               "<td colspan='3'>" +
+                               "<div class='cust_details'>" +
+                               "<table class='sub_table'>" +
+                               "<tr><td>Alamat</td><td colspan='2'>" + val.alamat + "</td></tr>" +
+                               "<tr><td>Tarif</td><td colspan='2'>"+ val.tarif +"</td></tr>" +
+                               "<tr><td>Daya</td><td colspan='2'>"+ val.daya +"</td></tr>" +
+                               "<tr><td>Fakm</td><td colspan='2'>"+ val.fakm +"</td></tr>" +
+                               "<tr><td>Fakmvarh</td><td colspan='2'>"+ val.fakmvarh +"</td></tr>" +
+                               "<tr><td>Unitup</td><td colspan='2'>"+ val.unitup +"</td></tr>" +
+                               "<tr><td>Kdgardu</td><td colspan='2'>"+ val.kdgardu +"</td></tr>" +
+                               "<tr><td>DLPD</td><td colspan='2'>"+ val.dlpd +"</td></tr>" +
+                               "<tr><td>DLPD FKM</td><td colspan='2'>"+ val.dlpd_fkm +"</td></tr>" +
+                               "<tr><td>DLPD Jenis Mutasi</td><td colspan='2'>"+ val.dlpd_jnsmutasi +"</td></tr>" +
+                               "<tr>" +
+                               "<td rowspan='3'><select class='jam_nyala_opt'>"+ jamnyalaopt +"</select></td>"+
+                               "<td>Jam Nyala</td>" + jamnyala +
+                               "</tr>" +
+                               "</table>" +
+                               "</div>" +
+                               "</td>" +
+                               "</tr>");
+        });
+      }
+    });
+}
 
 // WHEN DOCUMENT IS READY
 $(function() {
@@ -296,12 +266,11 @@ $(function() {
   $('.jam').hide();
   $('.bl').hide();
   $('.th').hide();
+
+  getPelanggan();
   // $('.jam').next().hide();
   // $('.bl').next().hide();
   // $('.th').next().hide();
-
-
-
 })
 
 </script>

@@ -32,7 +32,7 @@
     </td>
     <td>
       <button type="button" name="add-user" class="btn del_user" id="{{ $value->id }}" style="color:crimson;"><i class="fa fa-user-times" aria-hidden="true"></i></button>
-      <button type="button" name="edit-user" class="btn edit_user" id="{{ $value->nip }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+      <button type="button" name="edit-user" class="btn edit_user" id="{{ $value->id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
     </td>
     </tr>
       @endforeach
@@ -69,19 +69,21 @@
     <h3><span></span> Pengguna</h3>
     <form method="post" action="{{ route('admin.pegawai.edit') }}" >
       @csrf
-      <input type="number" name="nip" id="edit_user_id" value="" readonly>
-      <input type="password" name="password" id="edit_user_password" value="" placeholder="Password (default: pegawaiPLN)">
-      <div>
+      <input type="hidden" name="id" id="edit_user_id" value="">
+      <input type="number" name="nip" id="edit_user_nip" value="" disabled>
+      <!-- <input type="password" name="password" id="edit_user_password" value="" placeholder="Password (default: pegawaiPLN)"> -->
+<!--       <div>
         <input type="checkbox" name="edit_user_pass_show" id="edit_user_pass_show">
         <label for="edit_user_pass_show"><i class="fa fa-eye" aria-hidden="true"></i> Show Password</label>
-      </div>
+      </div> -->
       <select name="level" id="edit_user_level">
         <option value="0">Pegawai</option>
         <option value="1">Admin</option>
       </select>
       <div class="form_button">
         <button type="button" name="cancel_edit" id="cancel_edit">Cancel</button>
-        <button type="submit" id="sumbit_edit">Submit</button>
+        <button type="submit" id="sumbit_edit" name="btn" value="change">Submit</button>
+        <button type="submit" id="reset" name="btn" value="reset">Reset Password</button>
       </div>
     </form>
 </div>
@@ -175,9 +177,21 @@
     var id = $(this).attr('id');
     $('.edit_user_form_box').show();
     $('.edit_user_form').find('span').html('Tambah');
-    $('#edit_user_id').val(id)
     $('#edit_user_level').prop('disabled', false);
-    $('#edit_user_id').focus();
+    $('#edit_user_nip').focus();
+
+    $.ajax({
+      url: "{{ route('admin.pegawai.get') }}",
+      data: {
+        id: id
+      },
+      success: function(response){
+        var pegawai = response.pegawai;
+        $('#edit_user_id').val(pegawai.id);
+        $('#edit_user_nip').val(pegawai.nip);
+        $('#edit_user_level').val(pegawai.level);
+      }
+    });
   });
 
 
@@ -234,9 +248,6 @@
       // $('.edit_user').prop('disabled', true);
     }
   });
-
-
-
 
   // WHEN DOCUMENT IS READY
   $(function() {

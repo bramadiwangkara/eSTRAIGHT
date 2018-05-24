@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="{{asset('css/style_Workpage.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Workpage</title>
 </head>
@@ -15,7 +16,7 @@
   <div class="nav">
     <ul>
       <li class="nav-button curr_nav" data-id="workpage_menu_box">Workpage</li>
-      <a href="{{ route('adminIndex') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
+      <a href="{{ route('admin.dashboard') }}"><li class="nav-button admin_only" data-id="">Admin Panel</li></a>
     </ul>
     <div class="user_profile">
       <span id="user_name">{{ Auth::user()->nip }} <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -176,17 +177,12 @@
             <div class="tahun">
             Tahun
             <select name="tahun" id="select_tahun">
-              @foreach($bjn_thn as $a)
-                <option value="{{ $a->tahun }}">{{ $a->tahun }}</option>
-              @endforeach
             </select>
           </div>
           <div class="bulan">
             Bulan
             <select name="Bulan" id="select_bulan">
-              @foreach($bjn_bln as $a)
-                <option value="{{ $a->bulan }}">{{ strtoupper(date('M', mktime(0, 0, 0, $a->bulan, 1, 2013))) }}</option>
-              @endforeach
+                <!-- <option value=""></option> -->
             </select>
           </div>
 
@@ -257,21 +253,23 @@
             <input type="text" name="test" placeholder="Cari" id="cari_cust">
             <label><i class="fa fa-search" aria-hidden="true" id="cari_cust_logo"></i></label>
           </div>
+          <!-- cust_table -->
           <div class="cust_table">
-            <table>
+            <table class="table table-condensed">
               <thead>
-                  <td>A1</td>
-                  <td>A2</td>
+                  <td>Id</td>
+                  <td>Nama</td>
+                  <td>Alamat</td>
+                  <td>Tarif</td>
+                  <td>Daya</td>
+                  <td>Fakm</td>
+                  <td>Fakmvarh</td>
+                  <td>Kdgardu</td>
+                  <td>DLPD</td>
+                  <td>DLPD FKM</td>
+                  <td>DLPD Jenis Mutasi</td>
               </thead>
-              <tbody>
-                <tr class="cust" id="NIPnyabeb123">
-                  <td>B1</td>
-                  <td>B2</td>
-                </tr>
-                <tr class="cust" id="NIPnyabeb456">
-                  <td>C1</td>
-                  <td>C2</td>
-                </tr>
+              <tbody id="tbody_data">
               </tbody>
             </table>
           </div>
@@ -280,7 +278,6 @@
       <div class="chart" id="chart">
         <div class="chart_box">
           <div class="chart_real">
-            CHARTNYA DISINI...
           </div>
           <button>Export ke PDF</button>
         </div>
@@ -298,7 +295,7 @@
   </div>
  -->  <script>
     $(function() {
-
+      var global_area = "";
       var show_area = false;
       // var curr_page = "workpage_menu_box";
       // $("#"+curr_page).siblings().not('.nav').hide();
@@ -322,6 +319,7 @@
 
       $('.cls, .group').on('click', function(e) {
         if ($(this).attr('id') != 'Surabaya'){
+          global_area = $(this).attr('id');
           $('.workspace').slideDown(500);
           $('.Areaname').html($(this).attr('id'));
           $('#tahunan_area, #area').val($(this).attr('id'));
@@ -338,6 +336,8 @@
           $('#infobox').css('display', 'none');
           $('.sa').hide();
           $('.map2').hide(); 
+
+          getTime($(this).attr('id'));
         }
         else {
           $('.map2').show();
@@ -370,17 +370,11 @@
       });
 
       $('#select_bulan').on('change', function() {
-          $('#tetap_bulan').val($('#select_bulan').val());
-          $('#pln_bulan').val($('#select_bulan').val());    
-          $('#turun_bulan').val($('#select_bulan').val());      
+          getPelanggan(global_area, $(this).val(), $('#select_tahun').val()); 
       })
 
       $('#select_tahun').on('change', function() {
-          $('#tetap_tahun').val($('#select_tahun').val());
-          $('#tahunan_tahun').val($('#select_tahun').val());
-          $('#pln_tahun').val($('#select_tahun').val());
-          $('#turun_tahun').val($('#select_tahun').val());
-          $('#chart_tahun').val($('#select_tahun').val());
+          getPelanggan(global_area, $('#select_bulan').val(), $(this).val()); 
       })
 
       $('.close').on('click', function(e) {
@@ -454,24 +448,20 @@
       //   $('.change_pass_form').toggle();
       // })
       
-      function getChart(){
-        var id = $('#ID').val();
-        var tahun = $('#select_tahun').val();
-
+      function getChart(id, tahun){
         $.ajax({
-          url: "/pelanggan/chart",
+          url: "{{ route('workpage.getChart') }}",
           data: {
             id: id, 
             tahun: tahun},
           success: function(data){
-            var title = data.title;
+            // console.log(data);
+
+            var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             var jamnyala = [];
-
             for(i=0; i<12; i++){
-              // jamnyala[i] = { x: new Date(data.jamnyala[i].x.tahun, data.jamnyala[i].x.bulan, 1),
-              //                 y: data.jamnyala[i].y };
-
-              jamnyala.push({ x: new Date(data.jamnyala[i].x.tahun, data.jamnyala[i].x.bulan, 1), y: data.jamnyala[i].y });
+              var jn = data.jamnyala[i];
+              jamnyala[i] = { x: new Date(jn.tahun, jn.bulan - 1, 1), y: jn.jam_nyala, label: months[i] };
             }
 
             console.log(jamnyala);
@@ -480,17 +470,14 @@
               animationEnabled: true,
               theme: "light2",
               title:{
-                text: title
+                text: "Jam Nyala " + tahun
               },
               axisX:{
-                 valueFormatString: "MMM"
+                 title: "Bulan",
               },
               axisY: {
                 title: "Jam Nyala",
               },
-              toolTip:{
-                shared:true
-              },  
               legend:{
                 cursor:"pointer",
                 verticalAlign: "bottom",
@@ -500,9 +487,9 @@
               },
               data: [{
                 type: "line",
-                showInLegend: true,
+                // showInLegend: true,
                 name: "Jam Nyala",
-                xValueFormatString: "MMM",
+                xValueFormatString: "MMMM",
                 color: "#F08080",
                 yValueFormatString: "# Jam",
                 dataPoints: jamnyala
@@ -527,11 +514,11 @@
         e.chart.render();
       };
 
-      $('.cust').on('click', function() {
-        var idBuatChart = console.log($(this).attr('id'));
+      $(document).on('click', '.cust', function(){
+        var id = $(this).attr('id');
 
+        getChart(id, $('#select_tahun').val());
         $('.chart').show();
-
       });
 
       $('.chart').on('click', function() {
@@ -543,6 +530,81 @@
 
 
     });
+
+// <tr class="cust" id="NIPnyabeb123">
+//                   <td>B1</td>
+//                   <td>B2</td>
+//                 </tr>
+
+    function getPelanggan(ar, bln, thn){
+      var area = ar.toUpperCase();
+
+      $.ajax({
+        url: "{{ route('workpage.getPelanggan') }}",
+        data: {
+          area: area,
+          bulan: bln,
+          tahun: thn
+        },
+        success: function(response){
+          // console.log(response);
+
+          var tdata = "";
+
+          pelanggan = response.pelanggan;
+          $.each(pelanggan, function(index, val){
+            tdata += "<tr class='cust' id='" + val.id + "'>" +
+                     "<td>" + val.id + "</td>" +
+                     "<td>" + val.nama + "</td>" +
+                     "<td>" + val.alamat + "</td>" +
+                     "<td>" + val.tarif + "</td>" +
+                     "<td>" + val.daya + "</td>" +
+                     "<td>" + val.fakm + "</td>" +
+                     "<td>" + val.fakmvarh + "</td>" +
+                     "<td>" + val.kdgardu + "</td>" +
+                     "<td>" + val.dlpd + "</td>" +
+                     "<td>" + val.dlpd_fkm + "</td>" +
+                     "<td>" + val.dlpd_jnsmutasi + "</td>";
+          });
+
+          $('#tbody_data').html(tdata);
+        }
+      });
+    }
+
+    function getTime(ar){
+      var area = ar.toUpperCase();
+      $.ajax({
+        url: "{{ route('workpage.getTime') }}",
+        data: {
+          area: area
+        },
+        success: function(response){
+          var min_tahun = response.waktu.min_tahun;
+          var max_tahun = response.waktu.max_tahun;
+          var bulan = response.waktu.bulan;
+
+          var select_tahun_opt = "";
+          if(min_tahun != undefined){
+            for(i=min_tahun; i<=max_tahun; i++){
+            select_tahun_opt += "<option value='"+ i +"' selected='selected'>"+ i +"</option>";
+          }
+          }
+
+          var months = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+               "Juli", "Agustus", "September", "Oktober", "November", "Desember" ];
+          var select_bulan_opt = "";
+          for(i=1; i<=bulan; i++){
+            select_bulan_opt += "<option value='"+ i +"' selected='selected'>"+ months[i-1] +"</option>"
+          }
+
+          $('#select_tahun').html(select_tahun_opt);
+          $('#select_bulan').html(select_bulan_opt);
+          
+          getPelanggan(area, bulan, max_tahun);
+        }
+      });
+    }
 
   </script>
 <!--   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

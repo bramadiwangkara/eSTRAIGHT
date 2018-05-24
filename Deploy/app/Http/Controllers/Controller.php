@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\User;
 use App\jam_nyala;
+use App\pelanggan;
 
 
 class Controller extends BaseController
@@ -66,13 +67,74 @@ class Controller extends BaseController
     }
 
     public function workpage(){
-      $bjn_thn = jam_nyala::select('tahun')->groupBy('tahun')->get();
-      $bjn_bln = jam_nyala::selectRaw('bulan')
-                              ->groupBy('bulan')
-                              ->groupBy('tahun')
-                              ->havingRaw('tahun=MAX(tahun)')
-                              ->get();
+      return view('workpage');
+    }
 
-      return view('workpage', ['bjn_thn' => $bjn_thn, 'bjn_bln' => $bjn_bln]);
+    public function getTime(Request $request){
+      $area = $request->area;
+      $waktu = jam_nyala::whereHas('pelanggan', function($query) use($area){
+        $query->whereHas('area', function($query) use($area){
+          $query->where('area', $area);
+        });
+      })
+      ->selectRaw('max(bulan) as bulan, max(tahun) as max_tahun, min(tahun) as min_tahun')
+      ->first();
+
+      return response()->json(array('waktu' => $waktu), 200);
+    }
+
+    public function getPelanggan(Request $request){
+      $area = $request->area;
+      $bln_now = $request->bulan;
+      $thn_now = $request->tahun;
+
+      if($bln_now < 12){
+        $bln_bef = $bln_now + 1;
+        $thn_bef = $thn_now - 1;
+      }
+      else{
+        $bln_bef = 1;
+        $thn_bef = $thn_now;
+      }
+
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->with(['jam_nyala' => function($query) use($bln_bef, $bln_now, $thn_bef, $thn_now){
+        $query->where(function($query) use($bln_bef, $thn_bef){
+                $query->whereBetween('bulan', [$bln_bef, 12])
+                      ->where('tahun', $thn_bef);
+              })
+              ->orWhere(function($query) use($bln_now, $thn_now){
+                $query->whereBetween('bulan', [1, $bln_now])
+                      ->where('tahun', $thn_now);
+              });
+      }])
+      ->get()
+      ->take(25);
+
+      return response()->json(array('pelanggan' => $pelanggan), 200);
+    }
+
+    public function getChart(Request $request){
+        $id = $request->id;
+        $tahun = $request->tahun;
+        $pelanggan = pelanggan::find($id);
+
+        // $title = $id . ' - ' . $pelanggan->nama;
+        $jamnyala = array();
+        for($i = 1; $i <= 12; $i++){
+            $jamnyala[$i-1]['tahun'] = 2013;
+            $jamnyala[$i-1]['bulan'] = $i;
+            $jamnyala[$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala'];
+        } 
+
+        // for($i=1; $i<=12; $i++){
+        //   $pelanggan['jam_nyala'][$i-1]['bln'] = $i;
+        //   $pelanggan['jam_nyala'][$i-1]['tahun'] = $tahun;
+        //   $pelanggan['jam_nyala'][$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala'];
+        // }
+
+        return response()->json(array('pelanggan' => $pelanggan, 'jamnyala' => $jamnyala), 200);
     }
 }

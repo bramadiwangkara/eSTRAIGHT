@@ -9,7 +9,7 @@ class jam_nyala extends Model
     //
     public function pelanggan()
     {
-    	return $this->belongsTo('App\pelanggan');
+    	return $this->belongsTo('App\pelanggan', 'idpel', 'id');
     }
 
     public static function tetap($bulan, $tahun)

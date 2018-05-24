@@ -89,31 +89,40 @@ class adminController extends Controller
       return redirect('admin/manajemenpegawai');
     }
 
+    public function getPegawai(Request $request){
+      $id = $request->id;
+      $pegawai = User::find($id);
+      return response()->json(array('pegawai' => $pegawai), 200);
+    }
+
     public function edit(Request $request){
-      //$pelanggan = pelanggan::first('nip', $request->nip);
-      print_r($request->toArray());
+      $pegawai = User::find($request->id);
+      
+      if($request->btn == "change"){
+        $pegawai->level = $request->level;
+      } else{
+        $pegawai->password = bcrypt('pegawaiPLN');
+      }
+
+      $pegawai->save();
+      return redirect('/admin/manajemenpegawai');
     }
 
     public function pelanggan(Request $request){
-      $datauser = User::all();
+      $area = area::select('area')->groupBy('area')->get();
+      return view('admin.pelanggan', ['area' => $area]); 
+    }
 
-      if($request == null)
-        $area = 'BANYUWANGI';
-      else
-        $area = $request->area;
-
-      $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
-        $query->where('bulan', '12')->where('tahun', '2013');
-      })
-      ->whereHas('area', function($query) use($area){
+    public function getPelanggan(Request $request){
+      $area = $request->area;
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
         $query->where('area', $area);
       })
+      ->with('jam_nyala')
       ->get()
       ->take(25);
 
-      $area = area::select('area')->groupBy('area')->get();
-
-      return view('admin.pelanggan', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
+      return response()->json(array('pelanggan' => $pelanggan), 200);
     }
 
 }
