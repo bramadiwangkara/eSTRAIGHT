@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/workpage', 'Controller@workpage')->name('workpage');
 Route::get('/workpage/getPelanggan', 'Controller@getPelanggan')->name('workpage.getPelanggan');
+Route::get('/workpage/getTetap', 'Controller@getTetap')->name('workpage.getTetap');
+Route::get('/workpage/getPln1', 'Controller@getPln1')->name('workpage.getPln1');
+Route::get('/workpage/getPln3', 'Controller@getPln3')->name('workpage.getPln3');
+Route::get('/workpage/turun', 'Controller@getTurun')->name('workpage.getTurun');
 Route::get('/workpage/search', 'Controller@search')->name('workpage.search');
 Route::get('/workpage/getTime', 'Controller@getTime')->name('workpage.getTime');
 Route::get('/workpage/getChart', 'Controller@getChart')->name('workpage.getChart');
@@ -26,9 +30,6 @@ Route::get('/chart', 'Controller@exportChart')->name('workpage.exportChart');
 
 Route::post('/pegawai/changepassword', 'Controller@changePasswordPegawai')->name('workpage.pegawai.changepassword');
 
-
-Route::get('/admin/dashboard', function(){ return view('admin.dashboard'); })->name('admin.dashboard');
-Route::get('/admin', 'AdminController@index')->name('adminIndex'); 
 // Route::post('/admin/adduser', 'AdminController@adduser')->name('adduser');
 // Route::get('/admin/deleteuser', 'AdminController@deleteuser')->name('deleteuser');
 // Route::post('/admin/addpelanggan', 'AdminController@addpelanggan')->name('addpelanggan');

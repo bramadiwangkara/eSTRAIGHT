@@ -116,6 +116,170 @@ class Controller extends BaseController
       return response()->json(array('pelanggan' => $pelanggan), 200);
     }
 
+    public function getTetap(Request $request){
+      $area = $request->area;
+      $thn = $request->tahun;
+      $bln = $request->bulan;
+
+      $bln_now = $request->bulan;
+      $thn_now = $request->tahun;
+      if($bln_now == 1){
+          $bln_bef = 12;
+          $thn_bef = $thn_now - 1;
+      }
+      else{
+          $bln_bef = $bln_now - 1;
+          $thn_bef = $thn_now;
+      }
+
+      $having = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) <> 0 AND
+                 SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) = 
+                 SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
+
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->whereHas('jam_nyala', function($query) use($bln_now, $thn_now, $having){
+          $query->groupBy('idpel')
+                ->havingRaw($having);
+      })
+      ->with('jam_nyala')
+      ->get()
+      ->take(25);
+
+      return response()->json(array('pelanggan' => $pelanggan), 200);
+    }
+
+    public function getPln1(Request $request){
+        $area = $request->area;
+        $thn = $request->tahun;
+        $bln = $request->bulan;
+        $bBawah = $request->bBawah;
+        $bAtas = $request->bAtas;
+
+        $bln_now = $request->bulan;
+        $thn_now = $request->tahun;
+        if($bln_now == 1){
+            $bln_bef = 12;
+            $thn_bef = $thn_now - 1;
+        }
+        else{
+            $bln_bef = $bln_now - 1;
+            $thn_bef = $thn_now;
+        }
+
+        $having = $bBawah. ' <= ((SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) / SUM(IF(bulan = '.$bln_bef.' AND '.$thn_bef.', jam_nyala, null))) - 1 ) * 100 AND ((SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null)) / SUM(IF(bulan = '.$bln_bef.' AND '.$thn_bef.', jam_nyala, null))) - 1 ) * 100 <= ' .$bAtas;
+
+          $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+            $query->where('area', $area);
+          })
+          ->whereHas('jam_nyala', function($query) use($having){
+              $query->groupBy('idpel')
+                    ->havingRaw($having);
+          })
+          ->with('jam_nyala')
+          ->get()
+          ->take(25);
+
+        return response()->json(array('pelanggan' => $pelanggan), 200);
+    }
+
+    public function getPln3(Request $request){
+      $area = $request->area;
+      $thn = $request->tahun;
+      $bln = $request->bulan;
+      $bBawah = $request->bBawah;
+      $bAtas = $request->bAtas;
+
+      $bln_now = $request->bulan;
+      $thn_now = $request->tahun;
+
+      if($bln_now == 1){
+          $bln_bef = 12;
+          $thn_bef = $thn_now - 1;
+      }
+      else{
+          $bln_bef = $bln_now - 1;
+          $thn_bef = $thn_now;
+      }
+
+      if($bln_bef == 1){
+          $bln_bef2 = 12;
+          $thn_bef2 = $thn_bef - 1;
+      }
+      else{
+          $bln_bef2 = $bln_bef - 1;
+          $thn_bef2 = $thn_bef;
+      }
+
+      $bln1 = 'SUM(IF(bulan = '.$bln_now.' AND tahun = '.$thn_now.', jam_nyala, null))';
+      $bln2 = 'SUM(IF(bulan = '.$bln_bef.' AND tahun = '.$thn_bef.', jam_nyala, null))';
+      $bln3 = 'SUM(IF(bulan = '.$bln_bef2.' AND tahun = '.$thn_bef2.', jam_nyala, null))';
+
+      $dev1 = '(('.$bln2.' / '.$bln3.') - 1) * 100';
+      $dev2 = '(('.$bln1.' / '.$bln3.') - 1) * 100';
+
+      $having = $bBawah. ' <= ' .$dev2. ' AND ' .$dev2. ' <= ' .$bAtas. ' AND ' .$dev1. ' <= ' .$dev2;
+
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->whereHas('jam_nyala', function($query) use($having){
+          $query->groupBy('idpel')
+                ->havingRaw($having);
+      })
+      ->with('jam_nyala')
+      ->get()
+      ->take(25);
+
+      return response()->json(array('pelanggan' => $pelanggan), 200);
+    }
+
+    public function getTurun(Request $request){
+      $area = $request->area;
+      $tahun = $request->tahun;
+      $bulan = $request->bulan;
+      $jb = $request->jumlah_turun;
+
+      $having = '';
+      for($i = 1; $i <= $jb; $i++){
+        if($bulan == 1){
+          $bulan_bef = 12;
+          $tahun_bef = $tahun - 1;
+        }
+        else{
+          $bulan_bef = $bulan - 1;
+          $tahun_bef = $tahun;
+        }
+        
+        $having .= 'SUM(IF(bulan = '.$bulan.' AND tahun = '.$tahun.', jam_nyala, null)) < 
+                    SUM(IF(bulan = '.$bulan_bef.' AND tahun = '.$tahun_bef.', jam_nyala, null))';
+
+        if($i != $jb){
+          $having .= ' AND ';
+          $bulan--;
+        }
+
+        if($bulan == 0){
+          $bulan = 12;
+          $tahun--;
+        }
+      }
+
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->whereHas('jam_nyala', function($query) use($having){
+          $query->groupBy('idpel')
+                ->havingRaw($having);
+      })
+      ->with('jam_nyala')
+      ->get()
+      ->take(25);
+
+      return response()->json(array('pelanggan' => $pelanggan), 200);
+    }
+
     public function getChart(Request $request){
         $id = $request->id;
         $tahun = $request->tahun;

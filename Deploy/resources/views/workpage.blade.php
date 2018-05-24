@@ -211,64 +211,26 @@
           </div>
         </div>
         <div class="sorek_pemakaian">
-          <form action="{{ route('pelanggantahunan') }}" method="GET">
-            <input type="hidden" name="area" value="" id="tahunan_area">
-            <input type="hidden" name="tahun" value="" id="tahunan_tahun">
-            <button type="submit">SOREK Tahunan</button>
-          </form>
-          <form action="{{ route('pelanggantetap') }}" method="GET">
-            <input type="hidden" name="area" value="" id="tetap_area">
-            <input type="hidden" name="bulan" value="" id="tetap_bulan">
-            <input type="hidden" name="tahun" value="" id="tetap_tahun">
-            <button type="submit" name="pemakaian" value="query" >Pemakaian Tetap</button>
-          </form>
+            <button name="pemakaian" id="btn_tetap">Pemakaian Tetap</button>
         </div>
         <div class="minmax">
-          <form action="{{ route('pln') }}" method="GET">
-              <input type="hidden" name="area" value="" id="pln_area">
-              <input type="hidden" name="bulan" value="" id="pln_bulan">
-              <input type="hidden" name="tahun" value="" id="pln_tahun">
             <div class="minmax_box">
               <div>Min</div>
-              <input type="number" name="bBawah">
-              <button type="submit" name="btn" value="1" >Turun 1 Bulan</button>
+              <input type="number" name="bBawah" id="bBawah">
+              <button id="pln_1">Turun 1 Bulan</button>
             </div>
             <div class="minmax_box">
               <div>Max</div>
-              <input type="number" name="bAtas">
-              <button type="submit" name="btn" value="3">Turun 3 Bulan</button>
+              <input type="number" name="bAtas" id="bAtas">
+              <button id="pln_3">Turun 3 Bulan</button>
             </div>
           </form>
         </div>
         <div class="export_turun">
-          <form action="{{ route('pelangganturun') }}" method="GET">
-            <input type="hidden" name="area" value="" id="turun_area">
-            <input type="hidden" name="bulan" value="" id="turun_bulan">
-            <input type="hidden" name="tahun" value="" id="turun_tahun">
             Turun
-          <!-- <select id="export_turun_select">
-            <option value="3">3</option>
-            <option value="6">6</option>
-          </select> -->
-            <input type="number" name="jumlah_bulan" min="1">
+            <input type="number" name="jumlah_bulan" min="1" id="jumlah_turun">
             Bulan <br><br>
-            <button type="submit">Export</button>
-          </form>
-        </div>
-        <div class="chartProp">
-          <!-- <form action="{{ route('chart') }}" method="GET"> -->
-          <!-- <input type="hidden" name="tahun" id="chart_tahun" value=""> -->
-          <input type="number" name="id" id="ID">
-          <label for="ID">ID</label>
-          <br>
-          <!-- <select id="tahunChart">
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-          </select>
-          <label for="tahunChart">Tahun</label> -->
-          <br>
-          <button type="submit" id="chart_btn">Buat Chart</button>
-          <!-- </form> -->
+            <button id="btn_turun">Export</button>
         </div>
         <div class="cust_details">
           <div class="cust_tools">
@@ -278,18 +240,7 @@
           <!-- cust_table -->
           <div class="cust_table">
             <table class="table table-condensed">
-              <thead>
-                  <td>Id</td>
-                  <td>Nama</td>
-                  <td>Alamat</td>
-                  <td>Tarif</td>
-                  <td>Daya</td>
-                  <td>Fakm</td>
-                  <td>Fakmvarh</td>
-                  <td>Kdgardu</td>
-                  <td>DLPD</td>
-                  <td>DLPD FKM</td>
-                  <td>DLPD Jenis Mutasi</td>
+              <thead id="thead_data">
               </thead>
               <tbody id="tbody_data">
               </tbody>
@@ -306,17 +257,6 @@
       </div>
     </div>
   </div>
-<!--   <div id="profile_menu">
-    <button type="button" name="change_password" id="change_password">Change Password</button>
-    <div class="change_pass_form">
-      <input type="password" name="old_pass" value="" placeholder="Password Lama"> <span>*</span>
-      <input type="password" name="re_old_pass" value="" placeholder="Ulang Password Lama"> <span>*</span>
-      <input type="password" name="new_pass" value="" placeholder="Password Baru"> <span>*</span>
-      <button type="submit" name="submit_new_pass">Submit</button>
-    </div>
-  </div>
- -->
-
  <script>
     var selected_id = "";
     var global_area = "";
@@ -540,7 +480,7 @@
               jamnyala[i] = { x: new Date(jn.tahun, jn.bulan - 1, 1), y: jn.jam_nyala, label: months[i] };
             }
 
-            var title = "Jam Nyala " + tahun;
+            var title = data.pelanggan.nama;
 
             // console.log(jamnyala);
             var chart = new CanvasJS.Chart('chart',{
@@ -553,7 +493,7 @@
                  title: "Bulan",
               },
               axisY: {
-                title: "Jam Nyala",
+                title: "Jam Nyala " + tahun,
               },
               legend:{
                 cursor:"pointer",
@@ -625,10 +565,17 @@
 
     });
 
-// <tr class="cust" id="NIPnyabeb123">
-//                   <td>B1</td>
-//                   <td>B2</td>
-//                 </tr>
+// <td>Id</td>
+//                   <td>Nama</td>
+//                   <td>Alamat</td>
+//                   <td>Tarif</td>
+//                   <td>Daya</td>
+//                   <td>Fakm</td>
+//                   <td>Fakmvarh</td>
+//                   <td>Kdgardu</td>
+//                   <td>DLPD</td>
+//                   <td>DLPD FKM</td>
+//                   <td>DLPD Jenis Mutasi</td>
 
     function getPelanggan(ar, bln, thn){
       var area = ar.toUpperCase();
@@ -641,27 +588,7 @@
           tahun: thn
         },
         success: function(response){
-          // console.log(response);
-
-          var tdata = "";
-
-          pelanggan = response.pelanggan;
-          $.each(pelanggan, function(index, val){
-            tdata += "<tr class='cust' id='" + val.id + "'>" +
-                     "<td>" + val.id + "</td>" +
-                     "<td>" + val.nama + "</td>" +
-                     "<td>" + val.alamat + "</td>" +
-                     "<td>" + val.tarif + "</td>" +
-                     "<td>" + val.daya + "</td>" +
-                     "<td>" + val.fakm + "</td>" +
-                     "<td>" + val.fakmvarh + "</td>" +
-                     "<td>" + val.kdgardu + "</td>" +
-                     "<td>" + val.dlpd + "</td>" +
-                     "<td>" + val.dlpd_fkm + "</td>" +
-                     "<td>" + val.dlpd_jnsmutasi + "</td>";
-          });
-
-          $('#tbody_data').html(tdata);
+          printTable(response, area, bln, thn);
         }
       });
     }
@@ -698,6 +625,164 @@
           getPelanggan(area, bulan, max_tahun);
         }
       });
+    }
+
+    $('#btn_tetap').on('click', function(){
+      var area = global_area.toUpperCase();
+      var tahun = $('#select_tahun').val();
+      var bulan = $('#select_bulan').val();
+
+      $.ajax({
+        url: "{{ route('workpage.getTetap') }}",
+        data: {
+          area: area,
+          tahun: tahun,
+          bulan: bulan
+        },
+        success: function(response){
+          // console.log(response);
+          printTable(response, area, bulan, tahun);
+        }
+      });
+    });
+
+    $('#pln_1').on('click', function(){
+      var area = global_area.toUpperCase();
+      var tahun = $('#select_tahun').val();
+      var bulan = $('#select_bulan').val();
+      var bBawah = $('#bBawah').val();
+      var bAtas = $('#bAtas').val();
+
+      $.ajax({
+        url: "{{ route('workpage.getPln1') }}",
+        data: {
+          area: area,
+          tahun: tahun,
+          bulan: bulan,
+          bBawah: bBawah,
+          bAtas: bAtas
+        },
+        success: function(response){
+          // console.log(response);
+          printTable(response, area, bulan, tahun);
+        }
+      });
+    });
+
+    $('#pln_3').on('click', function(){
+      var area = global_area.toUpperCase();
+      var tahun = $('#select_tahun').val();
+      var bulan = $('#select_bulan').val();
+      var bBawah = $('#bBawah').val();
+      var bAtas = $('#bAtas').val();
+
+      $.ajax({
+        url: "{{ route('workpage.getPln3') }}",
+        data: {
+          area: area,
+          tahun: tahun,
+          bulan: bulan,
+          bBawah: bBawah,
+          bAtas: bAtas
+        },
+        success: function(response){
+          // console.log(response);
+          printTable(response, area, bulan, tahun);
+        }
+      });
+    });
+
+    $('#btn_turun').on('click', function(){
+      var area = global_area.toUpperCase();
+      var tahun = $('#select_tahun').val();
+      var bulan = $('#select_bulan').val();
+      var jumlah_turun = $('#jumlah_turun').val();
+
+      $.ajax({
+        url: "{{ route('workpage.getTurun') }}",
+        data: {
+          area: area,
+          tahun: tahun,
+          bulan: bulan,
+          jumlah_turun: jumlah_turun
+        },
+        success: function(response){
+          // console.log(response);
+          printTable(response, area, bulan, tahun);
+        }
+      })
+    })
+
+    function printTable(response, area, bln, thn){
+      if(bln == 12){
+            var bln_bef = 1;
+            var thn_bef = parseInt(thn);
+          }else{
+            var bln_bef = parseInt(bln) + 1;
+            var thn_bef = parseInt(thn) - 1;
+          }
+
+          var months = [ "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des" ];
+          var thdata = "<td>Id</td><td>Nama</td><td>Alamat</td><td>Tarif</td><td>Daya</td><td>Fakm</td><td>Fakmvarh</td>";
+
+          var bln_ctr = bln_bef;
+          var thn_ctr = thn_bef;
+          for(i=0; i<12; i++){
+            thdata += "<td>" + months[bln_ctr-1] + (thn_ctr%1000) + "</td>";
+
+            bln_ctr++;
+            if(bln_ctr == 13){
+              bln_ctr = 1;
+              thn_ctr++;
+            }
+          }
+          thdata += "<td>Kdgardu</td><td>DLPD</td><td>DLPD FKM</td><td>DLPD Jenis Mutasi</td>";
+          $('#thead_data').html(thdata);
+          
+
+          var tdata = "";
+          pelanggan = response.pelanggan;
+          $.each(pelanggan, function(index, val)
+          {
+            var jnhtml = "";
+            var jn = val.jam_nyala;
+
+            bln_ctr = bln_bef;
+            thn_ctr = thn_bef;
+            for(i=1; i<=12; i++){
+              var getjn = $.grep(jn, function(n){
+                return n.bulan == bln_ctr && n.tahun == thn_ctr;
+              });
+
+              if(getjn[0]){
+                jnhtml += "<td>" + getjn[0].jam_nyala + "</td>";
+              } else{
+                jnhtml += "<td>-</td>";
+              }
+
+              bln_ctr++;
+              if(bln_ctr == 13){
+                bln_ctr = 1;
+                thn_ctr++;
+              }
+            }
+
+            tdata += "<tr class='cust' id='" + val.id + "'>" +
+                     "<td>" + val.id + "</td>" +
+                     "<td>" + val.nama + "</td>" +
+                     "<td>" + val.alamat + "</td>" +
+                     "<td>" + val.tarif + "</td>" +
+                     "<td>" + val.daya + "</td>" +
+                     "<td>" + val.fakm + "</td>" +
+                     "<td>" + val.fakmvarh + "</td>" +
+                     jnhtml +
+                     "<td>" + val.kdgardu + "</td>" +
+                     "<td>" + val.dlpd + "</td>" +
+                     "<td>" + val.dlpd_fkm + "</td>" +
+                     "<td>" + val.dlpd_jnsmutasi + "</td>";
+          });
+
+          $('#tbody_data').html(tdata);
     }
 
   </script>
