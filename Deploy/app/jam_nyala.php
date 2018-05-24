@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class jam_nyala extends Model
 {
+    public $timestamps = false;
     //
     public function pelanggan()
     {

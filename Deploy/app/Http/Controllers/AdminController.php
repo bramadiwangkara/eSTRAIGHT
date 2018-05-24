@@ -130,12 +130,10 @@ class adminController extends Controller
 
               $jamnyala = new jam_nyala;
               $jamnyala->idpel = $row['idpel'];
-              $jamnyala->jam_nyala = $row['jam_nyala'];
+              $jamnyala->jam_nyala = $row['jamnyala'];
               $jamnyala->bulan = $bulan;
               $jamnyala->tahun = $tahun;
-
-              // $arr_jn = array('idpel' => $row['idpel'], "jam_nyala" => $row["jamnyala"], "bulan" => $bulan, "tahun" => $tahun);
-              // jam_nyala::insert($arr_jn);
+              $jamnyala->save();
             }
         });
 

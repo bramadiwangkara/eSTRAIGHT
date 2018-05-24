@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,14 +48,6 @@
         <hr>
         <button id="reset_password_button">Reset Password</button>
         <div id="reset_password">
-          <!-- <form method="POST" action="">
-            <label for="reset_pwd_curr">Current Password</label>
-            <input type="text" name="" id="reset_pwd_curr">
-            <label for="reset_pwd_new">New Password</label>
-            <input type="text" name="" id="reset_pwd_new">
-            <label for="reset_pwd_renew">Repeat New Password</label>
-            <input type="text" name="" id="reset_pwd_renew">
-            <button type="submit" id="reset_password_submit">Submit</button> -->
           <form method="POST" action="{{ route('workpage.pegawai.changepassword') }}">
             {{ csrf_field() }}
           <input type="hidden" name="nip" value="{{ Auth::user()->nip }}">
@@ -205,7 +196,6 @@
           <div class="bulan">
             Bulan
             <select name="Bulan" id="select_bulan">
-                <!-- <option value=""></option> -->
             </select>
           </div>
 
@@ -448,7 +438,6 @@
         }
         else {
           $('.map2').show();
-          // $('.map2disp').fadeIn(500)
         }
       })
 
@@ -457,17 +446,7 @@
         $(this).siblings().removeClass('curr_nav');
         $(this).addClass('curr_nav');
         $("#"+$(this).data('id')).siblings().not('.nav').hide();
-        // console.log($(this).attr('class'));
       })
-
-      // $('.admin_only').on('click', function () {
-
-      // });
-
-
-      // $('#change_password').click(function() {
-      //   $('.change_pass_form').toggle();
-      // })
       
       function getChart(id, tahun){
         $.ajax({
