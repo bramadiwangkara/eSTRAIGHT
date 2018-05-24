@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/b/b1/Perusahaan_Listrik_Negara.png/1200px-Perusahaan_Listrik_Negara.png" type="image/gif" sizes="16x16">
   <link rel="stylesheet" href="{{ asset('css/style_Admin2.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
