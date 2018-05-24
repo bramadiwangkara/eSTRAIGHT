@@ -19,10 +19,18 @@ Auth::routes();
 
 Route::get('/workpage', 'Controller@workpage')->name('workpage');
 Route::get('/workpage/getPelanggan', 'Controller@getPelanggan')->name('workpage.getPelanggan');
+Route::get('/workpage/search', 'Controller@search')->name('workpage.search');
 Route::get('/workpage/getTime', 'Controller@getTime')->name('workpage.getTime');
 Route::get('/workpage/getChart', 'Controller@getChart')->name('workpage.getChart');
 
+
 Route::get('/admin/dashboard', function(){ return view('admin.dashboard'); })->name('admin.dashboard');
+Route::get('/admin', 'AdminController@index')->name('adminIndex'); 
+// Route::post('/admin/adduser', 'AdminController@adduser')->name('adduser');
+// Route::get('/admin/deleteuser', 'AdminController@deleteuser')->name('deleteuser');
+Route::post('/admin/addpelanggan', 'AdminController@addpelanggan')->name('addpelanggan');
+
+Route::get('/admin/dashboard', function(){return view('admin.dashboard');})->name('admin.dashboard');
 Route::get('/admin/manajemenpegawai', 'AdminController@pegawai')->name('admin.pegawai');
 Route::get('/admin/manajemenpegawai/get', 'AdminController@getPegawai')->name('admin.pegawai.get');
 Route::post('/admin/manajemenpegawai/tambah', 'AdminController@tambahpegawai')->name('admin.pegawai.tambah');
@@ -31,9 +39,7 @@ Route::post('/admin/manajemenpegawai/edit', 'AdminController@edit')->name('admin
 Route::get('/admin/manajemenpelanggan', 'AdminController@pelanggan')->name('admin.pelanggan');
 Route::get('/admin/manajemenpelanggan/get', 'AdminController@getPelanggan')->name('admin.pelanggan.get');
 Route::get('/admin/about', function(){ return view('admin.about'); })->name('admin.about');
-Route::get('/admin/developer', function(){ return view('admin.developer'); })->name('admin.developer');
-
-
+Route::get('/admin/version', function(){ return view('admin.version'); })->name('admin.version');
 
 
 // // Admin

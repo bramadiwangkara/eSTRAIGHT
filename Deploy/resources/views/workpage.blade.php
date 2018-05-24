@@ -23,7 +23,16 @@
 </span>
       <div id="user_option">
         <button class="user_profile_button" id="open_profile">Profile</button><br>
-        <button class="user_profile_button">Logout</button>
+        <button class="user_profile_button"><a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+        </button>
+       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+       </form>
+
       </div>
     </div>
   </div>
@@ -293,7 +302,21 @@
       <button type="submit" name="submit_new_pass">Submit</button>
     </div>
   </div>
- -->  <script>
+ -->  
+ <script>
+
+    $(document).ready(function() {
+      var timeout = null;
+      $('#cari_cust').keyup(function(e){
+        clearTimeout(timeout);
+        timeout = setTimeout(() => findPelanggan(e.target.value), 500);
+      });
+    });
+
+    function findPelanggan(str){
+      console.log(str);
+    }
+
     $(function() {
       var global_area = "";
       var show_area = false;

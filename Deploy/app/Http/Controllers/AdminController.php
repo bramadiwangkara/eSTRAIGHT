@@ -17,27 +17,27 @@ class adminController extends Controller
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    // public function index(Request $request){
-    //   $datauser = User::all();
+    public function index(Request $request){
+      $datauser = User::all();
 
-    //   if($request == null)
-    //     $area = 'BANYUWANGI';
-    //   else
-    //     $area = $request->area;
+      if($request == null)
+        $area = 'BANYUWANGI';
+      else
+        $area = $request->area;
 
-    //   $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
-    //     $query->where('bulan', '12')->where('tahun', '2013');
-    //   })
-    //   ->whereHas('area', function($query) use($area){
-    //     $query->where('area', $area);
-    //   })
-    //   ->get()
-    //   ->take(25);
+      $pelanggans = pelanggan::whereHas('jam_nyala', function($query){
+        $query->where('bulan', '12')->where('tahun', '2013');
+      })
+      ->whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->get()
+      ->take(25);
 
-    //   $area = area::select('area')->groupBy('area')->get();
+      $area = area::select('area')->groupBy('area')->get();
 
-    //   return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
-    // }
+      return view('admin.layouts.masteradmin', ['datauser' => $datauser, 'pelanggans' => $pelanggans, 'area' => $area]); 
+    }
 
     // public function cust_area_change(Request $request){
     //   $area = $request->area;
