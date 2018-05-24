@@ -279,25 +279,26 @@
           tahun: tahun
         },
         success: function(response){
-          console.log(response);
-          var tdata = "";
-          pelanggan = response.pelanggan;
-          $.each(pelanggan, function(index, val){
-            tdata += "<tr class='cust' id='" + val.id + "'>" +
-                     "<td>" + val.id + "</td>" +
-                     "<td>" + val.nama + "</td>" +
-                     "<td>" + val.alamat + "</td>" +
-                     "<td>" + val.tarif + "</td>" +
-                     "<td>" + val.daya + "</td>" +
-                     "<td>" + val.fakm + "</td>" +
-                     "<td>" + val.fakmvarh + "</td>" +
-                     "<td>" + val.kdgardu + "</td>" +
-                     "<td>" + val.dlpd + "</td>" +
-                     "<td>" + val.dlpd_fkm + "</td>" +
-                     "<td>" + val.dlpd_jnsmutasi + "</td></tr>";
-          });
+          // console.log(response);
+          // var tdata = "";
+          // pelanggan = response.pelanggan;
+          // $.each(pelanggan, function(index, val){
+          //   tdata += "<tr class='cust' id='" + val.id + "'>" +
+          //            "<td>" + val.id + "</td>" +
+          //            "<td>" + val.nama + "</td>" +
+          //            "<td>" + val.alamat + "</td>" +
+          //            "<td>" + val.tarif + "</td>" +
+          //            "<td>" + val.daya + "</td>" +
+          //            "<td>" + val.fakm + "</td>" +
+          //            "<td>" + val.fakmvarh + "</td>" +
+          //            "<td>" + val.kdgardu + "</td>" +
+          //            "<td>" + val.dlpd + "</td>" +
+          //            "<td>" + val.dlpd_fkm + "</td>" +
+          //            "<td>" + val.dlpd_jnsmutasi + "</td></tr>";
+          // });
 
-          $('#tbody_data').html(tdata);
+          // $('#tbody_data').html(tdata);
+          printTable(response, area, bulan, tahun);
         }
       })
     }

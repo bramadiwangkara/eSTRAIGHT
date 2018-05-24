@@ -326,6 +326,7 @@ class Controller extends BaseController
       $pelanggan = $pelanggan->where('id', 'LIKE', '%'.$value.'%')
                              ->orWhere('nama', 'LIKE', '%'.$value.'%')
                              ->orWhere('alamat', 'LIKE', '%'.$value.'%')
+                             ->with('jam_nyala')
                              ->get()
                              ->take(25);
 
