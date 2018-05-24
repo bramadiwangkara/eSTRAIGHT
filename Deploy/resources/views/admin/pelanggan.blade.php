@@ -1,10 +1,6 @@
 @extends('admin.layouts.masteradmin')
 @section('content')
 <div class="wrapper">
-  <!-- <form method="GET" action="">
-    <input type="hidden" name="area" id="select_area" value="">
-    <input type="submit" id="button_area" style="display: none;">
-  </form> -->
   <button type="button" name="add-cust" class="btn add_cust"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
   <button type="button" name="del-cust" class="btn del_cust"><i class="fa fa-user-times" aria-hidden="true"></i></button>
   <button type="button" name="edit-cust" class="btn edit_cust"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -20,16 +16,21 @@
 <div class="add_cust_form_box">
   <div class="add_cust_form">
     <h3><span></span> Pelanggan</h3>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.pelanggan.tambah') }}" method="post" enctype="multipart/form-data">
     <input type="hidden" value="{{ csrf_token() }}" name="_token" /><br>
-    <input type="file" name="add_cust" value="" accept=".xls,.xlsx"/>
-  <!--   <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
-    </label><br>-->
+    <input type="file" name="add_cust" value="" accept=".xls,.xlsx"/ id="add_cust_file">
+     <label for="add_cust_file"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Add File
+    </label><br>
     <div class="form_button">
       <button type="button" name="cancel_add" id="cancel_addc">Cancel</button>
       <button type="submit" name="submit_user" id="submit_cust">Submit</button>
     </div>
     </form>
+
+    <!-- <form action="{{ route('admin.pelanggan.tambah') }}" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file">
+    </form>
+     -->
   </div>
 </div>
 

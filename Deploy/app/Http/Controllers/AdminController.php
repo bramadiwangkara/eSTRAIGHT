@@ -125,4 +125,9 @@ class adminController extends Controller
       return response()->json(array('pelanggan' => $pelanggan), 200);
     }
 
+    public function tambahPelanggan(){
+
+      
+    }
+
 }
