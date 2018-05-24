@@ -121,7 +121,6 @@ class Controller extends BaseController
         $tahun = $request->tahun;
         $pelanggan = pelanggan::find($id);
 
-        // $title = $id . ' - ' . $pelanggan->nama;
         $jamnyala = array();
         for($i = 1; $i <= 12; $i++){
             $jamnyala[$i-1]['tahun'] = 2013;
@@ -129,12 +128,43 @@ class Controller extends BaseController
             $jamnyala[$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->first()['jam_nyala'];
         } 
 
-        // for($i=1; $i<=12; $i++){
-        //   $pelanggan['jam_nyala'][$i-1]['bln'] = $i;
-        //   $pelanggan['jam_nyala'][$i-1]['tahun'] = $tahun;
-        //   $pelanggan['jam_nyala'][$i-1]['jam_nyala'] = $pelanggan->jam_nyala->where('bulan', $i)->where('tahun', $tahun)->first()['jam_nyala'];
-        // }
-
         return response()->json(array('pelanggan' => $pelanggan, 'jamnyala' => $jamnyala), 200);
+    }
+
+    public function search(Request $request){
+      $value = $request->value;
+      $area = $request->area;
+      $bln_now = $request->bulan;
+      $thn_now = $request->tahun;
+
+      if($bln_now < 12){
+        $bln_bef = $bln_now + 1;
+        $thn_bef = $thn_now - 1;
+      }
+      else{
+        $bln_bef = 1;
+        $thn_bef = $thn_now;
+      }
+
+      $pelanggan = pelanggan::whereHas('area', function($query) use($area){
+        $query->where('area', $area);
+      })
+      ->with(['jam_nyala' => function($query) use($bln_bef, $bln_now, $thn_bef, $thn_now){
+        $query->where(function($query) use($bln_bef, $thn_bef){
+                $query->whereBetween('bulan', [$bln_bef, 12])
+                      ->where('tahun', $thn_bef);
+              })
+              ->orWhere(function($query) use($bln_now, $thn_now){
+                $query->whereBetween('bulan', [1, $bln_now])
+                      ->where('tahun', $thn_now);
+              });
+      }]);
+      $pelanggan = $pelanggan->where('id', 'LIKE', '%'.$value.'%')
+                             ->orWhere('nama', 'LIKE', '%'.$value.'%')
+                             ->orWhere('alamat', 'LIKE', '%'.$value.'%')
+                             ->get()
+                             ->take(25);
+
+      return response()->json(array('pelanggan' => $pelanggan), 200);
     }
 }

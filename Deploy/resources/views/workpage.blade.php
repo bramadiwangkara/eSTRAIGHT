@@ -305,6 +305,8 @@
  -->  
  <script>
 
+    var global_area = "";
+
     $(document).ready(function() {
       var timeout = null;
       $('#cari_cust').keyup(function(e){
@@ -314,11 +316,44 @@
     });
 
     function findPelanggan(str){
-      console.log(str);
+      var value = str;
+      var area = global_area;
+      var bulan = $('#select_bulan').val();
+      var tahun = $('#select_tahun').val();
+
+      $.ajax({
+        url: "{{ route('workpage.search') }}",
+        data:{
+          value: value,
+          area: area,
+          bulan: bulan,
+          tahun: tahun
+        },
+        success: function(response){
+          console.log(response);
+          var tdata = "";
+          pelanggan = response.pelanggan;
+          $.each(pelanggan, function(index, val){
+            tdata += "<tr class='cust' id='" + val.id + "'>" +
+                     "<td>" + val.id + "</td>" +
+                     "<td>" + val.nama + "</td>" +
+                     "<td>" + val.alamat + "</td>" +
+                     "<td>" + val.tarif + "</td>" +
+                     "<td>" + val.daya + "</td>" +
+                     "<td>" + val.fakm + "</td>" +
+                     "<td>" + val.fakmvarh + "</td>" +
+                     "<td>" + val.kdgardu + "</td>" +
+                     "<td>" + val.dlpd + "</td>" +
+                     "<td>" + val.dlpd_fkm + "</td>" +
+                     "<td>" + val.dlpd_jnsmutasi + "</td>";
+          });
+
+          $('#tbody_data').html(tdata);
+        }
+      })
     }
 
     $(function() {
-      var global_area = "";
       var show_area = false;
       // var curr_page = "workpage_menu_box";
       // $("#"+curr_page).siblings().not('.nav').hide();
