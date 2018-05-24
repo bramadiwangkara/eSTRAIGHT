@@ -35,9 +35,9 @@ Route::get('/admin/manajemenpelanggan', 'AdminController@pelanggan')->name('admi
 Route::get('/admin/about', function(){
 	return view('admin.about');
 })->name('admin.about');
-Route::get('/admin/developer', function(){
-	return view('admin.developer');
-})->name('admin.developer');
+Route::get('/admin/version', function(){
+	return view('admin.version');
+})->name('admin.version');
 
 
 // // Admin
