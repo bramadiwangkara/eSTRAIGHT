@@ -94,8 +94,8 @@ $('.add_cust_form_box *').on('click', function(e) {
   e.stopPropagation();
 });
 
-$(document).on('click', '.cust td:not(:first-child)', function(e) {
-  var opt = $('.opt');
+$(document).on('click', '.cust td', function(e) {
+  var opt = $(this).parent().find('.opt');
   var parent = $(this).parent();
   opt.prop('checked', !opt.prop('checked') );
   if (opt.prop('checked')) {
@@ -106,8 +106,8 @@ $(document).on('click', '.cust td:not(:first-child)', function(e) {
     var jn_id = parent.next().attr('id');
     var jn_val = '1';
     $('#jam_nyala_' + jn_val + '_' + jn_id).show();
-    $('#bulan_' + jn_val + '_' + jn_id).show();
-    $('#tahun_' + jn_val + '_' + jn_id).show();
+    // $('#bulan_' + jn_val + '_' + jn_id).show();
+    // $('#tahun_' + jn_val + '_' + jn_id).show();
 
 
   }
@@ -116,9 +116,9 @@ $(document).on('click', '.cust td:not(:first-child)', function(e) {
     parent.next().hide();
     parent.css('border-bottom', '1px solid #607D8B');
     parent.find('td').css('border-bottom', '1px solid #607D8B');
-      $('.jam').hide();
-  $('.bl').hide();
-  $('.th').hide();
+    $('#jam_nyala_' + jn_val + '_' + jn_id).hide();
+  // $('.bl').hide();
+  // $('.th').hide();
 
   }
 });
@@ -168,12 +168,14 @@ var show_jam_nyala = function() {
 }
 
 $(document).on('change', '.jam_nyala_opt', function() {
-  $('.jam').hide();
+  // $('.jam').hide();
   // $('.bl').hide();
   // $('.th').hide();
 
   var jn_id = $(this).parent().parent().parent().parent().parent().parent().parent().attr('id');
   var jn_val = $(this).val();
+
+  $(this).parent().parent().find('.jam').hide();
 
   $('#jam_nyala_' + jn_val + '_' + jn_id).show();
   // $('#bulan_' + jn_val + '_' + jn_id).show();
@@ -240,7 +242,7 @@ function getPelanggan(){
                                "<tr><td>DLPD FKM</td><td colspan='2'>"+ val.dlpd_fkm +"</td></tr>" +
                                "<tr><td>DLPD Jenis Mutasi</td><td colspan='2'>"+ val.dlpd_jnsmutasi +"</td></tr>" +
                                "<tr>" +
-                               "<td rowspan='3'><select class='jam_nyala_opt'>"+ jamnyalaopt +"</select></td>"+
+                               "<td><select class='jam_nyala_opt'>"+ jamnyalaopt +"</select></td>"+
                                "<td>Jam Nyala</td>" + jamnyala +
                                "</tr>" +
                                "</table>" +

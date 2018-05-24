@@ -21,9 +21,14 @@ a {
   background: linear-gradient(to left, #14a2ba, #125d72);
 }
 
+.nav img {
+  margin-top: 30px;
+}
+
 .nav ul {
-  position: absolute;
-  top: 100px;
+/*  position: absolute;
+  top: 150px;*/
+  margin-top: 30px;
   width: 100%;
 }
 
@@ -133,7 +138,7 @@ td {
   width: 30px;
 }
 
-.cust_list th:nth-child(2) {
+.cust_list th:first-child {
   width: 150px;
 }
 
@@ -144,7 +149,11 @@ td {
 }
 
 .sub_table td:first-child {
-  width: 300px;
+  width: 200px;
+}
+
+.sub_table tr:last-child>td:nth-child(2){
+  width: 200px;
 }
 
 .jam_nyala_opt {

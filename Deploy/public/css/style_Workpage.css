@@ -14,9 +14,12 @@
 .nav {
   background: linear-gradient(to left, #14a2ba, #125d72);
   height: 50px;
+  widows: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
+
+
 
 .nav li {
   display: inline-block;
@@ -24,7 +27,7 @@
   line-height: 40px;
   font-size: 18px;
   color: #efe62f;
-  margin-left: 20px;
+  margin-right: 20px;
   border-bottom: 10px solid transparent;
   padding: 5px 10px;
   cursor: pointer;
@@ -130,11 +133,14 @@
 #reset_password_button {
   font-size: 15px;
 }
-
 #reset_password {
-  width: 400px;
   display: none;
-  flex-wrap: wrap;
+}
+
+#reset_password form{
+  width: 400px;
+  display: flex;
+  flex-flow: row wrap;
   justify-content: space-between;
   border: 1px solid grey;
   padding: 5px;
@@ -425,16 +431,15 @@
 .cust_table {
   height: calc(100% - 40px);
   width: 100%;
-  width: 86%;
   white-space: nowrap;
-  overflow: auto;
+  overflow-x: scroll;
   background-color: rgba(255, 255, 255, 0.8);
-  padding: 5px;
 }
 .cust_table thead {
   background-color: #14a2ba;
   color: white;
 }
+
 .cust_table tr {
   border: 1px solid grey;
 }
@@ -465,7 +470,7 @@
   max-width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 25% 1fr;
+  grid-template-columns: 25% 75%;
   grid-template-rows: repeat(7 ,1fr);
   grid-template-areas:
   "Areaname chart"

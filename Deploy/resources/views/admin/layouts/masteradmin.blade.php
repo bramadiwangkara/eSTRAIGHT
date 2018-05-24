@@ -11,8 +11,8 @@
 </head>
 <body>
   <div class="nav">
-    <ul>
       <img src="https://vectordesignlogo.files.wordpress.com/2015/03/d6416-logo2bpln.png?w=440" width="150px">
+    <ul>
       <a href="{{ route('admin.dashboard') }}"><li><div class="nav-button" id="dashboard"><i class="fa fa-tachometer"></i></i><span id="user_name">{{ Auth::user()->nip }} </span></div></li></a>
       <a href="{{ route('admin.pegawai') }}"><li><div class="nav-button" id="pegawai"><i class="fa fa-users"></i>Pegawai</div></li></a>
       <a href="{{ route('admin.pelanggan') }}"><li><div class="nav-button" id="pelanggan">Pelanggan</div></li></a>
