@@ -12,15 +12,19 @@
 <body>
   <div class="nav">
     <ul>
-      <a href="{{ route('admin.dashboard') }}"><li><div class="nav-button" id="dashboard"><i class="fa fa-tachometer"></i></i>Dashboard</div></li></a>
+      <a href="{{ route('admin.dashboard') }}"><li><div class="nav-button" id="dashboard"><i class="fa fa-tachometer"></i></i><span id="user_name">{{ Auth::user()->nip }} </span></div></li></a>
       <a href="{{ route('admin.pegawai') }}"><li><div class="nav-button" id="pegawai"><i class="fa fa-users"></i>Pegawai</div></li></a>
       <a href="{{ route('admin.pelanggan') }}"><li><div class="nav-button" id="pelanggan">Pelanggan</div></li></a>
       <a href="{{ route('admin.about') }}"><li><div class="nav-button" id="about">About</div></li></a>
       <a href="{{ route('admin.developer') }}"><li><div class="nav-button" id="developer">Developer</div></li></a>
       <a href="{{ route('workpage') }}"><li><div class="nav-button" id="workpage">Workpage</div></li></a>
-      <a href=""><li><div class="nav-button" id="logout">Log Out</div></li></a>
+      <a href="{{ route('logout') }}"><li><div class="nav-button" id="logout" onclick="event.preventDefault();
+          document.getElementById('logout-form').submit();">Log Out</div></li></a>
     </ul>
   </div>
+       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+       </form>
   <div class="page">
     @yield('content')
   </div>

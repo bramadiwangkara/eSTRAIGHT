@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/workpage', 'Controller@workpage')->name('workpage');
 
-Route::get('/admin', 'AdminController@index')->name('adminIndex');
+Route::get('/admin', 'AdminController@index')->name('adminIndex'); 
 // Route::post('/admin/adduser', 'AdminController@adduser')->name('adduser');
 // Route::get('/admin/deleteuser', 'AdminController@deleteuser')->name('deleteuser');
 Route::post('/admin/addpelanggan', 'AdminController@addpelanggan')->name('addpelanggan');
