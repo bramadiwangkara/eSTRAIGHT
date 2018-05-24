@@ -65,7 +65,7 @@
           <input type="password" name="new_pass" id="reset_pwd_new">
           <label for="reset_pwd_renew">Repeat New Password</label>
           <input type="password" name="repeat_new_pass" id="reset_pwd_renew">
-          <button type="submit" id="reset_password_submit">Submit</button>
+          <button type="submit" id="reset_password_submit">Submit</button>  
           </form>
         </div>
       </div>
@@ -587,7 +587,7 @@
         var pdf = new jsPDF("landscape", "cm", "a4");
         var width = pdf.internal.pageSize.width;
         var height = pdf.internal.pageSize.height;
-        pdf.addImage(dataURL, 'png', 4, 3);
+        pdf.addImage(dataURL, 'png', 1, 1, width - 2, height - 5);
         pdf.save(selected_id + ".pdf");
       });
 
