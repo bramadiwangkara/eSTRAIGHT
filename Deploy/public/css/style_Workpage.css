@@ -117,8 +117,9 @@
   margin: 0 auto;
   width: 100px;
   height: 100px;
-  background-color: crimson;
+  background: url(https://image.flaticon.com/icons/png/512/149/149071.png);
   border-radius: 50%;
+  background-size: cover;
 }
 
 #profile_details {
@@ -126,8 +127,9 @@
 }
 
 #profile_details span {
-  position: absolute;
-  left: 80px;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
 }
 
 #reset_password_button {

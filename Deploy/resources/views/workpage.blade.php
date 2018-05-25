@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/b/b1/Perusahaan_Listrik_Negara.png/1200px-Perusahaan_Listrik_Negara.png" type="image/gif" sizes="16x16">
   <link rel="stylesheet" href="{{asset('css/style_Workpage.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
