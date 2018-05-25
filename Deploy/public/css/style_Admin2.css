@@ -270,3 +270,18 @@ td {
   border-right: 2px solid honeydew;
   background: linear-gradient(to bottom, #869791, #d6d6d6);
 }
+
+#about_map {
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}
+#about_map iframe {
+  width: 800px;
+  height: 600px;
+  border: none;
+  display: block;
+  margin: 0 auto;
+}
+
+
