@@ -99,6 +99,7 @@ class adminController extends Controller
       $file->move('files', $file_name);
       Excel::load("files/".$file_name, function($reader) use($bulan, $tahun){
             $array = $reader->toArray();
+            $ctr = 0;
             foreach ($array as $row) {
                 $alamat = trim($row["alamat"]);
                 if($row["rt"] != null && $row["rt"] != 0)
@@ -128,13 +129,16 @@ class adminController extends Controller
                           );
               pelanggan::updateOrCreate($arr);
 
-              $jamnyala = new jam_nyala;
-              $jamnyala->idpel = $row['idpel'];
-              $jamnyala->jam_nyala = $row['jamnyala'];
-              $jamnyala->bulan = $bulan;
-              $jamnyala->tahun = $tahun;
-              $jamnyala->save();
+              $arr_jn[$ctr] = array('idpel' => $row['idpel'], 'jam_nyala' => $row['jamnyala'], 'bulan' => $bulan, 'tahun' => $tahun);
+              $ctr = $ctr + 1;
+              // $jamnyala = new jam_nyala;
+              // $jamnyala->idpel = $row['idpel'];
+              // $jamnyala->jam_nyala = $row['jamnyala'];
+              // $jamnyala->bulan = $bulan;
+              // $jamnyala->tahun = $tahun;
+              // $jamnyala->save();
             }
+            jam_nyala::insert($arr_jn);
         });
 
       return redirect('/admin/manajemenpelanggan');
