@@ -185,4 +185,12 @@ class Controller extends BaseController
 
 
     }
+
+    public function exportChart(Request $request){
+        // print_r($request->toArray());
+      $id = $request->id;
+      $tahun = $request->tahun;
+
+      return view('pdf.chart', ['id' => $id, 'tahun' => $tahun]);
+    }
 }

@@ -294,7 +294,12 @@
         <div class="chart_box">
           <div class="chart_real" id="chart">
           </div>
-          <button>Export ke PDF</button>
+          <!-- <form target="_blank" action="{{ route('workpage.exportChart') }}" method="GET">
+            <input type="hidden" name="id" id="export_id">
+            <input type="hidden" name="tahun" id="export_tahun">
+            <button id='export_pdf'>Export ke PDF</button>
+          </form> -->
+          <button id='export_pdf'>Export ke PDF</button>
         </div>
       </div>
     </div>
@@ -308,9 +313,10 @@
       <button type="submit" name="submit_new_pass">Submit</button>
     </div>
   </div>
- -->  
- <script>
+ -->
 
+ <script>
+    var selected_id = "";
     var global_area = "";
 
     $(document).ready(function() {
@@ -528,13 +534,14 @@
               jamnyala[i] = { x: new Date(jn.tahun, jn.bulan - 1, 1), y: jn.jam_nyala, label: months[i] };
             }
 
-            console.log(jamnyala);
+            var title = "Jam Nyala " + tahun;
 
-            var options = {
+            // console.log(jamnyala);
+            var chart = new CanvasJS.Chart('chart',{
               animationEnabled: true,
               theme: "light2",
               title:{
-                text: "Jam Nyala " + tahun
+                text: title
               },
               axisX:{
                  title: "Bulan",
@@ -558,12 +565,25 @@
                 yValueFormatString: "# Jam",
                 dataPoints: jamnyala
               }]
-            };
+            });
 
-            $('#chart').CanvasJSChart(options);
+            chart.render();
           }
         });
       };
+
+      $('#export_pdf').on('click', function(){
+        // console.log("halo");
+
+        var canvas = $("#chart .canvasjs-chart-canvas").get(0);
+        var dataURL = canvas.toDataURL('image/png');
+
+        var pdf = new jsPDF("landscape", "cm", "a4");
+        var width = pdf.internal.pageSize.width;
+        var height = pdf.internal.pageSize.height;
+        pdf.addImage(dataURL, 'png', 4, 3);
+        pdf.save(selected_id + ".pdf");
+      });
 
       $('#chart_btn').on('click', function() {
         getChart();
@@ -580,9 +600,13 @@
 
       $(document).on('click', '.cust', function(){
         var id = $(this).attr('id');
+        selected_id = id;
 
         getChart(id, $('#select_tahun').val());
         $('.chart').show();
+
+        $('#export_id').val(id);
+        $('#export_tahun').val($('#select_tahun').val());
       });
 
       $('.chart').on('click', function() {
@@ -673,6 +697,7 @@
   </script>
 <!--   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
  --><script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
 </body>
 
 </html>
